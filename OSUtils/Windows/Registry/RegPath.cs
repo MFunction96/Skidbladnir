@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Skidbladnir.OSUtils.Windows.Registry.Enums;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Skidbladnir.OSUtils.Windows.Registry.Enums;
 
 namespace Skidbladnir.OSUtils.Windows.Registry
 {
@@ -47,7 +47,7 @@ namespace Skidbladnir.OSUtils.Windows.Registry
         /// </param>
         public RegPath(string path, bool refMark = false)
         {
-            if (refMark) path = path.Substring(1, path.Length - 2);
+            if (refMark) path = path[1..^1];
             var index1 = path.IndexOf(@"\", StringComparison.Ordinal);
             var index2 = path.LastIndexOf(@"\", StringComparison.Ordinal);
             var tmp = path.Substring(0, index1);

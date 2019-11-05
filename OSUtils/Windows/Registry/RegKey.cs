@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using Skidbladnir.OSUtils.Windows.Registry.Enums;
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Skidbladnir.OSUtils.Windows.Registry.Enums;
 
 namespace Skidbladnir.OSUtils.Windows.Registry
 {
