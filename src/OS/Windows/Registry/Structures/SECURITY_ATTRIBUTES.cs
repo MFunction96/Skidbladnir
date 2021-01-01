@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 // ReSharper disable InconsistentNaming
 
-namespace Skidbladnir.OSUtils.Windows.Registry.Structures
+namespace Skidbladnir.OS.Windows.Registry.Structures
 {
     /// <summary>
     /// 安全标识符结构

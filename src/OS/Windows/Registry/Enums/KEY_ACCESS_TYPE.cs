@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Skidbladnir.OSUtils.Windows.Registry.Enums
+namespace Skidbladnir.OS.Windows.Registry.Enums
 {
     /// <summary>
     /// 注册表访问权限。

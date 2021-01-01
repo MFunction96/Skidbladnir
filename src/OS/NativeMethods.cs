@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
-namespace Skidbladnir.OSUtils
+namespace Skidbladnir.OS
 {
     /// <summary>
     /// 平台调用方法访问非托管代码方法

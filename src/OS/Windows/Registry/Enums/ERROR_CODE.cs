@@ -1,5 +1,5 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace Skidbladnir.OSUtils.Windows.Registry.Enums
+namespace Skidbladnir.OS.Windows.Registry.Enums
 {
     /// <summary>
     /// 常用系统错误代码。

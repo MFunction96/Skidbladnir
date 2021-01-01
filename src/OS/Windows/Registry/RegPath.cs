@@ -1,13 +1,13 @@
-﻿using Newtonsoft.Json;
-using Skidbladnir.OSUtils.Windows.Registry.Enums;
+﻿using Skidbladnir.OS.Windows.Registry.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Skidbladnir.OSUtils.Windows.Registry
+namespace Skidbladnir.OS.Windows.Registry
 {
     /// <inheritdoc cref="IComparable"/>
     /// <inheritdoc cref="ICloneable" />
@@ -89,7 +89,7 @@ namespace Skidbladnir.OSUtils.Windows.Registry
         public RegPath(string jsonFile)
         {
             var json = File.ReadAllText(jsonFile);
-            var regpath = JsonConvert.DeserializeObject<RegPath>(json);
+            var regpath = JsonSerializer.Deserialize<RegPath>(json);
             HKey = regpath.HKey;
             LpSubKey = regpath.LpSubKey;
             LpValueName = regpath.LpValueName;
@@ -121,7 +121,7 @@ namespace Skidbladnir.OSUtils.Windows.Registry
         {
             return Task.Run(() =>
             {
-                var json = JsonConvert.SerializeObject(this);
+                var json = JsonSerializer.Serialize(this);
                 File.WriteAllText(jsonFile, json);
             });
         }

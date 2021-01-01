@@ -1,11 +1,11 @@
-﻿using Newtonsoft.Json;
-using Skidbladnir.OSUtils.Windows.Registry.Enums;
+﻿using Skidbladnir.OS.Windows.Registry.Enums;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Skidbladnir.OSUtils.Windows.Registry
+namespace Skidbladnir.OS.Windows.Registry
 {
     /// <inheritdoc cref="RegPath" />
     /// <summary>
@@ -87,7 +87,7 @@ namespace Skidbladnir.OSUtils.Windows.Registry
         public RegKey(string jsonFile)
         {
             var json = File.ReadAllText(jsonFile);
-            var regkey = JsonConvert.DeserializeObject<RegKey>(json);
+            var regkey = JsonSerializer.Deserialize<RegKey>(json);
             HKey = regkey.HKey;
             LpSubKey = regkey.LpSubKey;
             LpValueName = regkey.LpValueName;
