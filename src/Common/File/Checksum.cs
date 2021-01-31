@@ -7,21 +7,9 @@ using System.Threading.Tasks;
 
 namespace Skidbladnir.Common.File
 {
-    public class ChecksumEventArg : EventArgs
-    {
-
-    }
-
-    public class Checksum
+    public static class Checksum
     {
         private const int DefaultBufferSize = 1 << 26;
-
-        public event EventHandler<ChecksumEventArg> ChecksumEvent;
-
-        private void OnRaiseChecksumEvent(object sender, ChecksumEventArg arg)
-        {
-            
-        }
 
         public static Task<string> GetSHA256Async(string filePath, CancellationToken cancellationToken)
         {
@@ -47,5 +35,7 @@ namespace Skidbladnir.Common.File
                     : hash.Aggregate(string.Empty, (current, t) => current + t.ToString("X2"));
             }, cancellationToken);
         }
+
+
     }
 }

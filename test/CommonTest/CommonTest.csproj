@@ -8,6 +8,8 @@
     <RootNamespace>Skidbladnir.CommonTest</RootNamespace>
 
     <AssemblyName>Skidbladnir.CommonTest</AssemblyName>
+
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
