@@ -104,7 +104,7 @@ namespace Skidbladnir.Common.File
 
         #region GetObjectHashAsync
 
-        public async Task<string> GetObjectHashAsync(object obj, SHAFormatting shaFormatting, CancellationToken cancellationToken = default)
+        public async Task<string> GetObjectHashAsync(object obj, SHAFormatting shaFormatting, CancellationToken cancellationToken)
         {
             return await GetObjectHashAsync(obj, shaFormatting, DefaultBufferSize, cancellationToken);
         }
@@ -133,7 +133,7 @@ namespace Skidbladnir.Common.File
 
         #region GetStreamHashAsync
 
-        public async Task<string> GetStreamHashAsync(Stream stream, SHAFormatting shaFormatting, CancellationToken cancellationToken = default)
+        public async Task<string> GetStreamHashAsync(Stream stream, SHAFormatting shaFormatting, CancellationToken cancellationToken)
         {
             return await GetStreamHashAsync(stream, shaFormatting, DefaultBufferSize, cancellationToken);
         }
