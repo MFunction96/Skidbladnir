@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Skidbladnir.Common.File;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -14,12 +15,12 @@ namespace Skidbladnir.CommonTest.File
         public async Task TestGetSHA256()
         {
             TestContext.WriteLine("Test started!");
-            const string expect = @"X9m2LqN3Bv+yBgZmQ2PstvVky9BPGZHOSOEUfW2ABTtfWelLA5sQgwH81w9YHHxJmyEvIOkIuSr07mcqZnLuDw==";
+            const string expect = @"QIeCsyx57gF3axoYuTUnP5v+h61oPGZqVLb3VzoHfo6MFzTNiaqUb3HSeZoCyWLtrZM75jQ570O30U0Ecr4dwg==";
             var watch = new Stopwatch();
             var checksum = new Common.File.Checksum(SHAAlgorithm.SHA512);
             watch.Start();
 
-            var result = checksum.GetFileHashAsync(@"E:\Captura\2021-01-01-20-01-58.mp4", SHAFormatting.Base64);
+            var result = checksum.GetFileHashAsync($"{Environment.CurrentDirectory}\\Microsoft.TestPlatform.CoreUtilities.dll", SHAFormatting.Base64);
 
             watch.Stop();
             Assert.AreEqual(expect, await result);
