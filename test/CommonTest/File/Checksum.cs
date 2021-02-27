@@ -1,7 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Skidbladnir.Common.File;
 using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Skidbladnir.CommonTest.File
@@ -9,36 +8,22 @@ namespace Skidbladnir.CommonTest.File
     [TestClass]
     public class Checksum
     {
-        private TestContext TestContext { get; set; }
-
-        private CancellationTokenSource _cancelToken = new();
+        public TestContext TestContext { get; set; }
 
         [TestMethod]
         public async Task TestGetSHA256()
         {
             TestContext.WriteLine("Test started!");
-
-            var cancelTask = Task.Run((() =>
-            {
-                while (Console.ReadKey().Key != ConsoleKey.Enter)
-                {
-                    Console.WriteLine("Press the ENTER key to cancel...");
-                }
-
-                Console.WriteLine("\nENTER key pressed: cancelling downloads.\n");
-                _cancelToken.Cancel();
-            }));
+            const string expect = @"J8dGcK23UHX60FjVzq97IMTneGyDuuijL2Jvl4KvNMmjPCBG72D9Knh403jin+yFGAa72aZ4ePOp8c2kgwdj/Q==";
             var watch = new Stopwatch();
+            var checksum = new Common.File.Checksum(SHAAlgorithm.SHA512);
             watch.Start();
-            const string expect = @"1B0EQw++DTFwcSaEYa9m8qQS8lgzvlMSwNOYJbGZTiY=";
-            var checksumTask = Common.File.Checksum.GetSHA256Async(@"E:\Captura\2021-01-01-20-01-58.mp4", _cancelToken.Token);
 
-            await Task.WhenAny(new[] { cancelTask, checksumTask });
+            var result = checksum.GetObjectHashAsync(checksum, SHAFormatting.Base64);
 
-            var result = checksumTask.IsCompletedSuccessfully ? checksumTask.Result : string.Empty;
-
-            Assert.AreEqual(expect, result);
-            TestContext.WriteLine($"Test Finished!\nRun Time: {watch.ElapsedMilliseconds}");
+            watch.Stop();
+            Assert.AreEqual(expect, await result);
+            TestContext.WriteLine($"Test Finished!\r\nExpected: {expect}\r\nActual: {await result}\r\nRun Time: {watch.ElapsedMilliseconds}ms\r\n");
         }
     }
 }
