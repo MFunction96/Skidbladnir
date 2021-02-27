@@ -16,9 +16,10 @@ namespace Skidbladnir.CommonTest.File
             TestContext.WriteLine("Test started!");
             const string expect = @"X9m2LqN3Bv+yBgZmQ2PstvVky9BPGZHOSOEUfW2ABTtfWelLA5sQgwH81w9YHHxJmyEvIOkIuSr07mcqZnLuDw==";
             var watch = new Stopwatch();
+            var checksum = new Common.File.Checksum(SHAAlgorithm.SHA512);
             watch.Start();
 
-            var result = Common.File.Checksum.GetFileHash(@"E:\Captura\2021-01-01-20-01-58.mp4", SHAAlgorithm.SHA512, SHAFormatting.Base64);
+            var result = checksum.GetFileHashAsync(@"E:\Captura\2021-01-01-20-01-58.mp4", SHAFormatting.Base64);
 
             watch.Stop();
             Assert.AreEqual(expect, await result);
