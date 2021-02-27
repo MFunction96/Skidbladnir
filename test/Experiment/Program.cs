@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Skidbladnir.Common.File;
+using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using Skidbladnir.Common.File;
 
 namespace Skidbladnir.Experiment
 {
@@ -24,10 +25,15 @@ namespace Skidbladnir.Experiment
                 Console.WriteLine("\nENTER key pressed: cancelling calculating file.\n");
                 SCts.Cancel();
             });
+            var watch = new Stopwatch();
+            watch.Start();
 
-            var sumPageSizesTask = Checksum.GetSHA256Async(@"E:\Captura\2021-01-01-20-01-58.mp4");
+            var sumPageSizesTask = Checksum.GetFileHash(@"E:\Captura\2021-01-01-20-01-58.mp4", SHAAlgorithm.SHA512, SHAFormatting.Base64, SCts.Token);
 
             await Task.WhenAny(new[] { cancelTask, sumPageSizesTask });
+            watch.Stop();
+
+            if (sumPageSizesTask.IsCompletedSuccessfully) Console.WriteLine($"File Hash is {sumPageSizesTask.Result} in {watch.ElapsedMilliseconds}ms.");
 
             Console.WriteLine("Application ending.");
         }
