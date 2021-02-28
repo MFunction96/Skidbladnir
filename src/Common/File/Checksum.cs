@@ -153,7 +153,7 @@ namespace Skidbladnir.Common.File
 
         public async Task<byte[]> GetStreamHashAsync(Stream stream, int bufferSize = DefaultBufferSize, CancellationToken cancellationToken = default)
         {
-            HashAlgorithm sha = Algorithm switch
+            using HashAlgorithm sha = Algorithm switch
             {
                 SHAAlgorithm.SHA1 => SHA1.Create(),
                 SHAAlgorithm.SHA256 => SHA256.Create(),
