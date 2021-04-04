@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -9,8 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Common\Common.csproj" />
-    <ProjectReference Include="..\..\src\OS\OS.csproj" />
+    <PackageReference Include="Skidbladnir" Version="1.0.0" />
   </ItemGroup>
 
 </Project>
