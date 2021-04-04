@@ -11,12 +11,13 @@
     <PackageProjectUrl>https://github.com/MFunction96/Skidbladnir</PackageProjectUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>1.0.0.0</Version>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>MFunction.pfx</AssemblyOriginatorKeyFile>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\key\Skidbladnir.pfx</AssemblyOriginatorKeyFile>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <FileVersion>1.0.0.1</FileVersion>
     <AssemblyVersion>1.0.0.1</AssemblyVersion>
-    <AssemblyName>out</AssemblyName>
+    <AssemblyName>Skidbladnir</AssemblyName>
+    <DelaySign>true</DelaySign>
   </PropertyGroup>
 
   <ItemGroup>

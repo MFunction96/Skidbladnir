@@ -48,11 +48,17 @@ jobs:
         # queries: ./path/to/local/query, your-org/your-repo/queries@main
 
     - name: Restore Package
-      run: dotnet restore --source https://www.myget.org/F/xanadu/api/v3/index.json
+      run: dotnet restore --source https://www.myget.org/F/xanadu/api/v3/index.json --source https://api.nuget.org/v3/index.json
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v1
+    #- name: Autobuild
+    #  uses: github/codeql-action/autobuild@v1
+
+    - name: Build Solution
+      run: dotnet build
+
+    - name: Test Solution
+      run: dotnet test
 
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 https://git.io/JvXDl
