@@ -7,7 +7,7 @@
     <Platforms>AnyCPU;x64</Platforms>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>MFunction</Authors>
-    <Version>1.0.0.1</Version>
+    <Version>1.0.0.2</Version>
     <Company>Xanadu</Company>
     <Product>Skidbladnir</Product>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -17,7 +17,8 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>MFunction.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\key\Skidbladnir.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyVersion>1.0.0.2</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

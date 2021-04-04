@@ -11,14 +11,14 @@
 #
 name: "CodeQL"
 
-on:
-  push:
-    branches: [ master, develop ]
-  pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [ master ]
-  schedule:
-    - cron: '15 9 * * 0'
+on: [pull_request, push, release]
+  #push:
+  #  # branches: [ main ]
+  #pull_request:
+  #  # The branches below must be a subset of the branches above
+  #  # branches: [ main ]
+  #schedule:
+  #  - cron: '15 9 * * 0'
 
 jobs:
   analyze:
@@ -47,6 +47,8 @@ jobs:
         # Prefix the list here with "+" to use these queries and those in the config file.
         # queries: ./path/to/local/query, your-org/your-repo/queries@main
 
+    - name: Restore Package
+      run: dotnet restore --source https://www.myget.org/F/xanadu/api/v3/index.json
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
     - name: Autobuild

@@ -16,6 +16,7 @@
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <FileVersion>1.0.0.1</FileVersion>
     <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <AssemblyName>out</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
