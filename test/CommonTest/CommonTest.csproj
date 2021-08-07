@@ -9,7 +9,7 @@
 
     <AssemblyName>Skidbladnir.CommonTest</AssemblyName>
 
-    <Platforms>AnyCPU;x64</Platforms>
+    <Platforms>AnyCPU;x64;ARM64;ARM32;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
