@@ -3,15 +3,15 @@ using Skidbladnir.Common.File;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace Skidbladnir.CommonTest.File
+namespace Skidbladnir.CommonTests.File
 {
     [TestClass]
-    public class Checksum
+    public class ChecksumTest
     {
         public TestContext TestContext { get; set; }
 
         [TestMethod]
-        public async Task TestGetSHA256()
+        public async Task GetSHA256Test()
         {
             TestContext.WriteLine("Test started!");
             const string expect = @"J8dGcK23UHX60FjVzq97IMTneGyDuuijL2Jvl4KvNMmjPCBG72D9Knh403jin+yFGAa72aZ4ePOp8c2kgwdj/Q==";

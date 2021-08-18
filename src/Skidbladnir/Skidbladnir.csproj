@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <Platforms>AnyCPU;x64</Platforms>
+    <TargetFramework>net5.0</TargetFramework>
+    <Platforms>AnyCPU;x64;ARM64;ARM32;x86</Platforms>
     <Authors>MFunction</Authors>
     <Company>Xanadu</Company>
     <Copyright>MFunction</Copyright>

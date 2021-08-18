@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Skidbladnir.OSTest.Windows.Registry
+namespace Skidbladnir.OSTests.Windows.Registry
 {
     [TestClass]
-    public class RegKey
+    public class RegKeyTest
     {
     }
 }
