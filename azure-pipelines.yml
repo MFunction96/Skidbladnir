@@ -11,7 +11,7 @@ pool:
 
 variables:
   solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
+  buildPlatform: 'Any CPU;x64;ARM64;ARM32;x86'
   buildConfiguration: 'Release'
 
 steps:
@@ -23,7 +23,7 @@ steps:
     performMultiLevelLookup: true
 
 - task: DotNetCoreCLI@2
-  displayName: Restore
+  displayName: 'dotnet restore'
   inputs:
     command: restore
     projects: '**/*.csproj'
@@ -38,20 +38,15 @@ steps:
     arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
-  inputs:
-    command: test
-    projects: '**/*Tests/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
-
-- task: DotNetCoreCLI@2
+  displayName: 'dotnet test $(buildConfiguration)'
   inputs:
     command: test
     projects: '**/*Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
 
 - task: DotNetCoreCLI@2
+  displayName: 'dotnet publish'
   inputs:
     command: publish
-    publishWebProjects: True
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: True
