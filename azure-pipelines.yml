@@ -22,13 +22,6 @@ steps:
     packageType: runtime
     performMultiLevelLookup: true
 
-- task: UseDotNet@2
-  displayName: 'Install .NET Core Runtime 3.x'
-  inputs:
-    version: '3.1.x'
-    packageType: runtime
-    performMultiLevelLookup: true
-
 - task: DotNetCoreCLI@2
   displayName: Restore
   inputs:
@@ -62,9 +55,3 @@ steps:
     publishWebProjects: True
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: True
-
-# this code takes all the files in $(Build.ArtifactStagingDirectory) and uploads them as an artifact of your build.
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)' 
-    artifactName: 'XanaCN'
