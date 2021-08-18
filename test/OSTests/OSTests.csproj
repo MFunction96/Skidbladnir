@@ -5,7 +5,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <RootNamespace>Skidbladnir.OSTest</RootNamespace>
+    <RootNamespace>Skidbladnir.OSTests</RootNamespace>
 
     <Platforms>AnyCPU;x64;ARM64;ARM32;x86</Platforms>
   </PropertyGroup>

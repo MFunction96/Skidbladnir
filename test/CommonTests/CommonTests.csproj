@@ -5,9 +5,9 @@
 
     <IsPackable>false</IsPackable>
 
-    <RootNamespace>Skidbladnir.CommonTest</RootNamespace>
+    <RootNamespace>Skidbladnir.CommonTests</RootNamespace>
 
-    <AssemblyName>Skidbladnir.CommonTest</AssemblyName>
+    <AssemblyName>Skidbladnir.CommonTests</AssemblyName>
 
     <Platforms>AnyCPU;x64;ARM64;ARM32;x86</Platforms>
   </PropertyGroup>
