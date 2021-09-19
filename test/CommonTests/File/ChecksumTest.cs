@@ -13,17 +13,18 @@ namespace Skidbladnir.CommonTests.File
         [TestMethod]
         public async Task GetSHA256Test()
         {
-            TestContext.WriteLine("Test started!");
-            const string expect = @"J8dGcK23UHX60FjVzq97IMTneGyDuuijL2Jvl4KvNMmjPCBG72D9Knh403jin+yFGAa72aZ4ePOp8c2kgwdj/Q==";
+            TestContext.WriteLine("Test Started!");
+            const string expect = @"VT60uG92jXAm9PNhoEZ5u4+2PZlZT4zgkqtsfapgkgUW+9q+1aHcOBmQ/zbbffEZ/VhPQI7tYk3+RMqT5cmp0w==";
             var watch = new Stopwatch();
-            var checksum = new Common.File.Checksum(SHAAlgorithm.SHA512);
+            var checksum = new Checksum(SHAAlgorithm.SHA512, "Hello World!");
             watch.Start();
 
-            var result = checksum.GetObjectHashAsync(checksum, SHAFormatting.Base64);
+            var result = await checksum.GetObjectHashAsync("Hello World!", SHAFormatting.Base64);
+            result = await checksum.GetObjectHashAsync("Hello World!", SHAFormatting.Base64);
 
             watch.Stop();
-            Assert.AreEqual(expect, await result);
-            TestContext.WriteLine($"Test Finished!\r\nExpected: {expect}\r\nActual: {await result}\r\nRun Time: {watch.ElapsedMilliseconds}ms\r\n");
+            Assert.AreEqual(expect, result);
+            TestContext.WriteLine($"Test Finished!\r\nExpected: {expect}\r\nActual: {result}\r\nRun Time: {watch.ElapsedMilliseconds}ms\r\n");
         }
     }
 }
