@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -281,10 +282,10 @@ namespace Skidbladnir.Common.File
         {
             if (obj is null)
             {
-                throw new ArgumentNullException($"{nameof(obj)} can not be null!");
+                throw new ArgumentNullException(nameof(obj));
             }
 
-            var binary = JsonSerializer.SerializeToUtf8Bytes(obj, new JsonSerializerOptions { IgnoreNullValues = true });
+            var binary = JsonSerializer.SerializeToUtf8Bytes(obj, new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull });
             return await this.GetBinaryHashAsync(binary, bufferSize, cancellationToken);
         }
 
