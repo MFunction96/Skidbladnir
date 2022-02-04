@@ -16,7 +16,7 @@
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <FileVersion>1.0.0.1</FileVersion>
     <AssemblyVersion>1.0.0.1</AssemblyVersion>
-    <AssemblyName>Skidbladnir</AssemblyName>
+    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <DelaySign>true</DelaySign>
   </PropertyGroup>
 

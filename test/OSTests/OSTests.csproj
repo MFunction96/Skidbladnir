@@ -5,16 +5,16 @@
 
     <IsPackable>false</IsPackable>
 
-    <RootNamespace>Skidbladnir.OSTests</RootNamespace>
+    <RootNamespace>Skidbladnir.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
 
     <Platforms>AnyCPU;x64;ARM64;ARM32;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="2.2.7" />
-    <PackageReference Include="MSTest.TestFramework" Version="2.2.7" />
-    <PackageReference Include="coverlet.collector" Version="3.1.0">
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.8" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.8" />
+    <PackageReference Include="coverlet.collector" Version="3.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
