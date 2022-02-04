@@ -18,7 +18,7 @@
 		<AssemblyOriginatorKeyFile>..\..\key\Skidbladnir.pfx</AssemblyOriginatorKeyFile>
 		<AssemblyVersion>1.0.1.0</AssemblyVersion>
 		<DelaySign>true</DelaySign>
-		<AssemblyName>Skidbladnir.$(MSBuildProjectName.Replace(" ", "_"))</AssemblyName>
+		<AssemblyName>$(MSBuildProjectName.Replace(" ", "_"))</AssemblyName>
 	</PropertyGroup>
 
 	<ItemGroup>
