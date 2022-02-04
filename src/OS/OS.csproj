@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>Skidbladnir.OS</RootNamespace>
-    <AssemblyName>Skidbladnir.OS</AssemblyName>
+    <RootNamespace>Skidbladnir.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <Platforms>AnyCPU;x64;ARM64;ARM32;x86</Platforms>
     <Authors>MFunction</Authors>
     <Company>Xanadu</Company>

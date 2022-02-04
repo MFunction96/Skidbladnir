@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>Skidbladnir.Common</RootNamespace>
-    <AssemblyName>Skidbladnir.Common</AssemblyName>
+    <RootNamespace>Skidbladnir.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <Platforms>AnyCPU;x64;ARM64;ARM32;x86</Platforms>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>MFunction</Authors>
@@ -23,7 +23,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="6.0.0" />
+    <PackageReference Include="System.Text.Json" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>
