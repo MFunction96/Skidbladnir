@@ -1,36 +1,36 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>Skidbladnir.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
-    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
-    <Platforms>AnyCPU;x64;ARM64;ARM32;x86</Platforms>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>MFunction</Authors>
-    <Version>1.0.0.2</Version>
-    <Company>Xanadu</Company>
-    <Product>Skidbladnir</Product>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageProjectUrl>https://github.com/MFunction96/Skidbladnir</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/MFunction96/Skidbladnir</RepositoryUrl>
-    <Copyright>2021 Xanadu</Copyright>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\key\Skidbladnir.pfx</AssemblyOriginatorKeyFile>
-    <AssemblyVersion>1.0.0.2</AssemblyVersion>
-    <DelaySign>true</DelaySign>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<RootNamespace>Skidbladnir.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+		<Platforms>AnyCPU;x64;ARM64;ARM32;x86</Platforms>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Authors>MFunction</Authors>
+		<Version>1.0.1</Version>
+		<Company>Xanadu</Company>
+		<Product>Skidbladnir</Product>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageProjectUrl>https://github.com/MFunction96/Skidbladnir</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/MFunction96/Skidbladnir</RepositoryUrl>
+		<Copyright>2021-2022 Xanadu</Copyright>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<SignAssembly>false</SignAssembly>
+		<AssemblyOriginatorKeyFile>..\..\key\Skidbladnir.pfx</AssemblyOriginatorKeyFile>
+		<AssemblyVersion>1.0.1.0</AssemblyVersion>
+		<DelaySign>true</DelaySign>
+		<AssemblyName>Skidbladnir.$(MSBuildProjectName.Replace(" ", "_"))</AssemblyName>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="6.0.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="System.Text.Json" Version="6.0.1" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="..\..\LICENSE">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
 
 </Project>
