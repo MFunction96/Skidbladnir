@@ -5,10 +5,6 @@ param(
     [string] $DesUri,
     [Parameter(Mandatory)]
     [string] $Branch,
-    [Parameter(Mandatory)]
-    [string] $SrcPAT,
-    [Parameter(Mandatory)]
-    [string] $DesPAT,
     [bool] $Force
 )
 
