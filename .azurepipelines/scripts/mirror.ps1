@@ -12,8 +12,8 @@ Write-Host $DesUri
 
 Write-Host $Branch
 
-Write-Host $SrcPAT
+Write-Host $env:SrcPAT
 
-Write-Host $DesPAT
+Write-Host $env:DesPAT
 
 Write-Host $Force
