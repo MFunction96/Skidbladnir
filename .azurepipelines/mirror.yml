@@ -1,0 +1,24 @@
+# Mirror
+# Mirror and publish the main branch to Github.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/zh-cn/azure/devops/pipelines/ecosystems/dotnet-core?view=azure-devops&tabs=dotnetfive
+
+trigger:
+- main
+
+pool: 'Azure Self-Host Pipeline'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU;x64;ARM64;ARM32;x86'
+  buildConfiguration: 'Release'
+
+steps:
+- task: PowerShell@2
+  inputs:
+    filePath: '\.azurepipelines\scripts\mirror.ps1'
+    arguments: '-DesUri ${env:DESURI} -Branch ${env:BRANCH} -SrcPAT ${env:SRCPAT} -DesPAT ${env:DESPAT}'
+    failOnStderr: true
+    showWarnings: true
+    pwsh: true
+    runScriptInSeparateScope: true
