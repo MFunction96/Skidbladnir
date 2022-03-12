@@ -16,7 +16,7 @@ variables:
 steps:
 - task: PowerShell@2
   inputs:
-    filePath: '\.azurepipelines\scripts\mirror.ps1'
+    filePath: '.azurepipelines\scripts\mirror.ps1'
     arguments: '-DesUri ${env:DESURI} -Branch ${env:BRANCH} -SrcPAT ${env:SRCPAT} -DesPAT ${env:DESPAT}'
     failOnStderr: true
     showWarnings: true
