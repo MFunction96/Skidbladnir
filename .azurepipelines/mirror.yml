@@ -11,8 +11,8 @@ pool: 'Azure Self-Host Pipeline'
 steps:
 - task: PowerShell@2
   inputs:
-    filePath: '.azurepipelines\scripts\mirror.ps1'
-    arguments: '-DesUri $(DESURI) -Branch $(BRANCH)'
+    filePath: '.azurepipelines\scripts\mirror\azuredevops_github.ps1'
+    arguments: '-Organization $(ORGANIZATION) -Project $(PROJECT) -Repository $(REPOSITORY) -DesRepo $(DESREPO) -Branch $(BRANCH)'
     failOnStderr: true
     showWarnings: true
     pwsh: true
