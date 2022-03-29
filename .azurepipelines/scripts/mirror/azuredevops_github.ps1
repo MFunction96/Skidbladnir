@@ -18,16 +18,19 @@ param(
     [switch] $Force
 )
 
+Write-Host $env:TMP
+Write-Host $env:TEMP
 
 $SrcUri = "https://$env:SRC_PAT@dev.azure.com/$Organization/$Project/_git/$Repository"
 $DesUri = "https://$env:DES_PAT@github.com/$DesRepo"
 $TmpDir = "TMP_$Repository"
 
 try {
+    Set-Location $env:TMP
     git clone $SrcUri $TmpDir --single-branch --branch $Branch
     Set-Location $TmpDir
     git push $DesUri --force
-    Set-Location ..
+    Set-Location $env:TMP
 }
 catch {
     
