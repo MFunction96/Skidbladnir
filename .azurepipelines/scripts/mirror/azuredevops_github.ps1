@@ -26,12 +26,12 @@ $DesUri = "https://$env:DES_PAT@github.com/$DesRepo"
 Write-Host $DesUri
 
 $TmpDir = "TMP_$Repository"
-# git clone $SrcUri $TmpDir --single-branch --branch $Branch
+git clone $SrcUri $TmpDir --single-branch --branch $Branch
 
-# Set-Location $TmpDir
+Set-Location $TmpDir
 
 git push $DesUri --force
 
-# Set-Location ..
+Set-Location ..
 
-# Remove-Item -Path $TmpDir -Recurse -Force
+Remove-Item -Path $TmpDir -Recurse -Force
