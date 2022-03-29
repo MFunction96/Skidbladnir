@@ -20,18 +20,18 @@ param(
 
 
 $SrcUri = "https://$env:SRC_PAT@dev.azure.com/$Organization/$Project/_git/$Repository"
-Write-Host $SrcUri
-
 $DesUri = "https://$env:DES_PAT@github.com/$DesRepo"
-Write-Host $DesUri
-
 $TmpDir = "TMP_$Repository"
-git clone $SrcUri $TmpDir --single-branch --branch $Branch
 
-Set-Location $TmpDir
-
-git push $DesUri --force
-
-Set-Location ..
-
-Remove-Item -Path $TmpDir -Recurse -Force
+try {
+    git clone $SrcUri $TmpDir --single-branch --branch $Branch
+    Set-Location $TmpDir
+    git push $DesUri --force
+    Set-Location ..
+}
+catch {
+    
+}
+finally {
+    Remove-Item -Path $TmpDir -Recurse -Force
+}
