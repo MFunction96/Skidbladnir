@@ -1,0 +1,26 @@
+# Release
+# Publish the binary and artifact.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch
+
+pool: 'Azure Self-Host Pipeline'
+
+steps:
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    arguments: '--configuration Release'
+
+- task: NuGetCommand@2
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: 'f06af8ee-5084-455c-ac24-8fc4f735382c/516b8cd6-e74d-4b13-a1f3-3705fa0bb769'
+    allowPackageConflicts: true
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)'
+    publishLocation: 'pipeline'
