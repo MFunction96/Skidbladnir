@@ -24,13 +24,12 @@ $TmpDir = "$env:TMP/TMP_$Repository"
 $WorkFolder = "$PSScriptRoot/../../.."
 
 try {    
-    git clone $SrcUri $TmpDir --single-branch --branch $Branch --quiet
+    Start-Process -FilePath "git" -ArgumentList "clone $SrcUri $TmpDir --single-branch --branch $Branch" -Wait -NoNewWindow
     Set-Location $TmpDir
-    git push $DesUri --force
-    break
+    Start-Process -FilePath "git" -ArgumentList "push $DesUri --force" -Wait -NoNewWindow
 }
 catch {
-    continue
+    
 }
 finally {
     Set-Location $WorkFolder
