@@ -23,10 +23,14 @@ $DesUri = "https://$env:DES_PAT@github.com/$DesRepo"
 $TmpDir = "$env:TMP/TMP_$Repository"
 $WorkFolder = "$PSScriptRoot/../../.."
 
-try {    
+try {
     Start-Process -FilePath "git" -ArgumentList "clone $SrcUri $TmpDir --single-branch --branch $Branch" -Wait -NoNewWindow
     Set-Location $TmpDir
-    Start-Process -FilePath "git" -ArgumentList "push $DesUri --force" -Wait -NoNewWindow
+    $pushArgs = "push $DesUri"
+    if ($Force) {
+        $pushArgs = "$pushArgs --force"
+    }
+    Start-Process -FilePath "git" -ArgumentList $pushArgs -Wait -NoNewWindow
 }
 catch {
     
