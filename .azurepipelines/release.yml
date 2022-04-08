@@ -10,7 +10,10 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: false
-    arguments: '--configuration Release'
+    projects: '**/*.csproj'
+    arguments: '--configuration Release -o $(Build.ArtifactStagingDirectory)/Output'
+    zipAfterPublish: true
+    modifyOutputPath: true
 
 - task: NuGetCommand@2
   inputs:
