@@ -11,17 +11,16 @@ steps:
     command: 'publish'
     publishWebProjects: false
     projects: '**/*.csproj'
-    arguments: '--configuration Release -o $(Build.ArtifactStagingDirectory)/Output'
+    arguments: '--configuration Release -o $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: true
     modifyOutputPath: true
 
-- task: NuGetCommand@2
+- task: DotNetCoreCLI@2
   inputs:
     command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
     nuGetFeedType: 'internal'
     publishVstsFeed: 'f06af8ee-5084-455c-ac24-8fc4f735382c/516b8cd6-e74d-4b13-a1f3-3705fa0bb769'
-    allowPackageConflicts: true
 
 - task: PublishPipelineArtifact@1
   inputs:
