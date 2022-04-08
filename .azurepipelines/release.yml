@@ -9,10 +9,12 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'pack'
-    publishWebProjects: false
-    projects: '**/*.csproj'
-    arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
-
+    packagesToPack: '**/*.csproj'
+    includesymbols: true
+    includesource: true
+    versioningScheme: 'byBuildNumber'
+    arguments: '--configuration Release'
+    
 - task: DotNetCoreCLI@2
   inputs:
     command: 'push'
