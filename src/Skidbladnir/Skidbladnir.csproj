@@ -2,10 +2,9 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
+		<RootNamespace>Skidbladnir</RootNamespace>
 		<Platforms>AnyCPU;x64;ARM64;ARM32;x86</Platforms>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Authors>MFunction</Authors>
-		<Version>1.0.1</Version>
 		<Company>Xanadu</Company>
 		<Product>Skidbladnir</Product>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -16,9 +15,13 @@
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<SignAssembly>false</SignAssembly>
 		<AssemblyOriginatorKeyFile>..\..\key\Skidbladnir.pfx</AssemblyOriginatorKeyFile>
-		<AssemblyVersion>1.0.1.0</AssemblyVersion>
 		<DelaySign>true</DelaySign>
 		<AssemblyName>$(MSBuildProjectName.Replace(" ", "_"))</AssemblyName>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Version Condition=" '$(BIN_VER)' == '' ">1.0.0.0</Version>
+		<Version Condition=" '$(BIN_VER)' != '' ">$(BIN_VER)</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
