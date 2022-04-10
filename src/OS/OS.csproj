@@ -20,8 +20,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<Version Condition=" '$(BIN_VER)' == '' ">1.0.0.0</Version>
-		<Version Condition=" '$(BIN_VER)' != '' ">$(BuildDefinitionName)_$(Date:yyyyMMdd)$(Rev:.rr)</Version>
+		<Version Condition=" '$(BUILD_BUILDNUMBER)' == '' ">1.0.0.0</Version>
+		<Version Condition=" '$(BUILD_BUILDNUMBER)' != '' ">$(BUILD_BUILDNUMBER)</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
