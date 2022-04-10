@@ -3,9 +3,6 @@
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/zh-cn/azure/devops/pipelines/ecosystems/dotnet-core?view=azure-devops&tabs=dotnetfive
 
-trigger:
-- main
-
 pool: 'Azure Self-Host Pipeline'
 
 variables:
