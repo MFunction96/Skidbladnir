@@ -21,8 +21,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-	<Version Condition=" '$(BIN_VER)' == '' ">1.0.0.0</Version>
-	<Version Condition=" '$(BIN_VER)' != '' ">$(BIN_VER)</Version>
+		<Version Condition=" '$(BIN_VER)' == '' ">1.0.0.0</Version>
+		<Version Condition=" '$(BIN_VER)' != '' ">$(BIN_VER)</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
