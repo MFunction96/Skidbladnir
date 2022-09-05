@@ -25,15 +25,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Common\Common.csproj" />
+		<PackageReference Include="System.Text.Json" Version="6.0.5" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Windows\Registry\Enums\" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Include="..\..\LICENSE">
+		<None Include="..\..\..\LICENSE">
 			<Pack>True</Pack>
 			<PackagePath></PackagePath>
 		</None>
