@@ -338,3 +338,30 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+
+# CLion
+.vscode/
+
+# thirdparty source
+
+thirdparty/
+
+# cmake output folders
+lib/
+bin/
+
+*.gch
+*.o
+
+# cmake build files
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+build/
+cmake-build-*/
