@@ -50,7 +50,7 @@ CompileOpenSSL() {
 	cd "${PROJECT_DIR}"
 	mkdir -p "${OPENSSL_DOWNLOAD_DIR}"
 	cd "${OPENSSL_DOWNLOAD_DIR}"
-	curl -SL "https://github.com/openssl/openssl/archive/refs/tags/${OPENSSL_ARCHIVE_FILE}" -o "${OPENSSL_ARCHIVE_FILE}"
+	curl -SL "https://github.com/openssl/openssl/archive/refs/tags/${OPENSSL_ARCHIVE_FILE}" -o "${OPENSSL_ARCHIVE_FILE}" --retry 100 --retry-all-errors
 	tar -zxf ${OPENSSL_ARCHIVE_FILE}
 	rm ${OPENSSL_ARCHIVE_FILE}
 	cd "${OPENSSL_EXTRACT_DIR}"

@@ -11,6 +11,13 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- task: PowerShell@2
+  inputs:
+    filePath: 'src/cpp/build.ps1'
+    arguments: '-Msys2Root "I:/msys64" -Clean'
+    showWarnings: true
+    pwsh: true
+
 - task: DotNetCoreCLI@2
   displayName: 'dotnet restore'
   inputs:
