@@ -46,18 +46,28 @@ Compile() {
 	tar -zxf ${OPENSSL_ARCHIVE_FILE}
 	rm ${OPENSSL_ARCHIVE_FILE}
 	cd "${OPENSSL_EXTRACT_DIR}"
-	if [ $# -eq 1 ] && [ $1 ]; then
+	if [ $# -eq 1 ] && [ $1 = true ]; then
 		./Configure mingw64 shared --prefix="${OPENSSL_ROOT_DIR}" --openssldir="${OPENSSL_ROOT_DIR}/openssl"
 	else
-		./Configure linux-generic32 shared --prefix="${OPENSSL_ROOT_DIR}" --openssldir="${OPENSSL_ROOT_DIR}/openssl"
+		./Configure linux-generic64 shared --prefix="${OPENSSL_ROOT_DIR}" --openssldir="${OPENSSL_ROOT_DIR}/openssl"
 	fi
 	make depend
 	make
+	make test
 	make install
+	cd "${PROJECT_DIR}"
+	# Remove temporary files
+	rm -rf ${OPENSSL_DOWNLOAD_DIR}
+	mkdir -p lib
+	if [ $# -eq 1 ] && [ $1 = true ]; then
+		cp thirdparty/openssl/bin/libcrypto-3-x64.dll lib/libcrypto-3-x64.dll
+		cp thirdparty/openssl/bin/libssl-3-x64.dll lib/libssl-3-x64.dll
+	else
+		cp thirdparty/openssl/lib/libcrypto.so.3 lib/libcrypto.so.3
+		cp thirdparty/openssl/lib/libssl.so.3 lib/libssl.so.3
+	fi
 	# CMake building
 	echo "${STAGE_INFO}Compiling Kankrelats...${NORMAL_INFO}"
-	cd "${PROJECT_DIR}"
-    rm -rf ${OPENSSL_DOWNLOAD_DIR}
 	cmake -B./build -DCMAKE_TOOLCHAIN_FILE=./cmake/native.cmake -G Ninja .
 	cmake --build ./build --target all -- -j 10
 	echo "${OK_INFO}Building finished!${NORMAL_INFO}"
@@ -81,6 +91,7 @@ CrossCompile() {
 	./Configure linux-generic32 shared --prefix="${OPENSSL_ROOT_DIR}" --openssldir="${OPENSSL_ROOT_DIR}/openssl" --cross-compile-prefix="arm-linux-gnueabihf-"
 	make depend
 	make
+	make test
 	make install
 	# CMake building
 	echo "${STAGE_INFO}Cross compiling Kankrelats...${NORMAL_INFO}"
@@ -91,7 +102,7 @@ CrossCompile() {
 }
 
 NativeCompile() {
-	Compile
+	Compile false
 }
 
 MinGWCompile() {

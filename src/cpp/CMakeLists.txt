@@ -12,7 +12,12 @@ set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib")
 
 set(OPENSSL_ROOT_DIR "${PROJECT_SOURCE_DIR}/thirdparty/openssl")
 set(OPENSSL_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/thirdparty/openssl/include")
-set(OPENSSL_LIBRARIES "${PROJECT_SOURCE_DIR}/thirdparty/openssl/lib64")
+if(WIN32)
+        set(OPENSSL_LIBRARIES "${PROJECT_SOURCE_DIR}/thirdparty/openssl/lib64")
+else()
+        set(OPENSSL_LIBRARIES "${PROJECT_SOURCE_DIR}/thirdparty/openssl/lib")
+endif()
+
 
 ########################## Configure Kankrelats Source ##########################
 
@@ -52,6 +57,6 @@ if(WIN32)
 else()
     target_link_libraries(Kankrelats
             PRIVATE ${Boost_LIBRARIES}
-            PRIVATE libcrypto
+            PRIVATE crypto
             )
 endif()
