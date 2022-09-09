@@ -13,7 +13,7 @@ variables:
 steps:
 - task: PowerShell@2
   inputs:
-    filePath: './build.ps1'
+    filePath: 'src/cpp/build.ps1'
     arguments: '-Msys2Root "I:/msys64" -Clean'
     workingDirectory: 'src/cpp'
     showWarnings: true
