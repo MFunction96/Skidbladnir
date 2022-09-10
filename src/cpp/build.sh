@@ -70,12 +70,16 @@ CompileOpenSSL() {
 	# Remove temporary files
 	rm -rf ${OPENSSL_DOWNLOAD_DIR}
 	mkdir -p lib
-	if [ $_COMPILE_PLATFORM = "MinGW" ]; then
+	if [ $_COMPILE_PLATFORM -eq 3 ]; then
 		cp thirdparty/openssl/bin/libcrypto-3-x64.dll lib/libcrypto-3-x64.dll
 		cp thirdparty/openssl/bin/libssl-3-x64.dll lib/libssl-3-x64.dll
+		cp thirdparty/openssl/bin/libcrypto-3-x64.dll ../csharp/libcrypto-3-x64.dll
+		cp thirdparty/openssl/bin/libssl-3-x64.dll ../csharp/libssl-3-x64.dll
 	else
 		cp thirdparty/openssl/lib/libcrypto.so.3 lib/libcrypto.so.3
 		cp thirdparty/openssl/lib/libssl.so.3 lib/libssl.so.3
+		cp thirdparty/openssl/lib/libcrypto.so.3 ../csharp/libcrypto.so.3
+		cp thirdparty/openssl/lib/libssl.so.3 ../csharp/libssl.so.3
 	fi
 
 	echo -e "${OK_INFO}OpenSSL compilation finished!${RESET_INFO}"

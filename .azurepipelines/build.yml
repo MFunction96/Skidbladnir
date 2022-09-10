@@ -7,11 +7,12 @@ pool: 'Azure Self-Host Pipeline'
 
 variables:
   solution: '**/*.sln'
-  buildPlatform: 'Any CPU;x64;ARM64;ARM32;x86'
+  buildPlatform: 'x64;ARM64'
   buildConfiguration: 'Release'
 
 steps:
 - task: PowerShell@2
+  displayName: 'Build cpp project'
   inputs:
     filePath: 'src/cpp/build.ps1'
     arguments: '-Msys2Root "I:/msys64" -Clean'

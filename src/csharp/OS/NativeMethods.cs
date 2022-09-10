@@ -8,7 +8,7 @@ namespace Skidbladnir.OS
     /// <summary>
     /// 平台调用方法访问非托管代码方法
     /// </summary>
-    internal static class NativeMethods
+    internal static partial class NativeMethods
     {
         #region Windows
 

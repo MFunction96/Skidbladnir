@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<RootNamespace>Skidbladnir.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
-		<Platforms>AnyCPU;x64;ARM64;ARM32;x86</Platforms>
+		<Platforms>x64;ARM64</Platforms>
 		<Authors>MFunction</Authors>
 		<Company>Xanadu</Company>
 		<Product>Skidbladnir</Product>
@@ -17,6 +17,8 @@
 		<AssemblyOriginatorKeyFile>..\..\key\Skidbladnir.pfx</AssemblyOriginatorKeyFile>
 		<DelaySign>true</DelaySign>
 		<AssemblyName>Skidbladnir.$(MSBuildProjectName.Replace(" ", "_"))</AssemblyName>
+		<ChecksumAlgorithm>SHA256</ChecksumAlgorithm>
+		<Utf8Output>true</Utf8Output>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -33,6 +35,27 @@
 			<Pack>True</Pack>
 			<PackagePath></PackagePath>
 		</None>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">
+		<Content Update="libKankrelats.dll">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="libssl-3-x64.dll">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'false'">
+		<Content Update="libcrypto.so.3">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="libssl.so.3">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="libKankrelats.so">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
 	</ItemGroup>
 
 </Project>

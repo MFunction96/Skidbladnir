@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<RootNamespace>Skidbladnir</RootNamespace>
-		<Platforms>AnyCPU;x64;ARM64;ARM32;x86</Platforms>
+		<Platforms>x64;ARM64</Platforms>
 		<Authors>MFunction</Authors>
 		<Company>Xanadu</Company>
 		<Product>Skidbladnir</Product>
@@ -17,6 +17,8 @@
 		<AssemblyOriginatorKeyFile>..\..\key\Skidbladnir.pfx</AssemblyOriginatorKeyFile>
 		<DelaySign>true</DelaySign>
 		<AssemblyName>$(MSBuildProjectName.Replace(" ", "_"))</AssemblyName>
+		<ChecksumAlgorithm>SHA256</ChecksumAlgorithm>
+		<Utf8Output>true</Utf8Output>
 	</PropertyGroup>
 
 	<PropertyGroup>
