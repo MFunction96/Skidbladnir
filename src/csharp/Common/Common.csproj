@@ -40,21 +40,36 @@
 	<ItemGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">
 		<Content Update="libKankrelats.dll">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<Pack>true</Pack>
+			<BuildAction>None</BuildAction>
+			<PackageCopyToOutput>true</PackageCopyToOutput>
 		</Content>
 		<Content Update="libssl-3-x64.dll">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<Pack>true</Pack>
+			<BuildAction>None</BuildAction>
+			<PackageCopyToOutput>true</PackageCopyToOutput>
 		</Content>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'false'">
 		<Content Update="libcrypto.so.3">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<Pack>true</Pack>
+			<BuildAction>None</BuildAction>
+			<PackageCopyToOutput>true</PackageCopyToOutput>
 		</Content>
 		<Content Update="libssl.so.3">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<Pack>true</Pack>
+			<BuildAction>None</BuildAction>
+			<PackageCopyToOutput>true</PackageCopyToOutput>
 		</Content>
 		<Content Update="libKankrelats.so">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<Pack>true</Pack>
+			<BuildAction>None</BuildAction>
+			<PackageCopyToOutput>true</PackageCopyToOutput>
 		</Content>
 	</ItemGroup>
 

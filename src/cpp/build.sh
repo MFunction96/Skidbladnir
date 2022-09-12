@@ -78,8 +78,8 @@ CompileOpenSSL() {
 	else
 		cp thirdparty/openssl/lib/libcrypto.so.3 lib/libcrypto.so.3
 		cp thirdparty/openssl/lib/libssl.so.3 lib/libssl.so.3
-		cp thirdparty/openssl/lib/libcrypto.so.3 ../csharp/libcrypto.so.3
-		cp thirdparty/openssl/lib/libssl.so.3 ../csharp/libssl.so.3
+		cp thirdparty/openssl/lib/libcrypto.so.3 ../csharp/Common/libcrypto.so.3
+		cp thirdparty/openssl/lib/libssl.so.3 ../csharp/Common/libssl.so.3
 	fi
 
 	echo -e "${OK_INFO}OpenSSL compilation finished!${RESET_INFO}"
@@ -103,6 +103,12 @@ CompileSelf() {
 	fi
 
 	cmake --build ./build --target all -- -j 10
+	if [ $_COMPILE_PLATFORM -eq 3 ]; then
+		cp lib/libKankrelats.dll ../csharp/Common/libKankrelats.dll
+	else
+		cp bin/libKankrelats.so ../csharp/Common/libKankrelats.so
+	fi
+
 	echo -e "${OK_INFO}Kankrelats compilation finished!${RESET_INFO}"	
 }
 
