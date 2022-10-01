@@ -4,7 +4,7 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<IsPackable>false</IsPackable>
 		<RootNamespace>Skidbladnir.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
-		<Platforms>AnyCPU;x64;ARM64;ARM32;x86</Platforms>
+		<Platforms>x64;ARM64</Platforms>
 		<AssemblyVersion>1.0.1.0</AssemblyVersion>
 		<Version>1.0.1</Version>
 		<AssemblyName>Skidbladnir.$(MSBuildProjectName.Replace(" ", "_"))</AssemblyName>
@@ -21,7 +21,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\src\csharp\Common\Common.csproj" />
+		<ProjectReference Include="..\..\src\Common\Common.csproj" />
 	</ItemGroup>
 
 </Project>

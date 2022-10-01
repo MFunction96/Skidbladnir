@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<RootNamespace>Skidbladnir</RootNamespace>
-		<Platforms>AnyCPU;x64;ARM64;ARM32;x86</Platforms>
+		<Platforms>x64;ARM64</Platforms>
 		<Authors>MFunction</Authors>
 		<Company>Xanadu</Company>
 		<Product>Skidbladnir</Product>
@@ -30,7 +30,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="..\..\..\LICENSE">
+		<None Include="..\..\LICENSE">
 			<Pack>True</Pack>
 			<PackagePath></PackagePath>
 		</None>

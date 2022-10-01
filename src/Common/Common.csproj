@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<RootNamespace>Skidbladnir.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
-		<Platforms>AnyCPU;x64;ARM64;ARM32;x86</Platforms>
+		<Platforms>x64;ARM64</Platforms>
 		<Authors>MFunction</Authors>
 		<Company>Xanadu</Company>
 		<Product>Skidbladnir</Product>
@@ -25,15 +25,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Common\Common.csproj" />
+		<PackageReference Include="OpenSSL.3-Library" Version="3.0.5.20220930" />
+		<PackageReference Include="System.Text.Json" Version="6.0.5" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Windows\Registry\Enums\" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Include="..\..\..\LICENSE">
+		<None Include="..\..\LICENSE">
 			<Pack>True</Pack>
 			<PackagePath></PackagePath>
 		</None>
