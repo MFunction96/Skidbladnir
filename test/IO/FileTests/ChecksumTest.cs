@@ -1,9 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Skidbladnir.Common.File;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Skidbladnir.IO.File;
 
-namespace Skidbladnir.CommonTests.File
+namespace Skidbladnir.Test.IO.FileTests
 {
     [TestClass]
     public class ChecksumTest
