@@ -20,8 +20,4 @@
 		</PackageReference>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="..\..\src\OS\OS.csproj" />
-	</ItemGroup>
-
 </Project>

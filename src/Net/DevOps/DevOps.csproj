@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
-		<RootNamespace>Skidbladnir</RootNamespace>
+		<RootNamespace>Skidbladnir.Net.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
 		<Platforms>x64;ARM64</Platforms>
 		<Authors>MFunction</Authors>
 		<Company>Xanadu</Company>
@@ -14,9 +14,9 @@
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<SignAssembly>false</SignAssembly>
-		<AssemblyOriginatorKeyFile>..\..\key\Skidbladnir.pfx</AssemblyOriginatorKeyFile>
+		<AssemblyOriginatorKeyFile>..\..\..\key\Skidbladnir.pfx</AssemblyOriginatorKeyFile>
 		<DelaySign>true</DelaySign>
-		<AssemblyName>$(MSBuildProjectName.Replace(" ", "_"))</AssemblyName>
+		<AssemblyName>Skidbladnir.Net.$(MSBuildProjectName.Replace(" ", "_"))</AssemblyName>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -25,16 +25,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="..\..\LICENSE">
+		<None Include="..\..\..\LICENSE">
 			<Pack>True</Pack>
 			<PackagePath></PackagePath>
 		</None>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\IO\File\File.csproj" />
-	  <ProjectReference Include="..\Net\DevOps\DevOps.csproj" />
-	  <ProjectReference Include="..\OS\Windows\Windows.csproj" />
+	  <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
 	</ItemGroup>
 
 </Project>
