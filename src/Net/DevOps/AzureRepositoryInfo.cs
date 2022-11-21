@@ -15,24 +15,29 @@ namespace Skidbladnir.Net.DevOps
         {
             get
             {
-                return $"https://dev.azure.com/{Organization}/{Project}/{Repository}";
+                return $"https://dev.azure.com/{this.Organization}/{this.Project}/{base.Repository}";
             }
             set
             {
-                if (!RepositoryRegex.IsMatch(value))
+                if (!AzureRepositoryInfo.RepositoryRegex.IsMatch(value))
                 {
                     return;
                 }
-                var match = RepositoryRegex.Match(value);
-                Organization = match.Groups["Organization"].Value;
-                Project = match.Groups["Project"].Value;
-                Repository = match.Groups["Repository"].Value;
+                var match = AzureRepositoryInfo.RepositoryRegex.Match(value);
+                this.Organization = match.Groups["Organization"].Value;
+                this.Project = match.Groups["Project"].Value;
+                base.Repository = match.Groups["Repository"].Value;
             }
         }
 
+        /// <summary>
+        /// https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows#use-a-pat
+        /// </summary>
+        /// <param name="pat"></param>
+        /// <returns></returns>
         public override string OriginUrl(SecureString pat)
         {
-            return $"https://{pat}@dev.azure.com/{Organization}/{Project}/_git/{Repository}";
+            return $"https://{pat}@dev.azure.com/{this.Organization}/{this.Project}/_git/{base.Repository}";
         }
     }
 }
