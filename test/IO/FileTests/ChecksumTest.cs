@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using Skidbladnir.IO.File;
 
@@ -13,17 +14,18 @@ namespace Skidbladnir.Test.IO.FileTests
         public async Task GetSHA256Test()
         {
             TestContext.WriteLine("Test Started!");
-            const string expect = @"VT60uG92jXAm9PNhoEZ5u4+2PZlZT4zgkqtsfapgkgUW+9q+1aHcOBmQ/zbbffEZ/VhPQI7tYk3+RMqT5cmp0w==";
+            const string expect = @"eace7ca4f91eff4da627ba7cda1346fa9600656f9331496f9b64e5cffa171bd7";
+            var filePath = "1225.pdf";
             var watch = new Stopwatch();
-            var checksum = new Checksum(SHAAlgorithm.SHA512, "Hello World!");
+            var checksum = new Checksum(SHAAlgorithm.SHA256);
             watch.Start();
-
-            var result = await checksum.GetObjectHashAsync("Hello World!", SHAFormatting.Base64);
-            result = await checksum.GetObjectHashAsync("Hello World!", SHAFormatting.Base64);
-
+            var fileResult = await checksum.GetFileHashAsync(filePath, SHAFormatting.Hexadecimal);
+            Assert.AreEqual(expect, fileResult.ToLower());
+            var binary = await File.ReadAllBytesAsync(filePath);
+            var binResult = await checksum.GetBinaryHashAsync(binary, SHAFormatting.Hexadecimal);
+            Assert.AreEqual(expect, binResult.ToLower());
             watch.Stop();
-            Assert.AreEqual(expect, result);
-            TestContext.WriteLine($"Test Finished!\r\nExpected: {expect}\r\nActual: {result}\r\nRun Time: {watch.ElapsedMilliseconds}ms\r\n");
+            TestContext.WriteLine($"Test Finished!\r\nExpected: {expect}\r\nActual: {fileResult}\r\nRun Time: {watch.ElapsedMilliseconds}ms\r\n");
         }
     }
 }
