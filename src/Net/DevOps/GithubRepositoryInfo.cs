@@ -13,25 +13,25 @@ namespace Skidbladnir.Net.DevOps
         {
             get
             {
-                return $"https://dev.azure.com/{Username}/{Repository}";
+                return $"https://dev.azure.com/{this.Username}/{base.Repository}";
             }
             set
             {
-                if (!RepositoryRegex.IsMatch(value))
+                if (!GithubRepositoryInfo.RepositoryRegex.IsMatch(value))
                 {
                     return;
                 }
-                var match = RepositoryRegex.Match(value);
-                Username = match.Groups["Username"].Value;
-                Repository = match.Groups["Repository"].Value;
+                var match = GithubRepositoryInfo.RepositoryRegex.Match(value);
+                this.Username = match.Groups["Username"].Value;
+                base.Repository = match.Groups["Repository"].Value;
             }
         }
 
         public override string OriginUrl(SecureString pat)
         {
-            return $"https://{Username}:{pat}@github.com/{Username}/{Repository}.git";
+            return $"https://{this.Username}:{pat}@github.com/{this.Username}/{base.Repository}.git";
         }
 
-        public string MetadataUrl => $"https://api.github.com/repos/{Username}/{Repository}/tags";
+        public string MetadataUrl => $"https://api.github.com/repos/{this.Username}/{base.Repository}/tags";
     }
 }
