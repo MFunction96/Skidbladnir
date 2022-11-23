@@ -18,6 +18,16 @@ steps:
     nugetConfigPath: nuget.config 
     noCache: true
 
+- task: PowerShell@2
+  displayName: 'Set User Secerts'
+  inputs:
+    filePath: '.azurepipelines/scripts/build/secret.ps1'
+    showWarnings: true
+    pwsh: true
+  env:
+    AzurePAT: $(AzurePAT)
+    GithubPAT: $(GithubPAT)
+
 - task: DotNetCoreCLI@2
   displayName: 'dotnet build $(buildConfiguration)'
   inputs:

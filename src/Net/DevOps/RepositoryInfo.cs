@@ -8,6 +8,8 @@ namespace Skidbladnir.Net.DevOps
 
         public abstract string RepositoryUrl { get; set; }
 
-        public abstract string OriginUrl(SecureString pat);
+        public abstract string OriginUrl(string pat);
+
+        public abstract bool IsAvailable { get; }
     }
 }

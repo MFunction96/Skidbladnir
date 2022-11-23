@@ -1,4 +1,5 @@
-﻿using System.Security;
+﻿using Newtonsoft.Json.Linq;
+using System.Security;
 using System.Text.RegularExpressions;
 
 namespace Skidbladnir.Net.DevOps
@@ -7,13 +8,13 @@ namespace Skidbladnir.Net.DevOps
     {
         public string Username { get; set; }
 
-        public static readonly Regex RepositoryRegex = new(@"https:\/\/github\.com\/(?<Username>(.+?))\/(?<Repository>(.+?))", RegexOptions.ExplicitCapture);
+        public static readonly Regex RepositoryRegex = new(@"^https:\/\/github\.com\/(?<Username>(.+?))\/(?<Repository>(.+?))$", RegexOptions.ExplicitCapture);
 
         public override string RepositoryUrl
         {
             get
             {
-                return $"https://dev.azure.com/{this.Username}/{base.Repository}";
+                return this.IsAvailable ? $"https://github.com/{this.Username}/{base.Repository}" : string.Empty;
             }
             set
             {
@@ -27,11 +28,14 @@ namespace Skidbladnir.Net.DevOps
             }
         }
 
-        public override string OriginUrl(SecureString pat)
+        public override bool IsAvailable =>
+            !string.IsNullOrEmpty(this.Username) && !string.IsNullOrEmpty(base.Repository);
+
+        public override string OriginUrl(string pat)
         {
-            return $"https://{this.Username}:{pat}@github.com/{this.Username}/{base.Repository}.git";
+            return this.IsAvailable ? $"https://{this.Username}:{pat}@github.com/{this.Username}/{base.Repository}.git" : string.Empty;
         }
 
-        public string MetadataUrl => $"https://api.github.com/repos/{this.Username}/{base.Repository}/tags";
+        public string MetadataUrl => this.IsAvailable ? $"https://api.github.com/repos/{this.Username}/{base.Repository}/tags" : string.Empty;
     }
 }
