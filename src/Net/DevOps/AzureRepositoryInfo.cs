@@ -9,13 +9,13 @@ namespace Skidbladnir.Net.DevOps
 
         public string Project { get; set; }
 
-        public static readonly Regex RepositoryRegex = new(@"https:\/\/dev\.azure\.com\/(?<Organization>(.+?))\/(?<Project>(.+?))\/(?<Repository>(.+?))", RegexOptions.ExplicitCapture);
+        public static readonly Regex RepositoryRegex = new(@"^https:\/\/dev\.azure\.com\/(?<Organization>(.+?))\/(?<Project>(.+?))\/_git\/(?<Repository>(.+?))$", RegexOptions.ExplicitCapture);
 
         public override string RepositoryUrl
         {
             get
             {
-                return $"https://dev.azure.com/{this.Organization}/{this.Project}/{base.Repository}";
+                return this.IsAvailable ? $"https://dev.azure.com/{this.Organization}/{this.Project}/{base.Repository}" : string.Empty;
             }
             set
             {
@@ -30,14 +30,18 @@ namespace Skidbladnir.Net.DevOps
             }
         }
 
+        public override bool IsAvailable => !string.IsNullOrEmpty(this.Organization) &&
+                                            !string.IsNullOrEmpty(this.Project) &&
+                                            !string.IsNullOrEmpty(base.Repository);
+
         /// <summary>
         /// https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows#use-a-pat
         /// </summary>
         /// <param name="pat"></param>
         /// <returns></returns>
-        public override string OriginUrl(SecureString pat)
+        public override string OriginUrl(string pat)
         {
-            return $"https://{pat}@dev.azure.com/{this.Organization}/{this.Project}/_git/{base.Repository}";
+            return this.IsAvailable ? $"https://{pat}@dev.azure.com/{this.Organization}/{this.Project}/_git/{base.Repository}" : string.Empty;
         }
     }
 }
