@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Skidbladnir.Interop.Extension;
+using System;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -6,8 +7,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Bson;
 
 namespace Skidbladnir.IO.File
 {
@@ -307,14 +306,7 @@ namespace Skidbladnir.IO.File
                 }
                 default:
                 {
-                    using var ms = new MemoryStream();
-                    using var writer = new BsonDataWriter(ms)
-                    {
-                        Formatting = Formatting.None
-                    };
-                    var serializer = new JsonSerializer();
-                    serializer.Serialize(writer, obj);
-                    return await this.GetStreamHashAsync(ms, bufferSize, cancellationToken);
+                    return await this.GetStreamHashAsync(obj.ToBson(), bufferSize, cancellationToken);
                 }
             }
         }
