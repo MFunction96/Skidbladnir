@@ -13,7 +13,6 @@ param(
 )
 
 $feedsUrl = "https://pkgs.dev.azure.com/XanaCN/Lyoko/_packaging/Subdigitals/nuget/v3/index.json"
-$credsAzureDevopsServices = New-Object System.Management.Automation.PSCredential("$env:AzurePAT", $env:AzurePAT)
-Register-PSRepository -Name "Subdigitals" -SourceLocation $feedsUrl -PublishLocation $feedsUrl -InstallationPolicy Trusted -Credential $credsAzureDevopsServices
+Register-PSRepository -Name "Subdigitals" -SourceLocation $feedsUrl -PublishLocation $feedsUrl -InstallationPolicy Trusted
 Install-Module -Name Skidbladnir.Net.DevOps -Repository Subdigitals
 Sync-Code -AzureUrl $AzureUrl -AzurePAT $env:AzurePAT -GithubUrl $GithubUrl -GithubPAT $env:GithubPAT -Branch $Branch
