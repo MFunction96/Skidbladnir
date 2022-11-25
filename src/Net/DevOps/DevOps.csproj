@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+		<TargetFrameworks>net7.0</TargetFrameworks>
 		<RootNamespace>Skidbladnir.Net.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
 		<Platforms>x64;ARM64</Platforms>
 		<Authors>MFunction</Authors>
@@ -38,6 +38,13 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Interop\Extension\Extension.csproj" />
 	  <ProjectReference Include="..\..\Interop\Process\Process.csproj" />
+	  <ProjectReference Include="..\..\IO\File\File.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+	  <PackageReference Include="System.Management.Automation">
+	    <Version>7.3.0</Version>
+	  </PackageReference>
 	</ItemGroup>
 
 </Project>
