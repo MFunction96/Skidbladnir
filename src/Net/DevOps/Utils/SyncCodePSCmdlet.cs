@@ -1,7 +1,9 @@
-﻿using System.Management.Automation;
+﻿using Skidbladnir.Net.DevOps.Azure;
+using Skidbladnir.Net.DevOps.Github;
+using System.Management.Automation;
 using System.Security;
 
-namespace Skidbladnir.Net.DevOps
+namespace Skidbladnir.Net.DevOps.Utils
 {
     [Cmdlet(VerbsData.Sync, "Code")]
     public class SyncCodePSCmdlet : PSCmdlet
@@ -29,23 +31,23 @@ namespace Skidbladnir.Net.DevOps
             base.BeginProcessing();
             var azureRepo = new AzureRepositoryInfo
             {
-                RepositoryUrl = this.AzureUrl
+                RepositoryUrl = AzureUrl
             };
 
             var githubRepo = new GithubRepositoryInfo
             {
-                RepositoryUrl = this.GithubUrl
+                RepositoryUrl = GithubUrl
             };
 
-            if (this.Retry < 1)
+            if (Retry < 1)
             {
-                this.Retry = 5;
+                Retry = 5;
             }
 
-            var exitInfo = SyncCode.SyncAzureToGithub(azureRepo, this.AzurePAT, githubRepo,
-                this.GithubPAT, this.Branch, this.Retry).ConfigureAwait(false).GetAwaiter().GetResult();
+            var exitInfo = SyncCode.SyncAzureToGithub(azureRepo, AzurePAT, githubRepo,
+                GithubPAT, Branch, Retry).ConfigureAwait(false).GetAwaiter().GetResult();
 
-            base.WriteObject(exitInfo);
+            WriteObject(exitInfo);
         }
     }
 }

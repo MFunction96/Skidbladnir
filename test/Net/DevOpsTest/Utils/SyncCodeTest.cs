@@ -1,13 +1,12 @@
 using Microsoft.Extensions.Configuration;
-using Skidbladnir.Interop.Process;
-using Skidbladnir.Net.DevOps;
-using System;
-using System.IO;
+using Skidbladnir.Interop.Extension;
+using Skidbladnir.Net.DevOps.Azure;
+using Skidbladnir.Net.DevOps.Github;
+using Skidbladnir.Net.DevOps.Utils;
 using System.Threading;
 using System.Threading.Tasks;
-using Skidbladnir.Interop.Extension;
 
-namespace Skidbladnir.Test.Net.DevOpsTest
+namespace Skidbladnir.Test.Net.DevOpsTest.Utils
 {
     [TestClass]
     public class SyncCodeTest
@@ -19,13 +18,13 @@ namespace Skidbladnir.Test.Net.DevOpsTest
         [TestInitialize]
         public void TestInitialize()
         {
-            Monitor.Enter(SyncCodeTest.SyncRoot);
+            Monitor.Enter(SyncRoot);
         }
 
         [TestCleanup]
         public void TestCleanup()
         {
-            Monitor.Exit(SyncCodeTest.SyncRoot);
+            Monitor.Exit(SyncRoot);
         }
 
         [TestMethod]
@@ -47,8 +46,8 @@ namespace Skidbladnir.Test.Net.DevOpsTest
             };
 
             var result = await SyncCode.SyncAzureToGithub(azureRepo, azurePAT, githubRepo, githubPAT, "main");
-            this.TestContext.WriteLine(result.Output);
-            this.TestContext.WriteLine(result.Error);
+            TestContext.WriteLine(result.Output);
+            TestContext.WriteLine(result.Error);
             Assert.AreEqual(0, result.ExitCode);
         }
     }

@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.Extensions.Configuration;
+using Skidbladnir.Interop.Extension;
+using Skidbladnir.Net.DevOps.Azure;
+using Skidbladnir.Net.DevOps.Github;
+using Skidbladnir.Net.DevOps.Utils;
 using System.Management.Automation;
 using System.Reflection;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Skidbladnir.Interop.Extension;
-using Skidbladnir.Net.DevOps;
 
-namespace Skidbladnir.Test.Net.DevOpsTest
+namespace Skidbladnir.Test.Net.DevOpsTest.Utils
 {
     [TestClass]
     public class SyncCodePSCmdletTest
@@ -22,13 +19,13 @@ namespace Skidbladnir.Test.Net.DevOpsTest
         [TestInitialize]
         public void TestInitialize()
         {
-            Monitor.Enter(SyncCodePSCmdletTest.SyncRoot);
+            Monitor.Enter(SyncRoot);
         }
 
         [TestCleanup]
         public void TestCleanup()
         {
-            Monitor.Exit(SyncCodePSCmdletTest.SyncRoot);
+            Monitor.Exit(SyncRoot);
         }
 
         [TestMethod]
@@ -62,7 +59,7 @@ namespace Skidbladnir.Test.Net.DevOpsTest
             var objs = ps.Invoke();
             foreach (var obj in objs)
             {
-                this.TestContext.WriteLine(obj.ToString());
+                TestContext.WriteLine(obj.ToString());
             }
 
         }

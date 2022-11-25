@@ -1,13 +1,15 @@
-﻿using System;
-using Skidbladnir.Interop.Process;
+﻿using Skidbladnir.Interop.Process;
+using Skidbladnir.IO.File;
+using Skidbladnir.Net.DevOps.Azure;
+using Skidbladnir.Net.DevOps.Github;
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
-using Skidbladnir.IO.File;
 
-namespace Skidbladnir.Net.DevOps
+namespace Skidbladnir.Net.DevOps.Utils
 {
     public static class SyncCode
     {
