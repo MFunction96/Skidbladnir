@@ -5,72 +5,15 @@
 
 param(
     [Parameter(Mandatory)]
-    [string] $Organization,
+    [string] $AzureUrl,
     [Parameter(Mandatory)]
-    [string] $Project,
-    [Parameter(Mandatory)]
-    [string] $Repository,
-    [Parameter(Mandatory)]
-    [string] $DesRepoUser,
-    [Parameter(Mandatory)]
-    [string] $Branch,
+    [string] $GithubUrl,
     [Parameter()]
-    [switch] $Force
+    [string] $Branch
 )
 
-if ($IsLinux -and [string]::IsNullOrEmpty($env:TMP))
-{
-    $env:TMP = "/tmp"
-}
-
-$Base64PAT = [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes("`:$env:SRCPAT"))
-$SrcUri = "https://dev.azure.com/$Organization/$Project/_git/$Repository"
-$DesUri = "https://$DesRepoUser`:$env:DES_PAT@github.com/$DesRepoUser/$Repository.git"
-$TmpDir = "$env:TMP/TMP_$Repository"
-$WorkFolder = "$PSScriptRoot/../../.."
-
-if ([System.IO.Directory]::Exists($TmpDir))
-{
-    [System.IO.Directory]::Delete($TmpDir, $true)
-}
-
-$flag = $true
-for ($i = 0; $i -lt 100; ++$i)
-{
-    $Process = Start-Process -FilePath "git" -ArgumentList "-c http.extraHeader=""Authorization: Basic $Base64PAT"" clone $SrcUri $TmpDir --single-branch --branch $Branch" -Wait -NoNewWindow -PassThru
-    if ($Process.ExitCode -eq 0) {	
-        $flag = $false
-        break
-    }
-}
-
-if ($flag)
-{
-    Write-Error "Unable to clone the repository!"
-    Exit 1
-}
-
-Set-Location $TmpDir
-$pushArgs = "push $DesUri"
-if ($Force) {
-    $pushArgs = "$pushArgs --force"
-}
-
-$flag = $true
-for ($i = 0; $i -lt 100; ++$i)
-{
-    $Process = Start-Process -FilePath "git" -ArgumentList $pushArgs -Wait -NoNewWindow -PassThru
-    if ($Process.ExitCode -eq 0) {	
-        $flag = $false
-        break
-    }
-}
-
-if ($flag)
-{
-    Write-Error "Unable to push the repository!"
-    Exit 1
-}
-
-Set-Location $WorkFolder
-Remove-Item -Path $TmpDir -Recurse -Force
+$feedsUrl = "https://pkgs.dev.azure.com/XanaCN/Lyoko/_packaging/Subdigitals/nuget/v3/index.json"
+$credsAzureDevopsServices = New-Object System.Management.Automation.PSCredential("$env:AzurePAT", $env:AzurePAT)
+Register-PSRepository -Name "Subdigitals" -SourceLocation $feedsUrl -PublishLocation $feedsUrl -InstallationPolicy Trusted -Credential $credsAzureDevopsServices
+Install-Module -Name Skidbladnir.Net.DevOps -Repository Subdigitals
+Sync-Code -AzureUrl $AzureUrl -AzurePAT $env:AzurePAT -GithubUrl $GithubUrl -GithubPAT $env:GithubPAT -Branch $Branch
