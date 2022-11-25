@@ -1,5 +1,6 @@
 ﻿using System.Security;
 using System.Text.RegularExpressions;
+using Skidbladnir.Interop.Extension;
 
 namespace Skidbladnir.Net.DevOps
 {
@@ -39,9 +40,9 @@ namespace Skidbladnir.Net.DevOps
         /// </summary>
         /// <param name="pat"></param>
         /// <returns></returns>
-        public override string OriginUrl(string pat)
+        public override string OriginUrl(SecureString pat)
         {
-            return this.IsAvailable ? $"https://{pat}@dev.azure.com/{this.Organization}/{this.Project}/_git/{base.Repository}" : string.Empty;
+            return this.IsAvailable ? $"https://{pat.ToStr()}@dev.azure.com/{this.Organization}/{this.Project}/_git/{base.Repository}" : string.Empty;
         }
     }
 }

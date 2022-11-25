@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Security;
 using Newtonsoft.Json;
+using System.Runtime.InteropServices;
 
 namespace Skidbladnir.Interop.Extension
 {
@@ -37,6 +38,20 @@ namespace Skidbladnir.Interop.Extension
             }
 
             return ss;
+        }
+
+        public static string ToStr(this SecureString ss)
+        {
+            var returnValue = IntPtr.Zero;
+            try
+            {
+                returnValue = Marshal.SecureStringToGlobalAllocUnicode(ss);
+                return Marshal.PtrToStringUni(returnValue);
+            }
+            finally
+            {
+                Marshal.ZeroFreeGlobalAllocUnicode(returnValue);
+            }
         }
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Skidbladnir.Interop.Process
+﻿namespace Skidbladnir.Interop.Process
 {
     public class ProcessExitInfo
     {
@@ -17,6 +11,12 @@ namespace Skidbladnir.Interop.Process
             this.ExitCode += info.ExitCode;
             this.Output += info.Output;
             this.Error += info.Error;
+        }
+
+        public override string ToString()
+        {
+            return
+                $"{nameof(this.ExitCode)}: {this.ExitCode}\r\n{nameof(this.Output)}: \r\n{this.Output}\r\n{nameof(this.Error)}: \r\n{this.Error}";
         }
     }
 }
