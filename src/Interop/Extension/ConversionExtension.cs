@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json.Bson;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Bson;
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Security;
-using Newtonsoft.Json;
 
 namespace Skidbladnir.Interop.Extension
 {
@@ -37,6 +38,20 @@ namespace Skidbladnir.Interop.Extension
             }
 
             return ss;
+        }
+
+        public static string ToStr(this SecureString ss)
+        {
+            var returnValue = IntPtr.Zero;
+            try
+            {
+                returnValue = Marshal.SecureStringToGlobalAllocUnicode(ss);
+                return Marshal.PtrToStringUni(returnValue);
+            }
+            finally
+            {
+                Marshal.ZeroFreeGlobalAllocUnicode(returnValue);
+            }
         }
     }
 }
