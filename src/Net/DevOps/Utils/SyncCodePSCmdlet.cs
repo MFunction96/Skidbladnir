@@ -1,4 +1,5 @@
-﻿using Skidbladnir.Net.DevOps.Azure;
+﻿using Skidbladnir.Interop.Process;
+using Skidbladnir.Net.DevOps.Azure;
 using Skidbladnir.Net.DevOps.Github;
 using System.Management.Automation;
 using System.Security;
@@ -6,6 +7,7 @@ using System.Security;
 namespace Skidbladnir.Net.DevOps.Utils
 {
     [Cmdlet(VerbsData.Sync, "Code")]
+    [OutputType(typeof(ProcessExitInfo))]
     public class SyncCodePSCmdlet : PSCmdlet
     {
         [Parameter(Mandatory = true)]
@@ -31,21 +33,21 @@ namespace Skidbladnir.Net.DevOps.Utils
             base.BeginProcessing();
             var azureRepo = new AzureRepositoryInfo
             {
-                RepositoryUrl = AzureUrl
+                RepositoryUrl = this.AzureUrl
             };
 
             var githubRepo = new GithubRepositoryInfo
             {
-                RepositoryUrl = GithubUrl
+                RepositoryUrl = this.GithubUrl
             };
 
-            if (Retry < 1)
+            if (this.Retry < 1)
             {
-                Retry = 5;
+                this.Retry = 5;
             }
 
-            var exitInfo = SyncCode.SyncAzureToGithub(azureRepo, AzurePAT, githubRepo,
-                GithubPAT, Branch, Retry).ConfigureAwait(false).GetAwaiter().GetResult();
+            var exitInfo = SyncCode.SyncAzureToGithub(azureRepo, this.AzurePAT, githubRepo,
+                this.GithubPAT, this.Branch, this.Retry).ConfigureAwait(false).GetAwaiter().GetResult();
 
             WriteObject(exitInfo);
         }
