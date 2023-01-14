@@ -18,15 +18,19 @@ steps:
     nugetConfigPath: nuget.config 
     noCache: true
 
-- task: PowerShell@2
-  displayName: 'Set User Secerts'
+- task: DotNetCoreCLI@2
+  displayName: 'Set Azure PAT'
   inputs:
-    filePath: '.azurepipelines/scripts/build/secret.ps1'
-    showWarnings: true
-    pwsh: true
-  env:
-    AzurePAT: $(AzurePAT)
-    GithubPAT: $(GithubPAT)
+    command: 'custom'
+    custom: 'user-secrets'
+    arguments: 'set Azure:PAT "$(AzurePAT)" --project test/Net/DevOpsTest/DevOpsTest.csproj'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Set Github PAT'
+  inputs:
+    command: 'custom'
+    custom: 'user-secrets'
+    arguments: 'set Github:PAT "$(GithubPAT)" --project test/Net/DevOpsTest/DevOpsTest.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet build $(buildConfiguration)'
