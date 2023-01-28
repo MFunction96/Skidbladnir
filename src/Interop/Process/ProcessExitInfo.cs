@@ -8,7 +8,7 @@
 
         public void Append(ProcessExitInfo info)
         {
-            this.ExitCode += info.ExitCode;
+            this.ExitCode = info.ExitCode;
             this.Output += info.Output;
             this.Error += info.Error;
         }

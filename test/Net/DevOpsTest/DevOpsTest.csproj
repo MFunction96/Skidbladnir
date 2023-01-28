@@ -24,7 +24,7 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="*" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="*" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="*" />
-		<PackageReference Include="Microsoft.PowerShell.SDK" Version="7.3.0" />
+		<PackageReference Include="Microsoft.PowerShell.SDK" Version="*" />
 		<PackageReference Include="MSTest.TestAdapter" Version="*" />
 		<PackageReference Include="MSTest.TestFramework" Version="*" />
 		<PackageReference Include="coverlet.collector" Version="*">
