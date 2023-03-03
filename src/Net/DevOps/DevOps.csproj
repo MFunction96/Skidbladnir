@@ -1,43 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup>
-		<TargetFrameworks>net7.0</TargetFrameworks>
-		<RootNamespace>Skidbladnir.Net.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
-		<Platforms>x64;ARM64</Platforms>
-		<Authors>MFunction</Authors>
-		<Company>Xanadu</Company>
-		<Product>Skidbladnir</Product>
-		<PackageLicenseFile>LICENSE</PackageLicenseFile>
-		<PackageProjectUrl>https://github.com/MFunction96/Skidbladnir</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/MFunction96/Skidbladnir</RepositoryUrl>
-		<Copyright>2021-2022 Xanadu</Copyright>
-		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-		<SignAssembly>false</SignAssembly>
-		<AssemblyOriginatorKeyFile>..\..\..\key\Skidbladnir.pfx</AssemblyOriginatorKeyFile>
-		<DelaySign>true</DelaySign>
-		<AssemblyName>Skidbladnir.Net.$(MSBuildProjectName.Replace(" ", "_"))</AssemblyName>
-	</PropertyGroup>
-
-	<PropertyGroup>
-		<Version Condition=" '$(BIN_VER)' == '' ">1.0.0.0</Version>
-		<Version Condition=" '$(BIN_VER)' != '' ">$(BIN_VER)</Version>
-	</PropertyGroup>
-
 	<ItemGroup>
-		<None Include="..\..\..\LICENSE">
-			<Pack>True</Pack>
-			<PackagePath></PackagePath>
-		</None>
+		<PackageReference Include="System.Management.Automation" Version="*" />
 	</ItemGroup>
-
 	<ItemGroup>
-	  <PackageReference Include="System.Management.Automation" Version="*" />
+		<ProjectReference Include="..\..\Interop\Process\Process.csproj" />
+		<ProjectReference Include="..\..\IO\File\File.csproj" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\..\Interop\Process\Process.csproj" />
-	  <ProjectReference Include="..\..\IO\File\File.csproj" />
-	</ItemGroup>
-
 </Project>

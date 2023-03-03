@@ -131,7 +131,7 @@ namespace Skidbladnir.IO.File
             var hash = await GetFileHashAsync(filePath, bufferSize, cancellationToken);
             return shaFormatting == SHAFormatting.Base64
                 ? Convert.ToBase64String(hash)
-                : hash.Aggregate(string.Empty, (current, t) => current + t.ToString("X2"));
+                : hash.ToHexadecimal();
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace Skidbladnir.IO.File
         /// <returns>The hash binary of the file.</returns>
         public async Task<byte[]> GetFileHashAsync(string filePath, CancellationToken cancellationToken, int bufferSize = Checksum.DefaultBufferSize)
         {
-            return await GetFileHashAsync(filePath, bufferSize, cancellationToken);
+            return await this.GetFileHashAsync(filePath, bufferSize, cancellationToken);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace Skidbladnir.IO.File
         /// <returns>The hash string of the file.</returns>
         public async Task<string> GetBinaryHashAsync(byte[] binary, SHAFormatting shaFormatting, CancellationToken cancellationToken)
         {
-            return await GetBinaryHashAsync(binary, shaFormatting, Checksum.DefaultBufferSize, cancellationToken);
+            return await this.GetBinaryHashAsync(binary, shaFormatting, Checksum.DefaultBufferSize, cancellationToken);
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace Skidbladnir.IO.File
         /// <returns>The hash string of the file.</returns>
         public async Task<string> GetBinaryHashAsync(byte[] binary, SHAFormatting shaFormatting, int bufferSize = Checksum.DefaultBufferSize, CancellationToken cancellationToken = default)
         {
-            var hash = await GetBinaryHashAsync(binary, bufferSize, cancellationToken);
+            var hash = await this.GetBinaryHashAsync(binary, bufferSize, cancellationToken);
             return shaFormatting == SHAFormatting.Base64
                 ? Convert.ToBase64String(hash)
                 : hash.Aggregate(string.Empty, (current, t) => current + t.ToString("X2"));
