@@ -2,12 +2,14 @@
 using Newtonsoft.Json.Bson;
 using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Text;
 
 namespace Skidbladnir.Interop.Extension
 {
-    public static class ConversionExtension
+    public static class CastExtension
     {
         public static Stream ToBson(this object obj)
         {
@@ -42,7 +44,7 @@ namespace Skidbladnir.Interop.Extension
 
         public static string ToStr(this SecureString ss)
         {
-            var returnValue = IntPtr.Zero;
+            var returnValue = nint.Zero;
             try
             {
                 returnValue = Marshal.SecureStringToGlobalAllocUnicode(ss);
@@ -52,6 +54,16 @@ namespace Skidbladnir.Interop.Extension
             {
                 Marshal.ZeroFreeGlobalAllocUnicode(returnValue);
             }
+        }
+
+        public static string ToHexadecimal(this byte[] bytes)
+        {
+            return bytes.Aggregate(string.Empty, (current, t) => current + t.ToString("X2"));
+        }
+
+        public static string ToBase64(this string str)
+        {
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(str));
         }
     }
 }
