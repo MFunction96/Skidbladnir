@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Skidbladnir.Net.DevOps.Azure;
-using Skidbladnir.Test.Net.DevOpsTest.Utils;
 
 namespace Skidbladnir.Test.Net.DevOpsTest.Azure
 {
