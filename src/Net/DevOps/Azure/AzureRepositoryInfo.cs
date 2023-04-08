@@ -1,4 +1,4 @@
-﻿using Skidbladnir.Interop.Extension;
+﻿using Skidbladnir.Core.Extension;
 using System.Security;
 using System.Text.RegularExpressions;
 

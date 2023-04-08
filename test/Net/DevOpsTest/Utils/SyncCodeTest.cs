@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Configuration;
-using Skidbladnir.Interop.Extension;
+using Skidbladnir.Core.Extension;
 using Skidbladnir.Net.DevOps.Azure;
 using Skidbladnir.Net.DevOps.Github;
 using Skidbladnir.Net.DevOps.Utils;
