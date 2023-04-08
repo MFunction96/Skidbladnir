@@ -1,6 +1,6 @@
-﻿using Skidbladnir.Interop.Extension;
-using System.Security;
+﻿using System.Security;
 using System.Text.RegularExpressions;
+using Skidbladnir.Core.Extension;
 
 namespace Skidbladnir.Net.DevOps.Github
 {

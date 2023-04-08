@@ -34,13 +34,15 @@ namespace Skidbladnir.Net.DevOps.Utils
             var exitInfo = new ProcessExitInfo();
             for (var i = 0; i < retry; ++i)
             {
-                await Deletion.DeleteDirectory(tmpFolder);
+                await Deletion.DeleteDirectory(tmpFolder, true, true);
                 exitInfo.Append(await Git.Clone(cloneUrl, branch, true, string.Empty, Path.GetTempPath(), null, cancellationToken));
-                if (exitInfo.ExitCode == 0)
+                if (exitInfo.ExitCode != 0)
                 {
-                    flag = false;
-                    break;
+                    continue;
                 }
+
+                flag = false;
+                break;
 
             }
 
@@ -53,11 +55,13 @@ namespace Skidbladnir.Net.DevOps.Utils
             for (var i = 0; i < retry; ++i)
             {
                 exitInfo.Append(await Git.Push(tmpFolder, new[] { remoteUrl }, cancellationToken));
-                if (exitInfo.ExitCode == 0)
+                if (exitInfo.ExitCode != 0)
                 {
-                    flag = false;
-                    break;
+                    continue;
                 }
+
+                flag = false;
+                break;
 
             }
 
@@ -66,7 +70,7 @@ namespace Skidbladnir.Net.DevOps.Utils
                 throw new ExternalException(exitInfo.Error, exitInfo.ExitCode);
             }
 
-            await Deletion.DeleteDirectory(tmpFolder);
+            await Deletion.DeleteDirectory(tmpFolder, true, true);
             return exitInfo;
         }
     }

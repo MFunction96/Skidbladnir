@@ -15,7 +15,7 @@ namespace Skidbladnir.IO.File
                     {
                         throw new FileNotFoundException("File Not Found!", path);
                     }
-                    
+
                     return;
                 }
 
@@ -24,7 +24,7 @@ namespace Skidbladnir.IO.File
             });
         }
 
-        public static Task DeleteDirectory(string path, bool allowNotFound = true)
+        public static Task DeleteDirectory(string path, bool allowNotFound = true, bool force = false)
         {
             return Task.Run(() =>
             {
@@ -38,10 +38,14 @@ namespace Skidbladnir.IO.File
                     return;
                 }
 
-                var files = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories);
-                foreach (var file in files)
+                if (force)
                 {
-                    System.IO.File.SetAttributes(file, FileAttributes.Normal);
+                    var files = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories);
+                    foreach (var file in files)
+                    {
+                        System.IO.File.SetAttributes(file, FileAttributes.Normal);
+                    }
+
                 }
 
                 Directory.Delete(path, true);

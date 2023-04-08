@@ -7,10 +7,12 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 
-namespace Skidbladnir.Interop.Extension
+namespace Skidbladnir.Core.Extension
 {
     public static class CastExtension
     {
+        #region Object
+
         public static Stream ToBson(this object obj)
         {
             switch (obj)
@@ -30,6 +32,10 @@ namespace Skidbladnir.Interop.Extension
             serializer.Serialize(writer, obj);
             return ms;
         }
+
+        #endregion
+
+        #region String
 
         public static SecureString ToSecureString(this string str)
         {
@@ -56,14 +62,21 @@ namespace Skidbladnir.Interop.Extension
             }
         }
 
+        public static string ToBase64(this string str)
+        {
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(str));
+        }
+
+        #endregion
+
+        #region Byte
+
         public static string ToHexadecimal(this byte[] bytes)
         {
             return bytes.Aggregate(string.Empty, (current, t) => current + t.ToString("X2"));
         }
 
-        public static string ToBase64(this string str)
-        {
-            return Convert.ToBase64String(Encoding.UTF8.GetBytes(str));
-        }
+        #endregion
+        
     }
 }

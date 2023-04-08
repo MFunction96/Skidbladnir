@@ -1,3 +1,4 @@
+using Skidbladnir.Core.Extension;
 using Skidbladnir.IO.File;
 using System.Diagnostics;
 using System.IO;
@@ -19,10 +20,10 @@ namespace Skidbladnir.Test.IO.FileTests
             var watch = new Stopwatch();
             var checksum = new Checksum(SHAAlgorithm.SHA256);
             watch.Start();
-            var fileResult = await checksum.GetFileHashAsync(filePath, SHAFormatting.Hexadecimal);
+            var fileResult = await checksum.GetFileHashAsync(filePath, BinaryFormatting.Hexadecimal);
             Assert.AreEqual(expect, fileResult.ToLower());
             var binary = await File.ReadAllBytesAsync(filePath);
-            var binResult = await checksum.GetBinaryHashAsync(binary, SHAFormatting.Hexadecimal);
+            var binResult = await checksum.GetBinaryHashAsync(binary, BinaryFormatting.Hexadecimal);
             Assert.AreEqual(expect, binResult.ToLower());
             watch.Stop();
             TestContext.WriteLine($"Test Finished!\r\nExpected: {expect}\r\nActual: {fileResult}\r\nRun Time: {watch.ElapsedMilliseconds}ms\r\n");
