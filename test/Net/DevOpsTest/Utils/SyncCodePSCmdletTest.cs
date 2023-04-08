@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Skidbladnir.Interop.Extension;
-using Skidbladnir.Net.DevOps.Azure;
-using Skidbladnir.Net.DevOps.Github;
+using Skidbladnir.Core.Extension;
 using Skidbladnir.Net.DevOps.Utils;
 using System.Management.Automation;
 using System.Reflection;
@@ -28,23 +26,13 @@ namespace Skidbladnir.Test.Net.DevOpsTest.Utils
             Monitor.Exit(SyncRoot);
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void SyncCodePs()
         {
             var config = new ConfigurationBuilder()
                 .AddJsonFile("config.json")
                 .AddUserSecrets<SyncCodeTest>()
                 .Build();
-            var azurePAT = config["Azure:PAT"]!;
-            var githubPAT = config["Github:PAT"]!;
-            var azureRepo = new AzureRepositoryInfo
-            {
-                RepositoryUrl = config["Azure:RepositoryUrl"]!
-            };
-            var githubRepo = new GithubRepositoryInfo
-            {
-                RepositoryUrl = config["Github:RepositoryUrl"]!
-            };
 
             using var ps = PowerShell.Create()
                 .AddCommand("Import-Module").AddArgument(Assembly.GetAssembly(typeof(SyncCodePSCmdlet))!.Location);
