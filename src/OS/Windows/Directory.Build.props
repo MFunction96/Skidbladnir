@@ -1,7 +1,7 @@
 <Project>
 	<Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 	<PropertyGroup>
-		<TargetFramework>net7.0-windows</TargetFramework>
+		<TargetFramework>net8.0-windows</TargetFramework>
 		<RootNamespace>Skidbladnir.OS.Windows.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
 		<AssemblyName>Skidbladnir.OS.Windows.$(MSBuildProjectName.Replace(" ", "_"))</AssemblyName>
 	</PropertyGroup>

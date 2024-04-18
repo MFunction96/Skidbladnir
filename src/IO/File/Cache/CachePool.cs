@@ -1,7 +1,6 @@
-﻿using Serilog;
+﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -33,7 +32,7 @@ namespace Skidbladnir.IO.File.Cache
         public async Task CleanAsync(bool force = false)
         {
             var msg = $"Clean {this.BasePath}...";
-            this._logger.Information(new MissingFieldException(msg), msg);
+            this._logger.LogInformation(msg);
             await Deletion.DeleteDirectory(this.BasePath, true, force);
             this.CacheFiles.Clear();
         }
@@ -48,7 +47,7 @@ namespace Skidbladnir.IO.File.Cache
             }
 
             var msg = $"{file.FullPath} is already at current cache pool.";
-            this._logger.Warning(new DuplicateNameException(msg), msg);
+            this._logger.LogWarning(msg);
             return file.FullPath;
         }
 
@@ -101,7 +100,7 @@ namespace Skidbladnir.IO.File.Cache
             {
                 // Dispose managed resources.
                 this.CleanAsync(true).GetAwaiter().GetResult();
-                this._logger?.Information($"{GetType().Name} disposing");
+                this._logger?.LogInformation($"{this.GetType().Name} disposing");
 
             }
             // Call the appropriate methods to clean up
