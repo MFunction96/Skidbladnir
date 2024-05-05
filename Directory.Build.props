@@ -7,7 +7,10 @@
 		<RepositoryUrl>https://github.com/MFunction96/Skidbladnir</RepositoryUrl>
 		<Copyright>2021-2024 Xanadu</Copyright>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-		<Version Condition=" '$(BIN_VER)' == '' ">1.0.1.1-alpha</Version>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<Version Condition=" '$(BIN_VER)' == '' ">1.0.0-alpha</Version>
 		<Version Condition=" '$(BIN_VER)' != '' ">$(BIN_VER)</Version>
 	</PropertyGroup>
 </Project>
