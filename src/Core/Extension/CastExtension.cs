@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 
-namespace Skidbladnir.Core.Extension
+namespace Xanadu.Skidbladnir.Core.Extension
 {
     public static class CastExtension
     {

@@ -1,8 +1,8 @@
-﻿using Skidbladnir.Core.Extension;
-using System.Security;
+﻿using System.Security;
 using System.Text.RegularExpressions;
+using Xanadu.Skidbladnir.Core.Extension;
 
-namespace Skidbladnir.Net.DevOps.Azure
+namespace Xanadu.Skidbladnir.Net.DevOps.Azure
 {
     public class AzureRepositoryInfo : RepositoryInfo
     {

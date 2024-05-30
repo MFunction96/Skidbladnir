@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 
-namespace Skidbladnir.IO.File
+namespace Xanadu.Skidbladnir.IO.File
 {
     public static class Deletion
     {

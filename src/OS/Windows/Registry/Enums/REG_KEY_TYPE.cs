@@ -1,5 +1,5 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace Skidbladnir.OS.Windows.Registry.Enums
+namespace Xanadu.Skidbladnir.OS.Windows.Registry.Enums
 {
     public enum REG_KEY_TYPE
     {

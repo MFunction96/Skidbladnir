@@ -1,10 +1,10 @@
-﻿using Skidbladnir.Interop.Process;
-using Skidbladnir.Net.DevOps.Azure;
-using Skidbladnir.Net.DevOps.Github;
-using System.Management.Automation;
+﻿using System.Management.Automation;
 using System.Security;
+using Xanadu.Skidbladnir.Interop.Process;
+using Xanadu.Skidbladnir.Net.DevOps.Azure;
+using Xanadu.Skidbladnir.Net.DevOps.Github;
 
-namespace Skidbladnir.Net.DevOps.Utils
+namespace Xanadu.Skidbladnir.Net.DevOps.Utils
 {
     [Cmdlet(VerbsData.Sync, "Code")]
     [OutputType(typeof(ProcessExitInfo))]

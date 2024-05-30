@@ -1,13 +1,13 @@
-﻿using Skidbladnir.OS.Windows.Registry.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Xanadu.Skidbladnir.OS.Windows.Registry.Enums;
 
-namespace Skidbladnir.OS.Windows.Registry
+namespace Xanadu.Skidbladnir.OS.Windows.Registry
 {
     /// <inheritdoc cref="IComparable"/>
     /// <inheritdoc cref="ICloneable" />

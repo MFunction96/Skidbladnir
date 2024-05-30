@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Skidbladnir.Interop.Process
+namespace Xanadu.Skidbladnir.Interop.Process
 {
     public static class Git
     {
