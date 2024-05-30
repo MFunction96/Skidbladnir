@@ -1,6 +1,6 @@
 ﻿using System.Security;
 
-namespace Skidbladnir.Net.DevOps
+namespace Xanadu.Skidbladnir.Net.DevOps
 {
     public abstract class RepositoryInfo
     {

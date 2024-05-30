@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Skidbladnir.OS.Windows.Registry.Enums
+namespace Xanadu.Skidbladnir.OS.Windows.Registry.Enums
 {
     /// <summary>
     /// 注册表访问位宽。

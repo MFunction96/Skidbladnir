@@ -2,7 +2,7 @@
 	<Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
-		<RootNamespace>Skidbladnir.Core.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+		<RootNamespace>Xanadu.Skidbladnir.Core.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
 		<AssemblyName>Skidbladnir.Core.$(MSBuildProjectName.Replace(" ", "_"))</AssemblyName>
 	</PropertyGroup>
 </Project>

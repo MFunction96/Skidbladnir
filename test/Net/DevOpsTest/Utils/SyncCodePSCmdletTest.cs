@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Skidbladnir.Core.Extension;
-using Skidbladnir.Net.DevOps.Utils;
+using Xanadu.Skidbladnir.Core.Extension;
+using Xanadu.Skidbladnir.Net.DevOps.Utils;
 using System.Management.Automation;
 using System.Reflection;
 using System.Threading;
 
-namespace Skidbladnir.Test.Net.DevOpsTest.Utils
+namespace Xanadu.Skidbladnir.Test.Net.DevOpsTest.Utils
 {
     [TestClass]
     public class SyncCodePSCmdletTest

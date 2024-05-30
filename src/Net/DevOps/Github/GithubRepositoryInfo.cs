@@ -1,8 +1,8 @@
 ﻿using System.Security;
 using System.Text.RegularExpressions;
-using Skidbladnir.Core.Extension;
+using Xanadu.Skidbladnir.Core.Extension;
 
-namespace Skidbladnir.Net.DevOps.Github
+namespace Xanadu.Skidbladnir.Net.DevOps.Github
 {
     public class GithubRepositoryInfo : RepositoryInfo
     {

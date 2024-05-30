@@ -1,23 +1,17 @@
 ﻿using System;
 using System.IO;
 
-namespace Skidbladnir.IO.File.Cache
+namespace Xanadu.Skidbladnir.IO.File.Cache
 {
-    public class CacheFile
+    public class CacheFile(CachePool pool, string fileName, string subFolder = "")
     {
         public string FileName => Path.GetFileName(this.FullPath);
 
         public string RelativePath => Path.GetRelativePath(this.Pool.BasePath, this.FullPath);
 
-        public string FullPath { get; }
+        public string FullPath { get; } = Path.Combine(pool.BasePath, subFolder, fileName);
 
-        public readonly CachePool Pool;
-
-        public CacheFile(CachePool pool, string fileName, string subFolder = "")
-        {
-            this.Pool = pool;
-            this.FullPath = Path.Combine(pool.BasePath, subFolder, fileName);
-        }
+        public CachePool Pool => pool;
 
         public override bool Equals(object obj)
         {

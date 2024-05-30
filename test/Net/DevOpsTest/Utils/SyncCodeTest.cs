@@ -1,12 +1,12 @@
 using Microsoft.Extensions.Configuration;
-using Skidbladnir.Core.Extension;
-using Skidbladnir.Net.DevOps.Azure;
-using Skidbladnir.Net.DevOps.Github;
-using Skidbladnir.Net.DevOps.Utils;
 using System.Threading;
 using System.Threading.Tasks;
+using Xanadu.Skidbladnir.Core.Extension;
+using Xanadu.Skidbladnir.Net.DevOps.Azure;
+using Xanadu.Skidbladnir.Net.DevOps.Github;
+using Xanadu.Skidbladnir.Net.DevOps.Utils;
 
-namespace Skidbladnir.Test.Net.DevOpsTest.Utils
+namespace Xanadu.Skidbladnir.Test.Net.DevOpsTest.Utils
 {
     [TestClass]
     public class SyncCodeTest
