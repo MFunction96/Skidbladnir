@@ -5,7 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Skidbladnir.IO.File.Cache
+namespace Xanadu.Skidbladnir.IO.File.Cache
 {
     public class CachePool : IDisposable
     {

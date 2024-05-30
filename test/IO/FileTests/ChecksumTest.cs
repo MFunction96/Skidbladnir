@@ -1,10 +1,10 @@
-using Skidbladnir.Core.Extension;
-using Skidbladnir.IO.File;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using Xanadu.Skidbladnir.Core.Extension;
+using Xanadu.Skidbladnir.IO.File;
 
-namespace Skidbladnir.Test.IO.FileTests
+namespace Xanadu.Skidbladnir.Test.IO.FileTests
 {
     [TestClass]
     public class ChecksumTest

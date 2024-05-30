@@ -1,4 +1,4 @@
-﻿namespace Skidbladnir.Interop.Process
+﻿namespace Xanadu.Skidbladnir.Interop.Process
 {
     public class ProcessExitInfo
     {

@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Skidbladnir.Net.DevOps.Azure
+namespace Xanadu.Skidbladnir.Net.DevOps.Azure
 {
     public class AzureArtifactsFeeds
     {

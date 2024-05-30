@@ -1,4 +1,4 @@
-﻿namespace Skidbladnir.Core.Extension
+﻿namespace Xanadu.Skidbladnir.Core.Extension
 {
     /// <summary>
     /// The format of exportation for SHA.

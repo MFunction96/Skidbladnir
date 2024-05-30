@@ -1,5 +1,5 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace Skidbladnir.OS.Windows.Registry.Enums
+namespace Xanadu.Skidbladnir.OS.Windows.Registry.Enums
 {
     /// <summary>
     /// 注册表根键常量。

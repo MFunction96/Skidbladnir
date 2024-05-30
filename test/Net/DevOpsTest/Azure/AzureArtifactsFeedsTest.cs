@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Skidbladnir.Net.DevOps.Azure;
+using Xanadu.Skidbladnir.Net.DevOps.Azure;
 
-namespace Skidbladnir.Test.Net.DevOpsTest.Azure
+namespace Xanadu.Skidbladnir.Test.Net.DevOpsTest.Azure
 {
     [TestClass]
     public class AzureArtifactsFeedsTest

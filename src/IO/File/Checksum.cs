@@ -1,5 +1,4 @@
-﻿using Skidbladnir.Core.Extension;
-using System;
+﻿using System;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -7,8 +6,9 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Xanadu.Skidbladnir.Core.Extension;
 
-namespace Skidbladnir.IO.File
+namespace Xanadu.Skidbladnir.IO.File
 {
     /// <summary>
     /// The SHA family.
