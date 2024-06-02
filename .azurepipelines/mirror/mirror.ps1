@@ -4,11 +4,9 @@ param(
 	[Parameter(Mandatory = $true)]
 	[string] $Username,
 	[Parameter(Mandatory = $true)]
-	[string] $Repository,
-	[Parameter(Mandatory = $false)]
-	[string] $Branch = 'main'
+	[string] $Repository
 )
 
-git checkout $Branch origin/$Branch
+git checkout -b $Branch origin/$Branch
 $uri = "git@$Site.com:$Username/$Repository.git"
-git push $uri --all
+git push $uri --follow-tags
