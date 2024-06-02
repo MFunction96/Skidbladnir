@@ -7,6 +7,5 @@ param(
 	[string] $Repository
 )
 
-git checkout -b $Branch origin/$Branch
 $uri = "git@$Site.com:$Username/$Repository.git"
 git push $uri --follow-tags
