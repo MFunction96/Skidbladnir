@@ -1,4 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net8.0;net8.0-windows</TargetFrameworks>
+	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="System.Management.Automation" Version="*" />
 	</ItemGroup>
