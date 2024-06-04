@@ -27,28 +27,28 @@ namespace Xanadu.Skidbladnir.Test.Net.DevOpsTest.Utils
             Monitor.Exit(SyncRoot);
         }
 
-        //[TestMethod]
-        //public async Task SyncAzureToGithubTest()
-        //{
-        //    var config = new ConfigurationBuilder()
-        //        .AddJsonFile("config.json")
-        //        .AddUserSecrets<SyncCodeTest>()
-        //        .Build();
-        //    var azurePAT = config["Azure:PAT"]!.ToSecureString();
-        //    var githubPAT = config["Github:PAT"]!.ToSecureString();
-        //    var azureRepo = new AzureRepositoryInfo
-        //    {
-        //        RepositoryUrl = config["Azure:RepositoryUrl"]!
-        //    };
-        //    var githubRepo = new GithubRepositoryInfo
-        //    {
-        //        RepositoryUrl = config["Github:RepositoryUrl"]!
-        //    };
+        [TestMethod]
+        public async Task SyncAzureToGithubTest()
+        {
+            var config = new ConfigurationBuilder()
+                .AddJsonFile("config.json")
+                .AddUserSecrets<SyncCodeTest>()
+                .Build();
+            var azurePAT = config["Azure:PAT"]!.ToSecureString();
+            var githubPAT = config["Github:PAT"]!.ToSecureString();
+            var azureRepo = new AzureRepositoryInfo
+            {
+                RepositoryUrl = config["Azure:RepositoryUrl"]!
+            };
+            var githubRepo = new GithubRepositoryInfo
+            {
+                RepositoryUrl = config["Github:RepositoryUrl"]!
+            };
 
-        //    var result = await SyncCode.SyncAzureToGithub(azureRepo, azurePAT, githubRepo, githubPAT, "main");
-        //    TestContext.WriteLine(result.Output);
-        //    TestContext.WriteLine(result.Error);
-        //    Assert.AreEqual(0, result.ExitCode);
-        //}
+            var result = await SyncCode.SyncAzureToGithub(azureRepo, azurePAT, githubRepo, githubPAT, "main");
+            TestContext.WriteLine(result.Output);
+            TestContext.WriteLine(result.Error);
+            Assert.AreEqual(0, result.ExitCode);
+        }
     }
 }
