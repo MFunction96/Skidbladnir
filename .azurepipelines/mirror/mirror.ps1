@@ -27,7 +27,7 @@ catch {
 $uri = "git@$Site.com:$Username/$Repository.git"
 git clone $Source --branch $Branch
 Set-Location $Repository
-git push $uri --follow-tags
+git push $uri --follow-tags -f
 git push $uri --tags
 
 Set-Location $tmpPath
