@@ -4,7 +4,7 @@ namespace Xanadu.Skidbladnir.Net.DevOps
 {
     public abstract class RepositoryInfo
     {
-        public string Repository { get; set; }
+        public string Repository { get; set; } = string.Empty;
 
         public abstract string RepositoryUrl { get; set; }
 

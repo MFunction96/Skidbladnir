@@ -10,11 +10,11 @@ namespace Xanadu.Skidbladnir.Net.DevOps.Azure
         public static Regex ProjectFeedsUrlRegex =>
             new(@"^https:\/\/dev\.azure\.com\/(?<Organization>(.+?))\/(?<Project>(.+?))\/_artifacts\/feed\/(?<FeedsName>(.+?))$", RegexOptions.ExplicitCapture);
 
-        public string Organization { get; set; }
+        public string Organization { get; set; } = string.Empty;
 
-        public string Project { get; set; }
+        public string Project { get; set; } = string.Empty;
 
-        public string FeedsName { get; set; }
+        public string FeedsName { get; set; } = string.Empty;
 
         public string FeedsUrl
         {

@@ -1,8 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<ItemGroup>
-		<PackageReference Include="System.Management.Automation" Version="*" />
-	</ItemGroup>
-	<ItemGroup>
 		<ProjectReference Include="..\..\Interop\Process\Process.csproj" />
 		<ProjectReference Include="..\..\IO\File\File.csproj" />
 	</ItemGroup>

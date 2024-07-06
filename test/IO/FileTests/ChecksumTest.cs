@@ -9,12 +9,12 @@ namespace Xanadu.Skidbladnir.Test.IO.FileTests
     [TestClass]
     public class ChecksumTest
     {
-        public TestContext TestContext { get; set; }
+        public TestContext? TestContext { get; set; }
 
         [TestMethod]
         public async Task GetSHA256Test()
         {
-            TestContext.WriteLine("Test Started!");
+            TestContext?.WriteLine("Test Started!");
             const string expect = @"eace7ca4f91eff4da627ba7cda1346fa9600656f9331496f9b64e5cffa171bd7";
             var filePath = "1225.pdf";
             var watch = new Stopwatch();
@@ -26,7 +26,7 @@ namespace Xanadu.Skidbladnir.Test.IO.FileTests
             var binResult = await checksum.GetBinaryHashAsync(binary, BinaryFormatting.Hexadecimal);
             Assert.AreEqual(expect, binResult.ToLower());
             watch.Stop();
-            TestContext.WriteLine($"Test Finished!\r\nExpected: {expect}\r\nActual: {fileResult}\r\nRun Time: {watch.ElapsedMilliseconds}ms\r\n");
+            TestContext?.WriteLine($"Test Finished!\r\nExpected: {expect}\r\nActual: {fileResult}\r\nRun Time: {watch.ElapsedMilliseconds}ms\r\n");
         }
     }
 }
