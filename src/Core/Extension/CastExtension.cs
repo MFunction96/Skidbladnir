@@ -54,7 +54,7 @@ namespace Xanadu.Skidbladnir.Core.Extension
             try
             {
                 returnValue = Marshal.SecureStringToGlobalAllocUnicode(ss);
-                return Marshal.PtrToStringUni(returnValue);
+                return Marshal.PtrToStringUni(returnValue)!;
             }
             finally
             {

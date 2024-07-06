@@ -10,6 +10,17 @@
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<PublishTrimmed>true</PublishTrimmed>
+		<TrimMode>full</TrimMode>
+		<SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
+		<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+		<TrimmerRemoveSymbols>true</TrimmerRemoveSymbols>
+		<EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
+		<HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
+		<EventSourceSupport>false</EventSourceSupport>
+		<DebuggerSupport>false</DebuggerSupport>
 		<Version Condition=" '$(BIN_VER)' == '' ">1.0.0-alpha</Version>
 		<Version Condition=" '$(BIN_VER)' != '' ">$(BIN_VER)</Version>
 	</PropertyGroup>

@@ -6,7 +6,7 @@ namespace Xanadu.Skidbladnir.Net.DevOps.Github
 {
     public class GithubRepositoryInfo : RepositoryInfo
     {
-        public string Username { get; set; }
+        public string Username { get; set; } = string.Empty;
 
         public static readonly Regex RepositoryRegex = new(@"^https:\/\/github\.com\/(?<Username>(.+?))\/(?<Repository>(.+?))$", RegexOptions.ExplicitCapture);
 

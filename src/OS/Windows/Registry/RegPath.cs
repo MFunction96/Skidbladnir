@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Xanadu.Skidbladnir.OS.Windows.Registry.Enums;
 
@@ -24,11 +24,12 @@ namespace Xanadu.Skidbladnir.OS.Windows.Registry
         /// <summary>
         /// 注册表子键。
         /// </summary>
-        public string LpSubKey { get; set; }
+        public string LpSubKey { get; set; } = string.Empty;
+
         /// <summary>
         /// 注册表键名。
         /// </summary>
-        public string LpValueName { get; set; }
+        public string LpValueName { get; set; } = string.Empty;
         /// <summary>
         /// 注册表路径信息类序列化构造函数。
         /// </summary>
@@ -89,10 +90,10 @@ namespace Xanadu.Skidbladnir.OS.Windows.Registry
         public RegPath(string jsonFile)
         {
             var json = File.ReadAllText(jsonFile);
-            var regpath = JsonSerializer.Deserialize<RegPath>(json);
-            HKey = regpath.HKey;
-            LpSubKey = regpath.LpSubKey;
-            LpValueName = regpath.LpValueName;
+            var regPath = JsonConvert.DeserializeObject<RegPath>(json)!;
+            HKey = regPath.HKey;
+            LpSubKey = regPath.LpSubKey;
+            LpValueName = regPath.LpValueName;
         }
 
         /// <summary>
@@ -117,13 +118,10 @@ namespace Xanadu.Skidbladnir.OS.Windows.Registry
         /// true为导出成功。
         /// false为导出失败。
         /// </returns>
-        public Task ExportJson(string jsonFile)
+        public async Task ExportJson(string jsonFile)
         {
-            return Task.Run(() =>
-            {
-                var json = JsonSerializer.Serialize(this);
-                File.WriteAllText(jsonFile, json);
-            });
+            var json = JsonConvert.SerializeObject(this);
+            await File.WriteAllTextAsync(jsonFile, json);
         }
         /// <inheritdoc />
         /// <summary>
@@ -147,31 +145,31 @@ namespace Xanadu.Skidbladnir.OS.Windows.Registry
         {
             return Task.Run(() =>
             {
-                int regopenkeytmp;
-                IntPtr phkresult;
+                int regOpenKeyEx;
+                IntPtr phkResult;
                 if (Environment.Is64BitOperatingSystem)
                 {
-                    regopenkeytmp = NativeMethods.RegOpenKeyEx(new IntPtr((int)HKey), LpSubKey, 0,
+                    regOpenKeyEx = NativeMethods.RegOpenKeyEx(new IntPtr((int)HKey), LpSubKey, 0,
                         (int)KEY_SAM_FLAGS.KEY_WOW64_64KEY |
-                        (int)KEY_ACCESS_TYPE.KEY_READ, out phkresult);
+                        (int)KEY_ACCESS_TYPE.KEY_READ, out phkResult);
                 }
                 else
                 {
-                    regopenkeytmp = NativeMethods.RegOpenKeyEx(new IntPtr((int)HKey), LpSubKey, 0,
-                        (int)KEY_ACCESS_TYPE.KEY_READ, out phkresult);
+                    regOpenKeyEx = NativeMethods.RegOpenKeyEx(new IntPtr((int)HKey), LpSubKey, 0,
+                        (int)KEY_ACCESS_TYPE.KEY_READ, out phkResult);
                 }
 
-                if (regopenkeytmp == (int)ERROR_CODE.ERROR_FILE_NOT_FOUND)
+                if (regOpenKeyEx == (int)ERROR_CODE.ERROR_FILE_NOT_FOUND)
                 {
-                    throw new NullReferenceException(@"注册表访问失败" + '\n' + regopenkeytmp + '\n' + nameof(RegOpenKey));
+                    throw new NullReferenceException(@"注册表访问失败" + '\n' + regOpenKeyEx + '\n' + nameof(RegOpenKey));
                 }
 
-                if (regopenkeytmp != (int)ERROR_CODE.ERROR_SUCCESS)
+                if (regOpenKeyEx != (int)ERROR_CODE.ERROR_SUCCESS)
                 {
-                    throw new Exception(@"注册表访问失败" + '\n' + regopenkeytmp + '\n' + nameof(RegOpenKey));
+                    throw new Exception(@"注册表访问失败" + '\n' + regOpenKeyEx + '\n' + nameof(RegOpenKey));
                 }
 
-                return phkresult;
+                return phkResult;
             });
         }
 
@@ -194,37 +192,37 @@ namespace Xanadu.Skidbladnir.OS.Windows.Registry
         {
             return Task.Run(() =>
             {
-                RegKey regkey;
+                RegKey regKey;
                 if (lpKind == REG_KEY_TYPE.REG_DWORD)
                 {
-                    var lpdataint = Marshal.ReadInt32(lpData);
-                    regkey = new RegKey(this, lpKind, lpdataint);
+                    var lpValue = Marshal.ReadInt32(lpData);
+                    regKey = new RegKey(this, lpKind, lpValue);
                 }
                 else if (lpKind == REG_KEY_TYPE.REG_QWORD)
                 {
-                    var lpdataint = Marshal.ReadInt64(lpData);
-                    regkey = new RegKey(this, lpKind, lpdataint);
+                    var lpValue = Marshal.ReadInt64(lpData);
+                    regKey = new RegKey(this, lpKind, lpValue);
                 }
                 else if (lpKind == REG_KEY_TYPE.REG_SZ ||
                          lpKind == REG_KEY_TYPE.REG_EXPAND_SZ ||
                          lpKind == REG_KEY_TYPE.REG_MULTI_SZ)
                 {
-                    var lpdatastr = Marshal.PtrToStringUni(lpData);
-                    lpdatastr = lpdatastr?.Trim();
-                    regkey = new RegKey(this, lpKind, lpdatastr);
+                    var lpValue = Marshal.PtrToStringUni(lpData);
+                    lpValue = lpValue?.Trim();
+                    regKey = new RegKey(this, lpKind, lpValue);
                 }
                 else if (lpKind == REG_KEY_TYPE.REG_BINARY)
                 {
                     var lpdatabin = new byte[lpcbData];
                     Marshal.Copy(lpData, lpdatabin, 0, lpcbData);
-                    regkey = new RegKey(this, lpKind, lpdatabin);
+                    regKey = new RegKey(this, lpKind, lpdatabin);
                 }
                 else
                 {
                     throw new Exception(@"注册表访问失败" + '\n' + @"注册表数据类型异常" + '\n' + nameof(ConvertData));
                 }
 
-                return regkey;
+                return regKey;
             });
         }
 
@@ -403,7 +401,7 @@ namespace Xanadu.Skidbladnir.OS.Windows.Registry
         /// <returns>
         /// 大小比较结果。
         /// </returns>
-        public int CompareTo(object obj)
+        public int CompareTo(object? obj)
         {
             if (!(obj is RegPath regpath)) throw new NullReferenceException();
             if (HKey < regpath.HKey) return 1;

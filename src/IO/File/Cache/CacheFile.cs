@@ -13,7 +13,7 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
 
         public CachePool Pool => pool;
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is not CacheFile cacheFile)
             {

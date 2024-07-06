@@ -1,9 +1,0 @@
-{
-  "Azure": {
-    "RepositoryUrl": "https://dev.azure.com/XanaCN/Lyoko/_git/IniParserDunbar",
-    "FeedsUrl": "https://dev.azure.com/XanaCN/Lyoko/_artifacts/feed/Subdigitals"
-  },
-  "Github": {
-    "RepositoryUrl": "https://github.com/MFunction96/IniParserDunbar"
-  }
-}

@@ -1,62 +1,74 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Xanadu.Skidbladnir.IO.File.Cache
 {
-    public class CachePool : IDisposable
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="logger"></param>
+    public class CachePool(ILogger logger) : ICachePool
     {
+        /// <summary>
+        /// 
+        /// </summary>
         private bool _disposed;
 
-        private readonly ILogger _logger;
+        /// <inheritdoc />
+        public string BasePath { get; protected set; } = Path.Combine(Path.GetTempPath(), Process.GetCurrentProcess().ProcessName);
 
-        public string BasePath { get; }
+        /// <inheritdoc />
+        public ISet<CacheFile> CacheFiles { get; } = new HashSet<CacheFile>();
 
-        public ISet<CacheFile> CacheFiles { get; }
-
-        public CachePool(string basePath = "", bool clean = false, ILogger logger = default)
+        /// <inheritdoc />
+        public async void SetCustomBasePath(string basePath)
         {
-            this._logger = logger;
-            this.CacheFiles = new HashSet<CacheFile>();
-            this.BasePath = string.IsNullOrEmpty(basePath) ? Path.Combine(Path.GetTempPath(), Assembly.GetAssembly(GetType())!.FullName!) : basePath;
-            if (clean)
-            {
-                this.CleanAsync(true).GetAwaiter().GetResult();
-            }
-
+            await this.CleanAsync();
+            this.BasePath = basePath;
         }
 
+        /// <inheritdoc />
         public async Task CleanAsync(bool force = false)
         {
             var msg = $"Clean {this.BasePath}...";
-            this._logger.LogInformation(msg);
-            await Deletion.DeleteDirectory(this.BasePath, true, force);
+            logger.LogInformation(msg, string.Empty);
+            await IOExtension.DeleteDirectory(this.BasePath, true, force);
             this.CacheFiles.Clear();
         }
 
-        public string Register(string fileName, string subFolder = "")
+        /// <inheritdoc />
+        public CacheFile Register(string fileName, string subFolder = "", bool createFolder = true)
         {
             var file = new CacheFile(this, fileName, subFolder);
+            var folder = Path.Combine(this.BasePath, subFolder);
+            if (createFolder && !Directory.Exists(folder))
+            {
+                Directory.CreateDirectory(folder);
+            }
+
             var result = this.CacheFiles.Add(file);
             if (result)
             {
-                return file.FullPath;
+                return file;
             }
 
             var msg = $"{file.FullPath} is already at current cache pool.";
-            this._logger.LogWarning(msg);
-            return file.FullPath;
+            logger.LogWarning(msg, string.Empty);
+            return file;
         }
 
+        /// <inheritdoc />
         public bool UnRegister(CacheFile cacheFile)
         {
             return this.CacheFiles.Remove(cacheFile);
         }
 
-        public override bool Equals(object obj)
+        /// <inheritdoc />
+        public override bool Equals(object? obj)
         {
             if (obj is not CachePool cachePool)
             {
@@ -68,6 +80,7 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
 
         public override int GetHashCode()
         {
+            // ReSharper disable once NonReadonlyMemberInGetHashCode
             return HashCode.Combine(this.BasePath);
         }
 
@@ -100,7 +113,7 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
             {
                 // Dispose managed resources.
                 this.CleanAsync(true).GetAwaiter().GetResult();
-                this._logger?.LogInformation($"{this.GetType().Name} disposing");
+                logger.LogInformation($"{this.GetType().Name} disposing", string.Empty);
 
             }
             // Call the appropriate methods to clean up

@@ -1,5 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<ItemGroup>
+	  <PackageReference Include="Moq" Version="*" />
+	</ItemGroup>
+	<ItemGroup>
 		<ProjectReference Include="..\..\..\src\IO\File\File.csproj" />
 	</ItemGroup>
 	<ItemGroup>

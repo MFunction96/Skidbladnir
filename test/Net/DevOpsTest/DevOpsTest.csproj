@@ -3,16 +3,6 @@
 		<UserSecretsId>fc917229-9891-407f-b6bc-81e2d384c041</UserSecretsId>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="*" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="*" />
-		<PackageReference Include="Microsoft.PowerShell.SDK" Version="*" />
-	</ItemGroup>
-	<ItemGroup>
 		<ProjectReference Include="..\..\..\src\Net\DevOps\DevOps.csproj" />
-	</ItemGroup>
-	<ItemGroup>
-		<None Update="config.json">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
 	</ItemGroup>
 </Project>

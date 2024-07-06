@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
+// ReSharper disable UnusedMember.Global
 
 namespace Xanadu.Skidbladnir.OS.Windows
 {
@@ -215,7 +216,7 @@ namespace Xanadu.Skidbladnir.OS.Windows
             IntPtr hKey,
             [MarshalAs(UnmanagedType.LPWStr)] string lpSubKey,
             int lpReserved,
-            [MarshalAs(UnmanagedType.LPWStr)] string lpClass,
+            [MarshalAs(UnmanagedType.LPWStr)] string? lpClass,
             int dwOptions,
             int samDesired,
             IntPtr lpSecurityAttributes,

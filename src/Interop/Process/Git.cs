@@ -13,7 +13,7 @@ namespace Xanadu.Skidbladnir.Interop.Process
             Environment.SetEnvironmentVariable("GIT_TERMINAL_PROMPT", "1", EnvironmentVariableTarget.Process);
         }
 
-        public static async Task<ProcessExitInfo> Clone(string url, string branch = "", bool single = false, string destination = "", string workFolder = "", string[] args = null, CancellationToken cancellationToken = default)
+        public static async Task<ProcessExitInfo> Clone(string url, string branch = "", bool single = false, string destination = "", string workFolder = "", string[]? args = null, CancellationToken cancellationToken = default)
         {
             var info = new ProcessStartInfo
             {
@@ -62,14 +62,12 @@ namespace Xanadu.Skidbladnir.Interop.Process
                 }
             }
 
-            using var process = new System.Diagnostics.Process
-            {
-                StartInfo = info,
-            };
+            using var process = new System.Diagnostics.Process();
+            process.StartInfo = info;
 
             process.Start();
-            var outputTask = process.StandardOutput.ReadToEndAsync();
-            var errorTask = process.StandardError.ReadToEndAsync();
+            var outputTask = process.StandardOutput.ReadToEndAsync(cancellationToken);
+            var errorTask = process.StandardError.ReadToEndAsync(cancellationToken);
             await process.WaitForExitAsync(cancellationToken);
             return new ProcessExitInfo
             {
@@ -79,7 +77,7 @@ namespace Xanadu.Skidbladnir.Interop.Process
             };
         }
 
-        public static async Task<ProcessExitInfo> Push(string workFolder = "", string[] args = null, CancellationToken cancellationToken = default)
+        public static async Task<ProcessExitInfo> Push(string workFolder = "", string[]? args = null, CancellationToken cancellationToken = default)
         {
             var info = new ProcessStartInfo
             {
@@ -117,8 +115,8 @@ namespace Xanadu.Skidbladnir.Interop.Process
             };
 
             process.Start();
-            var outputTask = process.StandardOutput.ReadToEndAsync();
-            var errorTask = process.StandardError.ReadToEndAsync();
+            var outputTask = process.StandardOutput.ReadToEndAsync(cancellationToken);
+            var errorTask = process.StandardError.ReadToEndAsync(cancellationToken);
             await process.WaitForExitAsync(cancellationToken);
             return new ProcessExitInfo
             {

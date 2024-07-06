@@ -6,9 +6,9 @@ namespace Xanadu.Skidbladnir.Net.DevOps.Azure
 {
     public class AzureRepositoryInfo : RepositoryInfo
     {
-        public string Organization { get; set; }
+        public string Organization { get; set; } = string.Empty;
 
-        public string Project { get; set; }
+        public string Project { get; set; } = string.Empty;
 
         public static readonly Regex RepositoryRegex = new(@"^https:\/\/dev\.azure\.com\/(?<Organization>(.+?))\/(?<Project>(.+?))\/_git\/(?<Repository>(.+?))$", RegexOptions.ExplicitCapture);
 

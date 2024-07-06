@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xanadu.Skidbladnir.Core.Extension;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Xanadu.Skidbladnir.IO.File
 {
@@ -47,7 +48,7 @@ namespace Xanadu.Skidbladnir.IO.File
         /// <summary>
         /// The file info of the stream.
         /// </summary>
-        public FileInfo FileInfo { get; set; }
+        public FileInfo? FileInfo { get; set; }
 
     }
 
@@ -64,12 +65,12 @@ namespace Xanadu.Skidbladnir.IO.File
         /// <summary>
         /// When the stream position updates, it will raise this event and pass the current status on reading.
         /// </summary>
-        public event EventHandler<ChecksumEventArg> CalculatePositionEvent;
+        public event EventHandler<ChecksumEventArg>? CalculatePositionEvent;
 
         /// <summary>
         /// When the meeting 
         /// </summary>
-        public event EventHandler<ChecksumEventArg> FileInfoEvent;
+        public event EventHandler<ChecksumEventArg>? FileInfoEvent;
 
         /// <summary>
         /// The type of hash algorithm.
@@ -110,6 +111,11 @@ namespace Xanadu.Skidbladnir.IO.File
         public async Task<string> GetFileHashAsync(string filePath, BinaryFormatting shaFormatting, int bufferSize = Checksum.DefaultBufferSize, CancellationToken cancellationToken = default)
         {
             var hash = await GetFileHashAsync(filePath, bufferSize, cancellationToken);
+            if (hash is null)
+            {
+                return string.Empty;
+            }
+
             return shaFormatting == BinaryFormatting.Base64
                 ? Convert.ToBase64String(hash)
                 : hash.ToHexadecimal();
@@ -122,7 +128,7 @@ namespace Xanadu.Skidbladnir.IO.File
         /// <param name="cancellationToken">The token for cancellation.</param>
         /// <param name="bufferSize">The size of buffer.</param>
         /// <returns>The hash binary of the file.</returns>
-        public async Task<byte[]> GetFileHashAsync(string filePath, CancellationToken cancellationToken, int bufferSize = Checksum.DefaultBufferSize)
+        public async Task<byte[]?> GetFileHashAsync(string filePath, CancellationToken cancellationToken, int bufferSize = Checksum.DefaultBufferSize)
         {
             return await this.GetFileHashAsync(filePath, bufferSize, cancellationToken);
         }
@@ -134,7 +140,7 @@ namespace Xanadu.Skidbladnir.IO.File
         /// <param name="bufferSize">The size of buffer.</param>
         /// <param name="cancellationToken">The token for cancellation.</param>
         /// <returns>The hash binary of the file.</returns>
-        public async Task<byte[]> GetFileHashAsync(string filePath, int bufferSize = Checksum.DefaultBufferSize, CancellationToken cancellationToken = default)
+        public async Task<byte[]?> GetFileHashAsync(string filePath, int bufferSize = Checksum.DefaultBufferSize, CancellationToken cancellationToken = default)
         {
             if (!System.IO.File.Exists(filePath))
             {
@@ -173,6 +179,11 @@ namespace Xanadu.Skidbladnir.IO.File
         public async Task<string> GetBinaryHashAsync(byte[] binary, BinaryFormatting shaFormatting, int bufferSize = Checksum.DefaultBufferSize, CancellationToken cancellationToken = default)
         {
             var hash = await this.GetBinaryHashAsync(binary, bufferSize, cancellationToken);
+            if (hash == null)
+            {
+                return string.Empty;
+            }
+
             return shaFormatting == BinaryFormatting.Base64
                 ? Convert.ToBase64String(hash)
                 : hash.Aggregate(string.Empty, (current, t) => current + t.ToString("X2"));
@@ -184,7 +195,7 @@ namespace Xanadu.Skidbladnir.IO.File
         /// <param name="binary">The binary to compute.</param>
         /// <param name="cancellationToken">The token for cancellation.</param>
         /// <returns>The hash binary of the file.</returns>
-        public async Task<byte[]> GetBinaryHashAsync(byte[] binary, CancellationToken cancellationToken)
+        public async Task<byte[]?> GetBinaryHashAsync(byte[] binary, CancellationToken cancellationToken)
         {
             return await this.GetBinaryHashAsync(binary, Checksum.DefaultBufferSize, cancellationToken);
         }
@@ -196,9 +207,9 @@ namespace Xanadu.Skidbladnir.IO.File
         /// <param name="bufferSize">The size of buffer.</param>
         /// <param name="cancellationToken">The token for cancellation.</param>
         /// <returns></returns>
-        public async Task<byte[]> GetBinaryHashAsync(byte[] binary, int bufferSize = Checksum.DefaultBufferSize, CancellationToken cancellationToken = default)
+        public Task<byte[]?> GetBinaryHashAsync(byte[] binary, int bufferSize = Checksum.DefaultBufferSize, CancellationToken cancellationToken = default)
         {
-            return await Task.Run(() =>
+            return Task.Run(() =>
             {
                 var totalRead = 0L;
                 using HashAlgorithm sha = this.Algorithm switch
@@ -251,6 +262,11 @@ namespace Xanadu.Skidbladnir.IO.File
         public async Task<string> GetObjectHashAsync(object obj, BinaryFormatting shaFormatting, int bufferSize = Checksum.DefaultBufferSize, CancellationToken cancellationToken = default)
         {
             var hash = await this.GetObjectHashAsync(obj, bufferSize, cancellationToken);
+            if (hash == null)
+            {
+                return string.Empty;
+            }
+
             return shaFormatting == BinaryFormatting.Base64
                 ? Convert.ToBase64String(hash)
                 : hash.Aggregate(string.Empty, (current, t) => current + t.ToString("X2"));
@@ -262,7 +278,7 @@ namespace Xanadu.Skidbladnir.IO.File
         /// <param name="obj">The object to compute.</param>
         /// <param name="cancellationToken">The token for cancellation.</param>
         /// <returns>The hash binary of the file.</returns>
-        public async Task<byte[]> GetObjectHashAsync(object obj, CancellationToken cancellationToken)
+        public async Task<byte[]?> GetObjectHashAsync(object obj, CancellationToken cancellationToken)
         {
             return await this.GetObjectHashAsync(obj, Checksum.DefaultBufferSize, cancellationToken);
         }
@@ -274,21 +290,21 @@ namespace Xanadu.Skidbladnir.IO.File
         /// <param name="bufferSize">The size of buffer.</param>
         /// <param name="cancellationToken">The token for cancellation.</param>
         /// <returns>The hash binary of the file.</returns>
-        public async Task<byte[]> GetObjectHashAsync(object obj, int bufferSize = Checksum.DefaultBufferSize, CancellationToken cancellationToken = default)
+        public async Task<byte[]?> GetObjectHashAsync(object obj, int bufferSize = Checksum.DefaultBufferSize, CancellationToken cancellationToken = default)
         {
             switch (obj)
             {
                 case null:
                     throw new ArgumentNullException(nameof(obj));
                 case string objStr:
-                {
-                    var binary = Encoding.UTF8.GetBytes(objStr);
-                    return await this.GetBinaryHashAsync(binary, bufferSize, cancellationToken);
-                }
+                    {
+                        var binary = Encoding.UTF8.GetBytes(objStr);
+                        return await this.GetBinaryHashAsync(binary, bufferSize, cancellationToken);
+                    }
                 default:
-                {
-                    return await this.GetStreamHashAsync(obj.ToBson(), bufferSize, cancellationToken);
-                }
+                    {
+                        return await this.GetStreamHashAsync(obj.ToBson(), bufferSize, cancellationToken);
+                    }
             }
         }
 
@@ -319,6 +335,11 @@ namespace Xanadu.Skidbladnir.IO.File
         public async Task<string> GetStreamHashAsync(Stream stream, BinaryFormatting shaFormatting, int bufferSize = Checksum.DefaultBufferSize, CancellationToken cancellationToken = default)
         {
             var hash = await GetStreamHashAsync(stream, bufferSize, cancellationToken);
+            if (hash is null)
+            {
+                return string.Empty;
+            }
+
             return shaFormatting == BinaryFormatting.Base64
                 ? Convert.ToBase64String(hash)
                 : hash.Aggregate(string.Empty, (current, t) => current + t.ToString("X2"));
@@ -330,7 +351,7 @@ namespace Xanadu.Skidbladnir.IO.File
         /// <param name="stream">The stream to compute.</param>
         /// <param name="cancellationToken">The token for cancellation.</param>
         /// <returns>The hash binary of the file.</returns>
-        public async Task<byte[]> GetStreamHashAsync(Stream stream, CancellationToken cancellationToken)
+        public async Task<byte[]?> GetStreamHashAsync(Stream stream, CancellationToken cancellationToken)
         {
             return await GetStreamHashAsync(stream, Checksum.DefaultBufferSize, cancellationToken);
         }
@@ -342,7 +363,7 @@ namespace Xanadu.Skidbladnir.IO.File
         /// <param name="bufferSize">The size of buffer.</param>
         /// <param name="cancellationToken">The token for cancellation.</param>
         /// <returns>The hash binary of the file.</returns>
-        public async Task<byte[]> GetStreamHashAsync(Stream stream, int bufferSize = Checksum.DefaultBufferSize, CancellationToken cancellationToken = default)
+        public async Task<byte[]?> GetStreamHashAsync(Stream stream, int bufferSize = Checksum.DefaultBufferSize, CancellationToken cancellationToken = default)
         {
             using HashAlgorithm sha = this.Algorithm switch
             {

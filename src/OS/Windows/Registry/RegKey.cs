@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Xanadu.Skidbladnir.OS.Windows.Registry.Enums;
 
 namespace Xanadu.Skidbladnir.OS.Windows.Registry
@@ -21,7 +22,7 @@ namespace Xanadu.Skidbladnir.OS.Windows.Registry
         /// <summary>
         /// 注册表键值。
         /// </summary>
-        public object LpValue { get; set; }
+        public object? LpValue { get; set; }
         /// <inheritdoc />
         /// <summary>
         /// 注册表键信息类序列化构造函数。
@@ -51,7 +52,7 @@ namespace Xanadu.Skidbladnir.OS.Windows.Registry
             string lpSubKey,
             string lpValueName = "",
             REG_KEY_TYPE lpKind = REG_KEY_TYPE.REG_UNKNOWN,
-            object lpValue = null) :
+            object? lpValue = null) :
             base(hKey, lpSubKey, lpValueName)
         {
             LpKind = lpKind;
@@ -70,7 +71,7 @@ namespace Xanadu.Skidbladnir.OS.Windows.Registry
         /// <param name="lpValue">
         /// 注册表键值。
         /// </param>
-        public RegKey(RegPath regPath, REG_KEY_TYPE lpKind = REG_KEY_TYPE.REG_UNKNOWN, object lpValue = null) :
+        public RegKey(RegPath regPath, REG_KEY_TYPE lpKind = REG_KEY_TYPE.REG_UNKNOWN, object? lpValue = null) :
             base(regPath)
         {
             LpKind = lpKind;
@@ -87,12 +88,12 @@ namespace Xanadu.Skidbladnir.OS.Windows.Registry
         public RegKey(string jsonFile)
         {
             var json = File.ReadAllText(jsonFile);
-            var regkey = JsonSerializer.Deserialize<RegKey>(json);
-            HKey = regkey.HKey;
-            LpSubKey = regkey.LpSubKey;
-            LpValueName = regkey.LpValueName;
-            LpKind = regkey.LpKind;
-            LpValue = regkey.LpValue;
+            var regKey = JsonConvert.DeserializeObject<RegKey>(json)!;
+            HKey = regKey.HKey;
+            LpSubKey = regKey.LpSubKey;
+            LpValueName = regKey.LpValueName;
+            LpKind = regKey.LpKind;
+            LpValue = regKey.LpValue;
         }
         /// <inheritdoc />
         /// <summary>
@@ -136,14 +137,14 @@ namespace Xanadu.Skidbladnir.OS.Windows.Registry
         /// <returns>
         /// 大小比较结果。
         /// </returns>
-        public new int CompareTo(object obj)
+        public new int CompareTo(object? obj)
         {
-            if (!(obj is RegKey regkey)) throw new NullReferenceException();
+            if (obj is not RegKey regKey) throw new NullReferenceException();
             var flag = base.CompareTo(obj);
             if (flag != 0) return flag;
-            if (LpKind < regkey.LpKind) return 1;
-            if (LpKind > regkey.LpKind) return -1;
-            return string.CompareOrdinal(LpValue.ToString(), regkey.LpValue.ToString());
+            if (LpKind < regKey.LpKind) return 1;
+            if (LpKind > regKey.LpKind) return -1;
+            return string.CompareOrdinal(LpValue?.ToString(), regKey.LpValue?.ToString());
         }
 
         /// <summary>
@@ -156,65 +157,65 @@ namespace Xanadu.Skidbladnir.OS.Windows.Registry
         {
             return Task.Run(() =>
             {
-                int regsetvaluetmp, exists;
+                int regCreateKeyEx, exists;
                 IntPtr phkResult;
                 if (Environment.Is64BitOperatingSystem)
                 {
-                    regsetvaluetmp = NativeMethods.RegCreateKeyEx(new IntPtr((int)HKey), LpSubKey, 0, null,
+                    regCreateKeyEx = NativeMethods.RegCreateKeyEx(new IntPtr((int)HKey), LpSubKey, 0, null,
                         (int)OPERATE_OPTION.REG_OPTION_NON_VOLATILE,
                         (int)KEY_SAM_FLAGS.KEY_WOW64_64KEY | (int)KEY_ACCESS_TYPE.KEY_READ |
                         (int)KEY_ACCESS_TYPE.KEY_WRITE, IntPtr.Zero, out phkResult, out exists);
                 }
                 else
                 {
-                    regsetvaluetmp = NativeMethods.RegCreateKeyEx(new IntPtr((int)HKey), LpSubKey, 0, null,
+                    regCreateKeyEx = NativeMethods.RegCreateKeyEx(new IntPtr((int)HKey), LpSubKey, 0, null,
                         (int)OPERATE_OPTION.REG_OPTION_NON_VOLATILE,
                         (int)KEY_ACCESS_TYPE.KEY_READ |
                         (int)KEY_ACCESS_TYPE.KEY_WRITE, IntPtr.Zero, out phkResult, out exists);
                 }
-                if (regsetvaluetmp != (int)ERROR_CODE.ERROR_SUCCESS && exists != (int)REG_CREATE_DISPOSITION.REG_OPENED_EXISTING_KEY)
+                if (regCreateKeyEx != (int)ERROR_CODE.ERROR_SUCCESS && exists != (int)REG_CREATE_DISPOSITION.REG_OPENED_EXISTING_KEY)
                 {
-                    throw new Exception(@"注册表访问失败" + '\n' + regsetvaluetmp + '\n' + nameof(Set));
+                    throw new Exception(@"注册表访问失败" + '\n' + regCreateKeyEx + '\n' + nameof(Set));
                 }
-                IntPtr lpdata;
-                int lpcbData;
+                IntPtr lpData;
+                int cb;
                 if (LpKind == REG_KEY_TYPE.REG_SZ ||
                     LpKind == REG_KEY_TYPE.REG_EXPAND_SZ ||
                     LpKind == REG_KEY_TYPE.REG_MULTI_SZ)
                 {
-                    if (!(LpValue is string lpdatastr)) throw new NullReferenceException();
-                    lpcbData = lpdatastr.Length + 1 << 1;
-                    lpdata = Marshal.StringToHGlobalUni(lpdatastr);
+                    if (!(LpValue is string s)) throw new NullReferenceException();
+                    cb = s.Length + 1 << 1;
+                    lpData = Marshal.StringToHGlobalUni(s);
                 }
                 else if (LpKind == REG_KEY_TYPE.REG_DWORD)
                 {
-                    lpcbData = Marshal.SizeOf(typeof(int));
-                    lpdata = Marshal.AllocHGlobal(lpcbData);
-                    Marshal.WriteInt32(lpdata, (int)LpValue);
+                    cb = Marshal.SizeOf(typeof(int));
+                    lpData = Marshal.AllocHGlobal(cb);
+                    Marshal.WriteInt32(lpData, (int)LpValue!);
                 }
                 else if (LpKind == REG_KEY_TYPE.REG_QWORD)
                 {
-                    lpcbData = Marshal.SizeOf(typeof(long));
-                    lpdata = Marshal.AllocHGlobal(lpcbData);
-                    Marshal.WriteInt64(lpdata, (long)LpValue);
+                    cb = Marshal.SizeOf(typeof(long));
+                    lpData = Marshal.AllocHGlobal(cb);
+                    Marshal.WriteInt64(lpData, (long)LpValue!);
                 }
                 else if (LpKind == REG_KEY_TYPE.REG_BINARY)
                 {
                     if (!(LpValue is byte[] lpdatabin)) throw new NullReferenceException();
-                    lpcbData = lpdatabin.Length;
-                    lpdata = Marshal.AllocHGlobal(lpcbData);
-                    Marshal.Copy(lpdatabin, 0, lpdata, lpcbData);
+                    cb = lpdatabin.Length;
+                    lpData = Marshal.AllocHGlobal(cb);
+                    Marshal.Copy(lpdatabin, 0, lpData, cb);
                 }
                 else
                 {
-                    throw new Exception(@"注册表访问失败" + '\n' + regsetvaluetmp + '\n' + nameof(Set));
+                    throw new Exception(@"注册表访问失败" + '\n' + regCreateKeyEx + '\n' + nameof(Set));
                 }
-                regsetvaluetmp =
-                    NativeMethods.RegSetValueEx(phkResult, LpValueName, 0, (int)LpKind, lpdata, lpcbData);
+                regCreateKeyEx =
+                    NativeMethods.RegSetValueEx(phkResult, LpValueName, 0, (int)LpKind, lpData, cb);
                 NativeMethods.RegCloseKey(phkResult);
-                if (regsetvaluetmp != (int)ERROR_CODE.ERROR_SUCCESS)
+                if (regCreateKeyEx != (int)ERROR_CODE.ERROR_SUCCESS)
                 {
-                    throw new Exception(@"注册表访问失败" + '\n' + regsetvaluetmp + '\n' + nameof(Set));
+                    throw new Exception(@"注册表访问失败" + '\n' + regCreateKeyEx + '\n' + nameof(Set));
                 }
             });
         }
