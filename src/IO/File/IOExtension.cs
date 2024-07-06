@@ -22,7 +22,7 @@ namespace Xanadu.Skidbladnir.IO.File
         /// <param name="destinationDir"></param>
         /// <param name="recursive"></param>
         /// <exception cref="DirectoryNotFoundException"></exception>
-        public static void CopyDirectory(string sourceDir, string destinationDir, bool recursive)
+        public static void CopyDirectory(string sourceDir, string destinationDir, bool recursive = true)
         {
             // Get information about the source directory
             var dir = new DirectoryInfo(sourceDir);

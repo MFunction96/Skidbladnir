@@ -11,7 +11,7 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
     /// 
     /// </summary>
     /// <param name="logger"></param>
-    public class CachePool(ILogger logger) : ICachePool
+    public class CachePool(ILogger<CachePool> logger) : ICachePool
     {
         /// <summary>
         /// 
