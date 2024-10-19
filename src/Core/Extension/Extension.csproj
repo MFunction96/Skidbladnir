@@ -1,6 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<ItemGroup>
 		<PackageReference Include="Newtonsoft.Json" Version="*" />
-		<PackageReference Include="Newtonsoft.Json.Bson" Version="*" />
 	</ItemGroup>
 </Project>
