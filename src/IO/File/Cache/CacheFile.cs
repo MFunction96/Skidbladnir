@@ -11,7 +11,29 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
 
         public string FullPath { get; } = Path.Combine(pool.BasePath, subFolder, fileName);
 
+        public bool Exists => System.IO.File.Exists(this.FullPath);
+
         public CachePool Pool => pool;
+
+        public void Create()
+        {
+            if (this.Exists)
+            {
+                return;
+            }
+
+            System.IO.File.Create(this.FullPath).Close();
+        }
+
+        public void Delete()
+        {
+            if (!this.Exists)
+            {
+                return;
+            }
+
+            System.IO.File.Delete(this.FullPath);
+        }
 
         public override bool Equals(object? obj)
         {

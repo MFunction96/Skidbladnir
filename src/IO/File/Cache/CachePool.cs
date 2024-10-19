@@ -1,9 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+// ReSharper disable ClassNeverInstantiated.Global
 
 namespace Xanadu.Skidbladnir.IO.File.Cache
 {
@@ -22,7 +23,7 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
         public string BasePath { get; protected set; } = Path.Combine(Path.GetTempPath(), Process.GetCurrentProcess().ProcessName);
 
         /// <inheritdoc />
-        public ISet<CacheFile> CacheFiles { get; } = new HashSet<CacheFile>();
+        public ConcurrentDictionary<string, CacheFile> CacheFiles { get; } = new();
 
         /// <inheritdoc />
         public async void SetCustomBasePath(string basePath)
@@ -41,8 +42,13 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
         }
 
         /// <inheritdoc />
-        public CacheFile Register(string fileName, string subFolder = "", bool createFolder = true)
+        public CacheFile Register(string fileName = "", string subFolder = "", bool createFolder = true, bool create = true)
         {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                fileName = Path.GetRandomFileName();
+            }
+
             var file = new CacheFile(this, fileName, subFolder);
             var folder = Path.Combine(this.BasePath, subFolder);
             if (createFolder && !Directory.Exists(folder))
@@ -50,21 +56,32 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
                 Directory.CreateDirectory(folder);
             }
 
-            var result = this.CacheFiles.Add(file);
+            var result = this.CacheFiles.TryAdd(file.FullPath, file);
             if (result)
             {
+                if (create)
+                {
+                    file.Create();
+                }
+
                 return file;
             }
 
-            var msg = $"{file.FullPath} is already at current cache pool.";
+            var msg = $"{file.FullPath} is already at current cache pool. Keep previous creation state: {file.Exists}";
             logger.LogWarning(msg, string.Empty);
             return file;
         }
 
         /// <inheritdoc />
-        public bool UnRegister(CacheFile cacheFile)
+        public bool UnRegister(CacheFile cacheFile, bool detete = true)
         {
-            return this.CacheFiles.Remove(cacheFile);
+            var result = this.CacheFiles.TryRemove(cacheFile.FullPath, out _);
+            if (result && detete)
+            {
+                cacheFile.Delete();
+            }
+
+            return result;
         }
 
         /// <inheritdoc />
@@ -75,7 +92,7 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
                 return false;
             }
 
-            return this.BasePath.Equals(cachePool.BasePath) && this.CacheFiles.SetEquals(cachePool.CacheFiles);
+            return this.BasePath.Equals(cachePool.BasePath) && this.CacheFiles.Equals(cachePool.CacheFiles);
         }
 
         public override int GetHashCode()
