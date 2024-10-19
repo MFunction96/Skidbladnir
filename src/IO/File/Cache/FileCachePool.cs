@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
     /// 
     /// </summary>
     /// <param name="logger"></param>
-    public class CachePool(ILogger<CachePool> logger) : ICachePool
+    public class FileCachePool(ILogger<FileCachePool> logger) : IFileCachePool
     {
         /// <summary>
         /// 
@@ -23,7 +24,12 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
         public string BasePath { get; protected set; } = Path.Combine(Path.GetTempPath(), Process.GetCurrentProcess().ProcessName);
 
         /// <inheritdoc />
-        public ConcurrentDictionary<string, CacheFile> CacheFiles { get; } = new();
+        public ICollection<FileCache> CacheFiles => this.InternalCacheFiles.Values;
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        protected ConcurrentDictionary<string, FileCache> InternalCacheFiles { get; } = new();
 
         /// <inheritdoc />
         public async void SetCustomBasePath(string basePath)
@@ -38,25 +44,25 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
             var msg = $"Clean {this.BasePath}...";
             logger.LogInformation(msg, string.Empty);
             await IOExtension.DeleteDirectory(this.BasePath, true, force);
-            this.CacheFiles.Clear();
+            this.InternalCacheFiles.Clear();
         }
 
         /// <inheritdoc />
-        public CacheFile Register(string fileName = "", string subFolder = "", bool createFolder = true, bool create = true)
+        public FileCache Register(string fileName = "", string subFolder = "", bool create = true)
         {
             if (string.IsNullOrEmpty(fileName))
             {
                 fileName = Path.GetRandomFileName();
             }
 
-            var file = new CacheFile(this, fileName, subFolder);
+            var file = new FileCache(this, fileName, subFolder);
             var folder = Path.Combine(this.BasePath, subFolder);
-            if (createFolder && !Directory.Exists(folder))
+            if (create && !Directory.Exists(folder))
             {
                 Directory.CreateDirectory(folder);
             }
 
-            var result = this.CacheFiles.TryAdd(file.FullPath, file);
+            var result = this.InternalCacheFiles.TryAdd(file.FullPath, file);
             if (result)
             {
                 if (create)
@@ -73,12 +79,17 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
         }
 
         /// <inheritdoc />
-        public bool UnRegister(CacheFile cacheFile, bool detete = true)
+        public bool UnRegister(FileCache fileCache, bool detete = true)
         {
-            var result = this.CacheFiles.TryRemove(cacheFile.FullPath, out _);
+            var result = this.InternalCacheFiles.TryRemove(fileCache.FullPath, out _);
+            if (!result)
+            {
+                result = !this.InternalCacheFiles.ContainsKey(fileCache.FullPath);
+            }
+
             if (result && detete)
             {
-                cacheFile.Delete();
+                fileCache.Delete();
             }
 
             return result;
@@ -87,12 +98,12 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
         /// <inheritdoc />
         public override bool Equals(object? obj)
         {
-            if (obj is not CachePool cachePool)
+            if (obj is not FileCachePool cachePool)
             {
                 return false;
             }
 
-            return this.BasePath.Equals(cachePool.BasePath) && this.CacheFiles.Equals(cachePool.CacheFiles);
+            return this.BasePath.Equals(cachePool.BasePath) && this.InternalCacheFiles.Equals(cachePool.InternalCacheFiles);
         }
 
         public override int GetHashCode()
@@ -145,7 +156,7 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
         /// <summary>
         /// The finalize method.
         /// </summary>
-        ~CachePool()
+        ~FileCachePool()
         {
             this.Dispose(false);
         }
