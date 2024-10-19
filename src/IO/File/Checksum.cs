@@ -303,7 +303,7 @@ namespace Xanadu.Skidbladnir.IO.File
                     }
                 default:
                     {
-                        return await this.GetStreamHashAsync(obj.ToBson(), bufferSize, cancellationToken);
+                        return await this.GetStreamHashAsync(obj.ToJsonStream(), bufferSize, cancellationToken);
                     }
             }
         }
