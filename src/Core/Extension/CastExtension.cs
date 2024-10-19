@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Bson;
 using System;
 using System.IO;
 using System.Linq;
@@ -13,7 +12,7 @@ namespace Xanadu.Skidbladnir.Core.Extension
     {
         #region Object
 
-        public static Stream ToBson(this object obj)
+        public static Stream ToJsonStream(this object obj)
         {
             switch (obj)
             {
@@ -23,14 +22,8 @@ namespace Xanadu.Skidbladnir.Core.Extension
                     throw new InvalidCastException("Unable to cast string to bson.");
             }
 
-            var ms = new MemoryStream();
-            using var writer = new BsonDataWriter(ms)
-            {
-                Formatting = Formatting.None
-            };
-            var serializer = new JsonSerializer();
-            serializer.Serialize(writer, obj);
-            return ms;
+            var json = JsonConvert.SerializeObject(obj, Formatting.None);
+            return new MemoryStream(Encoding.UTF8.GetBytes(json));
         }
 
         #endregion
@@ -77,6 +70,6 @@ namespace Xanadu.Skidbladnir.Core.Extension
         }
 
         #endregion
-        
+
     }
 }
