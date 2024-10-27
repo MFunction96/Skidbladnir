@@ -54,7 +54,7 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
         /// </summary>
         public void Delete()
         {
-            IOExtension.DeleteFile(this.FullPath).RunSynchronously();
+            IOExtension.DeleteFile(this.FullPath);
         }
 
         /// <inheritdoc />

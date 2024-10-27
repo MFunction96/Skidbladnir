@@ -56,7 +56,7 @@ namespace Xanadu.Skidbladnir.IO.File
             foreach (var subDir in dirs)
             {
                 var newDestinationDir = Path.Combine(destinationDir, subDir.Name);
-                IOExtension.CopyDirectory(subDir.FullName, newDestinationDir, true);
+                IOExtension.CopyDirectory(subDir.FullName, newDestinationDir);
             }
         }
 
@@ -67,23 +67,20 @@ namespace Xanadu.Skidbladnir.IO.File
         /// <param name="allowNotFound"></param>
         /// <returns></returns>
         /// <exception cref="FileNotFoundException"></exception>
-        public static Task DeleteFile(string path, bool allowNotFound = true)
+        public static void DeleteFile(string path, bool allowNotFound = true)
         {
-            return Task.Run(() =>
+            if (!System.IO.File.Exists(path))
             {
-                if (!System.IO.File.Exists(path))
+                if (!allowNotFound)
                 {
-                    if (!allowNotFound)
-                    {
-                        throw new FileNotFoundException("File Not Found!", path);
-                    }
-
-                    return;
+                    throw new FileNotFoundException("File Not Found!", path);
                 }
 
-                System.IO.File.SetAttributes(path, FileAttributes.Normal);
-                System.IO.File.Delete(path);
-            });
+                return;
+            }
+
+            System.IO.File.SetAttributes(path, FileAttributes.Normal);
+            System.IO.File.Delete(path);
         }
 
         /// <summary>
