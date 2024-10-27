@@ -4,7 +4,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Threading.Tasks;
 // ReSharper disable ClassNeverInstantiated.Global
 
 namespace Xanadu.Skidbladnir.IO.File.Cache
@@ -21,7 +20,7 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
         private bool _disposed;
 
         /// <inheritdoc />
-        public string BasePath { get; protected set; } = Path.Combine(Path.GetTempPath(), Process.GetCurrentProcess().ProcessName);
+        public string BasePath { get; private set; } = Path.Combine(Path.GetTempPath(), Process.GetCurrentProcess().ProcessName);
 
         /// <inheritdoc />
         public ICollection<FileCache> CacheFiles => this.InternalCacheFiles.Values;
@@ -32,23 +31,22 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
         protected ConcurrentDictionary<string, FileCache> InternalCacheFiles { get; } = new();
 
         /// <inheritdoc />
-        public async void SetCustomBasePath(string basePath)
+        public void SetCustomBasePath(string basePath)
         {
-            await this.CleanAsync();
+            this.Clean();
             this.BasePath = basePath;
         }
 
         /// <inheritdoc />
-        public async Task CleanAsync(bool force = false)
+        public virtual void Clean(bool force = false)
         {
             var msg = $"Clean {this.BasePath}...";
             logger.LogInformation(msg, string.Empty);
-            await IOExtension.DeleteDirectory(this.BasePath, true, force);
             this.InternalCacheFiles.Clear();
         }
 
         /// <inheritdoc />
-        public FileCache Register(string fileName = "", string subFolder = "", bool create = true)
+        public virtual FileCache Register(string fileName = "", string subFolder = "", bool create = true)
         {
             if (string.IsNullOrEmpty(fileName))
             {
@@ -79,7 +77,7 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
         }
 
         /// <inheritdoc />
-        public bool UnRegister(FileCache fileCache, bool detete = true)
+        public virtual bool UnRegister(FileCache fileCache, bool detete = true)
         {
             var result = this.InternalCacheFiles.TryRemove(fileCache.FullPath, out _);
             if (!result)
@@ -140,7 +138,7 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
             if (disposing)
             {
                 // Dispose managed resources.
-                this.CleanAsync(true).GetAwaiter().GetResult();
+                this.Clean(true);
                 logger.LogInformation($"{this.GetType().Name} disposing", string.Empty);
 
             }

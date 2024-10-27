@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Xanadu.Skidbladnir.IO.File.Cache
 {
@@ -29,8 +28,7 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
         /// Clean the cache files in the pool and delete them all.
         /// </summary>
         /// <param name="force"></param>
-        /// <returns></returns>
-        public Task CleanAsync(bool force = false);
+        public void Clean(bool force = false);
 
         /// <summary>
         /// Register a file cache in the pool.
