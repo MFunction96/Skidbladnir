@@ -46,11 +46,6 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
         /// </summary>
         public void Create()
         {
-            if (this.Exists)
-            {
-                return;
-            }
-
             System.IO.File.Create(this.FullPath).Close();
         }
 
@@ -59,12 +54,7 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
         /// </summary>
         public void Delete()
         {
-            if (!this.Exists)
-            {
-                return;
-            }
-
-            System.IO.File.Delete(this.FullPath);
+            IOExtension.DeleteFile(this.FullPath).RunSynchronously();
         }
 
         /// <inheritdoc />
@@ -111,8 +101,10 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
             // and unmanaged resources.
             if (disposing)
             {
-                _ = this.Pool.UnRegister(this);
-                this.Delete();
+                if (!this.Pool.UnRegister(this))
+                {
+                    this.Delete();
+                }
             }
             // Call the appropriate methods to clean up
             // unmanaged resources here.
