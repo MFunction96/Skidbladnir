@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text.Json;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Xanadu.Skidbladnir.OS.Windows.Registry.Enums;
 
 namespace Xanadu.Skidbladnir.OS.Windows.Registry

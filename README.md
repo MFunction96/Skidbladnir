@@ -17,5 +17,5 @@ Azure Artifacts: https://dev.azure.com/XanaCN/Lyoko/_artifacts/feed/Subdigitals
 
 ---
 
-Copyright &copy; 2018-2023 MFunction.
+Copyright &copy; 2018-2024 MFunction.
 All rights reserved.
