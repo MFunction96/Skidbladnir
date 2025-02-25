@@ -9,13 +9,13 @@ using System.IO;
 namespace Xanadu.Skidbladnir.IO.File.Cache
 {
     /// <summary>
-    /// 
+    /// The implementation of the file cache pool.
     /// </summary>
-    /// <param name="logger"></param>
+    /// <param name="logger">The logger in System.</param>
     public class FileCachePool(ILogger<FileCachePool> logger) : IFileCachePool
     {
         /// <summary>
-        /// 
+        /// The flag of the dispose status.
         /// </summary>
         private bool _disposed;
 

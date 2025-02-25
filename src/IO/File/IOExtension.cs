@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Threading.Tasks;
 
 namespace Xanadu.Skidbladnir.IO.File
 {
     /// <summary>
-    /// 
+    /// The extension of the IO operations.
     /// </summary>
     public static class IOExtension
     {
@@ -16,12 +15,12 @@ namespace Xanadu.Skidbladnir.IO.File
         public static string AppDataFolder => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Process.GetCurrentProcess().ProcessName);
 
         /// <summary>
-        /// 
+        /// Copy a directory including files.
         /// </summary>
-        /// <param name="sourceDir"></param>
-        /// <param name="destinationDir"></param>
-        /// <param name="recursive"></param>
-        /// <exception cref="DirectoryNotFoundException"></exception>
+        /// <param name="sourceDir">Source Directory</param>
+        /// <param name="destinationDir">Destination Directory. Create if not exist.</param>
+        /// <param name="recursive">Recursive copy the directory. Default is true.</param>
+        /// <exception cref="DirectoryNotFoundException">Throw if source directory does not exist!</exception>
         public static void CopyDirectory(string sourceDir, string destinationDir, bool recursive = true)
         {
             // Get information about the source directory
@@ -61,12 +60,11 @@ namespace Xanadu.Skidbladnir.IO.File
         }
 
         /// <summary>
-        /// 
+        /// Delete a file. Able to allow not found and the file with weird attributes.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="allowNotFound"></param>
-        /// <returns></returns>
-        /// <exception cref="FileNotFoundException"></exception>
+        /// <param name="path">File path.</param>
+        /// <param name="allowNotFound">Allow not found then do nothing.</param>
+        /// <exception cref="FileNotFoundException">If not allow not found but do not found, throw it.</exception>
         public static void DeleteFile(string path, bool allowNotFound = true)
         {
             if (!System.IO.File.Exists(path))
@@ -84,39 +82,35 @@ namespace Xanadu.Skidbladnir.IO.File
         }
 
         /// <summary>
-        /// 
+        /// Delete a directory. Able to allow not found and the files with weird attributes.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="allowNotFound"></param>
-        /// <param name="force"></param>
-        /// <returns></returns>
-        /// <exception cref="FileNotFoundException"></exception>
-        public static Task DeleteDirectory(string path, bool allowNotFound = true, bool force = false)
+        /// <param name="path">Directory path.</param>
+        /// <param name="allowNotFound">Allow not found then do nothing.</param>
+        /// <param name="force">true is for deleting the file with weird attributes.</param>
+        /// <exception cref="FileNotFoundException">If not allow not found but do not found, throw it.</exception>
+        public static void DeleteDirectory(string path, bool allowNotFound = true, bool force = false)
         {
-            return Task.Run(() =>
+            if (!Directory.Exists(path))
             {
-                if (!Directory.Exists(path))
+                if (!allowNotFound)
                 {
-                    if (!allowNotFound)
-                    {
-                        throw new FileNotFoundException("Directory Not Found!", path);
-                    }
-
-                    return;
+                    throw new FileNotFoundException("Directory Not Found!", path);
                 }
 
-                if (force)
-                {
-                    var files = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories);
-                    foreach (var file in files)
-                    {
-                        System.IO.File.SetAttributes(file, FileAttributes.Normal);
-                    }
+                return;
+            }
 
+            if (force)
+            {
+                var files = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories);
+                foreach (var file in files)
+                {
+                    System.IO.File.SetAttributes(file, FileAttributes.Normal);
                 }
 
-                Directory.Delete(path, true);
-            });
+            }
+
+            Directory.Delete(path, true);
         }
     }
 }
