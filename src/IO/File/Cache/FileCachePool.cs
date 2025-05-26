@@ -43,6 +43,7 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
                 fileCache.Dispose();
             }
 
+            IOExtension.DeleteDirectory(this.BasePath, allowNotFound: true, force: true);
             this.InternalCacheFiles.Clear();
         }
 

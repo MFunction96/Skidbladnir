@@ -107,14 +107,14 @@ namespace Xanadu.Skidbladnir.IO.File
         /// <param name="path">Directory path.</param>
         /// <param name="allowNotFound">Allow not found then do nothing.</param>
         /// <param name="force">true is for deleting the file with weird attributes.</param>
-        /// <exception cref="FileNotFoundException">If not allow not found but do not found, throw it.</exception>
+        /// <exception cref="DirectoryNotFoundException">If not allow not found but do not found, throw it.</exception>
         public static void DeleteDirectory(string path, bool allowNotFound = true, bool force = false)
         {
             if (!Directory.Exists(path))
             {
                 if (!allowNotFound)
                 {
-                    throw new FileNotFoundException("Directory Not Found!", path);
+                    throw new DirectoryNotFoundException($"{path} Not Found!");
                 }
 
                 return;
