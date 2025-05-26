@@ -1,51 +1,59 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
+using System.Linq;
+
 // ReSharper disable ClassNeverInstantiated.Global
 
 namespace Xanadu.Skidbladnir.IO.File.Cache
 {
     /// <summary>
-    /// The implementation of the file cache pool.
+    /// File cache pool which used to manage file cache. Support Dependency Injection.
     /// </summary>
-    /// <param name="logger">The logger in System.</param>
-    public class FileCachePool(ILogger<FileCachePool> logger) : IFileCachePool
+    public class FileCachePool : IDisposable
     {
         /// <summary>
         /// The flag of the dispose status.
         /// </summary>
         private bool _disposed;
 
-        /// <inheritdoc />
-        public string BasePath { get; private set; } = Path.Combine(Path.GetTempPath(), Process.GetCurrentProcess().ProcessName);
+        /// <summary>
+        /// The base path of the file cache pool. Path is %TMP%/{RandomPath}, where {RandomPath} is a random file name.
+        /// </summary>
+        public string BasePath { get; } = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
 
-        /// <inheritdoc />
+        /// <summary>
+        /// The current cache files in the pool.
+        /// </summary>
         public ICollection<FileCache> CacheFiles => this.InternalCacheFiles.Values;
-        
+
         /// <summary>
         /// 
         /// </summary>
         protected ConcurrentDictionary<string, FileCache> InternalCacheFiles { get; } = new();
 
-        /// <inheritdoc />
-        public void SetCustomBasePath(string basePath)
+        /// <summary>
+        /// Clean the cache files in the pool and delete them all.
+        /// </summary>
+        public virtual void Clean()
         {
-            this.Clean();
-            this.BasePath = basePath;
-        }
+            foreach (var fileCache in this.InternalCacheFiles.Values.ToArray())
+            {
+                fileCache.Dispose();
+            }
 
-        /// <inheritdoc />
-        public virtual void Clean(bool force = false)
-        {
-            var msg = $"Clean {this.BasePath}...";
-            logger.LogInformation(msg, string.Empty);
+            IOExtension.DeleteDirectory(this.BasePath, allowNotFound: true, force: true);
             this.InternalCacheFiles.Clear();
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Register a file cache in the pool.
+        /// </summary>
+        /// <param name="fileName">The cache file name. If leaves it empty, it will be filled by random file name.</param>
+        /// <param name="subFolder">The subfolder for the storage.</param>
+        /// <param name="create">Create file when register or not.</param>
+        /// <returns>The file cache instance.</returns>
         public virtual FileCache Register(string fileName = "", string subFolder = "", bool create = true)
         {
             if (string.IsNullOrEmpty(fileName))
@@ -61,23 +69,26 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
             }
 
             var result = this.InternalCacheFiles.TryAdd(file.FullPath, file);
-            if (result)
+            if (!result)
             {
-                if (create)
-                {
-                    file.Create();
-                }
-
                 return file;
             }
 
-            var msg = $"{file.FullPath} is already at current cache pool. Keep previous creation state: {file.Exists}";
-            logger.LogWarning(msg, string.Empty);
+            if (create)
+            {
+                file.Create();
+            }
+
             return file;
         }
 
-        /// <inheritdoc />
-        public virtual bool UnRegister(FileCache fileCache, bool detete = true)
+        /// <summary>
+        /// Unregister a file cache from the pool.
+        /// </summary>
+        /// <param name="fileCache">The file cache instance.</param>
+        /// <param name="delete">Delete file when unregister or not. Highly recommended set to TRUE or leave default.</param>
+        /// <returns>Success or not. Only if failed to delete the cache file but still is existed, return false.</returns>
+        public virtual bool UnRegister(FileCache fileCache, bool delete = true)
         {
             var result = this.InternalCacheFiles.TryRemove(fileCache.FullPath, out _);
             if (!result)
@@ -85,7 +96,7 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
                 result = !this.InternalCacheFiles.ContainsKey(fileCache.FullPath);
             }
 
-            if (result && detete)
+            if (result && delete)
             {
                 fileCache.Delete();
             }
@@ -104,9 +115,9 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
             return this.BasePath.Equals(cachePool.BasePath) && this.InternalCacheFiles.Equals(cachePool.InternalCacheFiles);
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
-            // ReSharper disable once NonReadonlyMemberInGetHashCode
             return HashCode.Combine(this.BasePath);
         }
 
@@ -138,8 +149,7 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
             if (disposing)
             {
                 // Dispose managed resources.
-                this.Clean(true);
-                logger.LogInformation($"{this.GetType().Name} disposing", string.Empty);
+                this.Clean();
 
             }
             // Call the appropriate methods to clean up

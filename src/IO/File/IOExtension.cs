@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace Xanadu.Skidbladnir.IO.File
 {
@@ -12,7 +13,14 @@ namespace Xanadu.Skidbladnir.IO.File
         /// <summary>
         /// Path for %APPDATA%/&lt;ProcessName&gt;
         /// </summary>
-        public static string AppDataFolder => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Process.GetCurrentProcess().ProcessName);
+        public static string AppDataFolder {
+            get
+            {
+                var processName = Process.GetCurrentProcess().ProcessName;
+                var sanitized = string.Concat(processName.Where(c => !Path.GetInvalidFileNameChars().Contains(c)));
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), sanitized);
+            }
+        }
 
         /// <summary>
         /// Copy a directory including files.
@@ -55,7 +63,7 @@ namespace Xanadu.Skidbladnir.IO.File
             foreach (var subDir in dirs)
             {
                 var newDestinationDir = Path.Combine(destinationDir, subDir.Name);
-                IOExtension.CopyDirectory(subDir.FullName, newDestinationDir);
+                IOExtension.CopyDirectory(subDir.FullName, newDestinationDir, recursive);
             }
         }
 
@@ -77,8 +85,20 @@ namespace Xanadu.Skidbladnir.IO.File
                 return;
             }
 
-            System.IO.File.SetAttributes(path, FileAttributes.Normal);
-            System.IO.File.Delete(path);
+            try
+            {
+                System.IO.File.SetAttributes(path, FileAttributes.Normal);
+                System.IO.File.Delete(path);
+            }
+            catch (IOException) when (allowNotFound)
+            {
+
+            }
+            catch (UnauthorizedAccessException) when (allowNotFound)
+            {
+
+            }
+
         }
 
         /// <summary>
@@ -87,14 +107,14 @@ namespace Xanadu.Skidbladnir.IO.File
         /// <param name="path">Directory path.</param>
         /// <param name="allowNotFound">Allow not found then do nothing.</param>
         /// <param name="force">true is for deleting the file with weird attributes.</param>
-        /// <exception cref="FileNotFoundException">If not allow not found but do not found, throw it.</exception>
+        /// <exception cref="DirectoryNotFoundException">If not allow not found but do not found, throw it.</exception>
         public static void DeleteDirectory(string path, bool allowNotFound = true, bool force = false)
         {
             if (!Directory.Exists(path))
             {
                 if (!allowNotFound)
                 {
-                    throw new FileNotFoundException("Directory Not Found!", path);
+                    throw new DirectoryNotFoundException($"{path} Not Found!");
                 }
 
                 return;
@@ -102,8 +122,15 @@ namespace Xanadu.Skidbladnir.IO.File
 
             if (force)
             {
-                var files = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories);
-                foreach (var file in files)
+                foreach (var dir in Directory.GetDirectories(path, "*", SearchOption.AllDirectories))
+                {
+                    _ = new DirectoryInfo(dir)
+                    {
+                        Attributes = FileAttributes.Normal
+                    };
+                }
+
+                foreach (var file in Directory.GetFiles(path, "*.*", SearchOption.AllDirectories))
                 {
                     System.IO.File.SetAttributes(file, FileAttributes.Normal);
                 }

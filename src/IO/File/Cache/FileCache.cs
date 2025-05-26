@@ -39,14 +39,14 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
         /// <summary>
         /// The file cache pool which the instance bind.
         /// </summary>
-        public FileCachePool Pool => pool;
+        public readonly FileCachePool Pool = pool;
 
         /// <summary>
         /// Create the file cache.
         /// </summary>
         public void Create()
         {
-            System.IO.File.Create(this.FullPath).Close();
+            using var _ = System.IO.File.Create(this.FullPath);
         }
 
         /// <summary>
