@@ -62,5 +62,10 @@ namespace Xanadu.Skidbladnir.Net.DevOps.Model.Github.Basic
         /// </summary>
         public string ListReleasesApi => this.IsAvailable ? $"https://api.github.com/repos/{this.Owner}/{this.Repository}/releases" : string.Empty;
 
+        /// <summary>
+        /// See detail: https://docs.github.com/en/rest/releases/assets?apiVersion=2022-11-28#list-release-assets
+        /// </summary>
+        /// <param name="releaseId">Release ID</param>
+        public string ListReleaseAssetApi(long releaseId) => this.IsAvailable ? $"https://api.github.com/repos/{this.Owner}/{this.Repository}/releases/${releaseId}/assets" : string.Empty;
     }
 }
