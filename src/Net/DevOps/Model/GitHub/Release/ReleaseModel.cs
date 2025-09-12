@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Xanadu.Skidbladnir.Net.DevOps.Model.GitHub.User;
 
-namespace Xanadu.Skidbladnir.Net.DevOps.Model.Github.Release
+namespace Xanadu.Skidbladnir.Net.DevOps.Model.GitHub.Release
 {
     public class ReleaseModel
     {
@@ -58,7 +59,7 @@ namespace Xanadu.Skidbladnir.Net.DevOps.Model.Github.Release
         public DateTimeOffset PublishedAt { get; set; } = DateTimeOffset.MinValue;
 
         [JsonPropertyName("author")]
-        public object Author { get; set; } = new { };
+        public AuthorModel? Author { get; set; }
 
         [JsonPropertyName("assets")]
         public ICollection<ReleaseAssetModel> Assets { get; set; } = new List<ReleaseAssetModel>();

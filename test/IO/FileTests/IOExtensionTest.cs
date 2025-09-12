@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using Xanadu.Skidbladnir.IO.File;
 
-namespace Xanadu.Skidbladnir.Test.IO.FileTests
+namespace Xanadu.Skidbladnir.Test.IO.File
 {
     [TestClass]
     public class IOExtensionTest
@@ -50,26 +50,26 @@ namespace Xanadu.Skidbladnir.Test.IO.FileTests
             var dest = Path.Combine(this._testRoot, "dest");
 
             Directory.CreateDirectory(source);
-            File.WriteAllText(Path.Combine(source, "file.txt"), "Hello");
+            System.IO.File.WriteAllText(Path.Combine(source, "file.txt"), "Hello");
             var subDir = Path.Combine(source, "subdir");
             Directory.CreateDirectory(subDir);
-            File.WriteAllText(Path.Combine(subDir, "subfile.txt"), "World");
+            System.IO.File.WriteAllText(Path.Combine(subDir, "subfile.txt"), "World");
 
             IOExtension.CopyDirectory(source, dest);
 
-            Assert.IsTrue(File.Exists(Path.Combine(dest, "file.txt")));
-            Assert.IsTrue(File.Exists(Path.Combine(dest, "subdir", "subfile.txt")));
+            Assert.IsTrue(System.IO.File.Exists(Path.Combine(dest, "file.txt")));
+            Assert.IsTrue(System.IO.File.Exists(Path.Combine(dest, "subdir", "subfile.txt")));
         }
 
         [TestMethod]
         public void DeleteFile_ShouldDeleteExistingFile()
         {
             var file = Path.Combine(this._testRoot, "test.txt");
-            File.WriteAllText(file, "data");
-            File.SetAttributes(file, FileAttributes.ReadOnly);
+            System.IO.File.WriteAllText(file, "data");
+            System.IO.File.SetAttributes(file, FileAttributes.ReadOnly);
 
             IOExtension.DeleteFile(file);
-            Assert.IsFalse(File.Exists(file));
+            Assert.IsFalse(System.IO.File.Exists(file));
         }
 
         [TestMethod]
@@ -92,8 +92,8 @@ namespace Xanadu.Skidbladnir.Test.IO.FileTests
             var dir = Path.Combine(this._testRoot, "readonlydir");
             Directory.CreateDirectory(dir);
             var file = Path.Combine(dir, "ro.txt");
-            File.WriteAllText(file, "readonly");
-            File.SetAttributes(file, FileAttributes.ReadOnly);
+            System.IO.File.WriteAllText(file, "readonly");
+            System.IO.File.SetAttributes(file, FileAttributes.ReadOnly);
 
             IOExtension.DeleteDirectory(dir, allowNotFound: false, force: true);
 

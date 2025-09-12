@@ -4,8 +4,6 @@
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
 		<IsPublishable>false</IsPublishable>
-		<RootNamespace>Xanadu.Test.$(MSBuildProjectName.Replace(" ", "_").Replace("Tests", ""))</RootNamespace>
-		<AssemblyName>Xanadu.Test.$(MSBuildProjectName.Replace(" ", "_").Replace("Tests", ""))</AssemblyName>
 		<EnableMSTestRunner>true</EnableMSTestRunner>
 		<OutputType>Exe</OutputType>
 		<!--
@@ -18,6 +16,7 @@
 		<PackageReference Include="MSTest" Version="*" />
 		<PackageReference Include="Moq" Version="*" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="$(DotNetMajorVersion)" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(DotNetMajorVersion)" />
 	</ItemGroup>
 
 	<ItemGroup>

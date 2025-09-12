@@ -1,18 +1,17 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
+﻿using System.Linq;
 using System.Security;
-using Xanadu.Skidbladnir.Net.DevOps.Model.Github.Basic;
+using Xanadu.Skidbladnir.Net.DevOps.Model.GitHub.Basic;
 
-namespace Xanadu.Skidbladnir.Test.Net.DevOpsTest.Model.Github.Basic
+namespace Xanadu.Skidbladnir.Test.Net.DevOps.Model.GitHub.Basic
 {
     [TestClass]
-    public class GithubRepositoryInfoModelTest
+    public class GitHubRepositoryInfoModelTest
     {
         [TestMethod]
         public void RepositoryUrl_SetValidUrl_ParsesOwnerAndRepository()
         {
             // Arrange
-            var model = new GithubRepositoryInfoModel();
+            var model = new GitHubRepositoryInfoModel();
             const string expectedOwner = "microsoft";
             const string expectedRepo = "vscode";
 
@@ -32,7 +31,7 @@ namespace Xanadu.Skidbladnir.Test.Net.DevOpsTest.Model.Github.Basic
         public void RepositoryUrl_SetInvalidUrl_DoesNotChangeProperties(string invalidUrl)
         {
             // Arrange
-            var model = new GithubRepositoryInfoModel
+            var model = new GitHubRepositoryInfoModel
             {
                 Owner = "initialOwner",
                 Repository = "initialRepo",
@@ -49,7 +48,7 @@ namespace Xanadu.Skidbladnir.Test.Net.DevOpsTest.Model.Github.Basic
         public void RepositoryUrl_Get_ConstructsCorrectUrl()
         {
             // Arrange
-            var model = new GithubRepositoryInfoModel
+            var model = new GitHubRepositoryInfoModel
             {
                 Owner = "octocat",
                 Repository = "Hello-World"
@@ -67,7 +66,7 @@ namespace Xanadu.Skidbladnir.Test.Net.DevOpsTest.Model.Github.Basic
         public void IsAvailable_WhenOwnerAndRepositorySet_ReturnsTrue()
         {
             // Arrange
-            var model = new GithubRepositoryInfoModel
+            var model = new GitHubRepositoryInfoModel
             {
                 Owner = "owner",
                 Repository = "repo"
@@ -84,7 +83,7 @@ namespace Xanadu.Skidbladnir.Test.Net.DevOpsTest.Model.Github.Basic
         public void IsAvailable_WhenOwnerOrRepositoryMissing_ReturnsFalse(string owner, string repo)
         {
             // Arrange
-            var model = new GithubRepositoryInfoModel
+            var model = new GitHubRepositoryInfoModel
             {
                 Owner = owner,
                 Repository = repo
@@ -98,7 +97,7 @@ namespace Xanadu.Skidbladnir.Test.Net.DevOpsTest.Model.Github.Basic
         public void GitOriginUrl_WhenAvailable_ReturnsCorrectUrl()
         {
             // Arrange
-            var model = new GithubRepositoryInfoModel
+            var model = new GitHubRepositoryInfoModel
             {
                 Owner = "owner",
                 Repository = "repo"
@@ -119,7 +118,7 @@ namespace Xanadu.Skidbladnir.Test.Net.DevOpsTest.Model.Github.Basic
         public void GitOriginUrl_WhenNotAvailable_ReturnsEmpty()
         {
             // Arrange
-            var model = new GithubRepositoryInfoModel();
+            var model = new GitHubRepositoryInfoModel();
             var pat = new SecureString();
 
             // Act
@@ -133,12 +132,12 @@ namespace Xanadu.Skidbladnir.Test.Net.DevOpsTest.Model.Github.Basic
         public void ListReleasesApi_WhenAvailable_ReturnsCorrectUrl()
         {
             // Arrange
-            var model = new GithubRepositoryInfoModel
+            var model = new GitHubRepositoryInfoModel
             {
                 Owner = "owner",
                 Repository = "repo"
             };
-            const string expectedUrl = "https://api.github.com/repos/owner/repo/releases";
+            const string expectedUrl = "/repos/owner/repo/releases";
 
             // Act
             var actualUrl = model.ListReleasesApi;
@@ -151,7 +150,7 @@ namespace Xanadu.Skidbladnir.Test.Net.DevOpsTest.Model.Github.Basic
         public void ListReleasesApi_WhenNotAvailable_ReturnsEmpty()
         {
             // Arrange
-            var model = new GithubRepositoryInfoModel();
+            var model = new GitHubRepositoryInfoModel();
 
             // Act
             var actualUrl = model.ListReleasesApi;

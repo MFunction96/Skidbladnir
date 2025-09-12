@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Text.Json.Serialization;
+using Xanadu.Skidbladnir.Net.DevOps.Model.GitHub.User;
 
-namespace Xanadu.Skidbladnir.Net.DevOps.Model.Github.Release
+namespace Xanadu.Skidbladnir.Net.DevOps.Model.GitHub.Release
 {
     public class ReleaseAssetModel
     {
@@ -42,6 +43,6 @@ namespace Xanadu.Skidbladnir.Net.DevOps.Model.Github.Release
         public DateTimeOffset UpdatedAt { get; set; } = DateTimeOffset.MinValue;
 
         [JsonPropertyName("uploader")]
-        public object Uploader { get; set; } = new { };
+        public AuthorModel? Uploader { get; set; }
     }
 }

@@ -1,13 +1,14 @@
 ﻿using System.Security;
 using System.Text.RegularExpressions;
 using Xanadu.Skidbladnir.Core.Extension;
+#pragma warning disable CS0659 // Type overrides Object.Equals(object o) but does not override Object.GetHashCode()
 
-namespace Xanadu.Skidbladnir.Net.DevOps.Model.Github.Basic
+namespace Xanadu.Skidbladnir.Net.DevOps.Model.GitHub.Basic
 {
     /// <summary>
     /// GitHub repository information.
     /// </summary>
-    public partial class GithubRepositoryInfoModel : IRepositoryInfoModel
+    public partial class GitHubRepositoryInfoModel : IRepositoryInfoModel
     {
         /// <summary>
         /// Regular expression to match GitHub repository URLs.
@@ -16,14 +17,14 @@ namespace Xanadu.Skidbladnir.Net.DevOps.Model.Github.Basic
         private static partial Regex RepositoryUrlRegex();
 
         /// <summary>
+        /// Regular expression to match GitHub repository URLs.
+        /// </summary>
+        public static readonly Regex RepositoryRegex = GitHubRepositoryInfoModel.RepositoryUrlRegex();
+
+        /// <summary>
         /// The owner of the GitHub repository.
         /// </summary>
         public string Owner { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Regular expression to match GitHub repository URLs.
-        /// </summary>
-        public static readonly Regex RepositoryRegex = GithubRepositoryInfoModel.RepositoryUrlRegex();
 
         /// <inheritdoc />
         public string Repository { get; set; } = string.Empty;
@@ -37,12 +38,12 @@ namespace Xanadu.Skidbladnir.Net.DevOps.Model.Github.Basic
             }
             set
             {
-                if (string.IsNullOrEmpty(value) || !GithubRepositoryInfoModel.RepositoryRegex.IsMatch(value))
+                if (string.IsNullOrEmpty(value) || !GitHubRepositoryInfoModel.RepositoryRegex.IsMatch(value))
                 {
                     return;
                 }
 
-                var match = GithubRepositoryInfoModel.RepositoryRegex.Match(value);
+                var match = GitHubRepositoryInfoModel.RepositoryRegex.Match(value);
                 this.Owner = match.Groups["Owner"].Value;
                 this.Repository = match.Groups["Repository"].Value;
             }
@@ -60,12 +61,19 @@ namespace Xanadu.Skidbladnir.Net.DevOps.Model.Github.Basic
         /// <summary>
         /// See detail: https://docs.github.com/en/rest/releases/releases?apiVersion=2022-11-28#list-releases
         /// </summary>
-        public string ListReleasesApi => this.IsAvailable ? $"https://api.github.com/repos/{this.Owner}/{this.Repository}/releases" : string.Empty;
+        public string ListReleasesApi => this.IsAvailable ? $"/repos/{this.Owner}/{this.Repository}/releases" : string.Empty;
 
         /// <summary>
         /// See detail: https://docs.github.com/en/rest/releases/assets?apiVersion=2022-11-28#list-release-assets
         /// </summary>
         /// <param name="releaseId">Release ID</param>
-        public string ListReleaseAssetApi(long releaseId) => this.IsAvailable ? $"https://api.github.com/repos/{this.Owner}/{this.Repository}/releases/${releaseId}/assets" : string.Empty;
+        public string ListReleaseAssetApi(long releaseId) => this.IsAvailable ? $"/repos/{this.Owner}/{this.Repository}/releases/{releaseId}/assets" : string.Empty;
+
+        /// <inheritdoc />
+        public override bool Equals(object? obj)
+        {
+            var model = obj as GitHubRepositoryInfoModel;
+            return model is not null && this.Owner == model.Owner && this.Repository == model.Repository;
+        }
     }
 }
