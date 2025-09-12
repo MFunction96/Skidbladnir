@@ -5,14 +5,14 @@
 		<Product>Skidbladnir</Product>
 		<PackageProjectUrl>https://github.com/MFunction96/Skidbladnir</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/MFunction96/Skidbladnir</RepositoryUrl>
-		<Copyright>2021-2024 Xanadu</Copyright>
+		<Copyright>2021-2025 Xanadu</Copyright>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>disable</ImplicitUsings>
-		<DotNetMajorVersion>8.*</DotNetMajorVersion>
+		<DotNetMajorVersion>[8.0,)</DotNetMajorVersion>
 		<Version Condition=" '$(BIN_VER)' == '' ">1.0.0-alpha</Version>
 		<Version Condition=" '$(BIN_VER)' != '' ">$(BIN_VER)</Version>
 	</PropertyGroup>

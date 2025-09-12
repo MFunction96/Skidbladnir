@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xanadu.Skidbladnir.IO.File;
 
-namespace Xanadu.Skidbladnir.Test.IO.FileTests
+namespace Xanadu.Skidbladnir.Test.IO.File
 {
     [TestClass]
     public class IOExtensionTest
     {
-        private string _testRoot;
+        private string _testRoot = null!;
 
         [TestInitialize]
         public void Setup()
@@ -42,63 +38,62 @@ namespace Xanadu.Skidbladnir.Test.IO.FileTests
         [TestMethod]
         public void AppDataFolder_ShouldReturnValidPath()
         {
-            string path = IOExtension.AppDataFolder;
+            var path = IOExtension.AppDataFolder;
             Assert.IsFalse(string.IsNullOrWhiteSpace(path));
-            Assert.IsTrue(path.Contains(Process.GetCurrentProcess().ProcessName));
+            Assert.Contains(Process.GetCurrentProcess().ProcessName, path);
         }
 
         [TestMethod]
         public void CopyDirectory_ShouldCopyAllFilesAndSubdirectories()
         {
-            string source = Path.Combine(_testRoot, "source");
-            string dest = Path.Combine(_testRoot, "dest");
+            var source = Path.Combine(this._testRoot, "source");
+            var dest = Path.Combine(this._testRoot, "dest");
 
             Directory.CreateDirectory(source);
-            File.WriteAllText(Path.Combine(source, "file.txt"), "Hello");
-            string subDir = Path.Combine(source, "subdir");
+            System.IO.File.WriteAllText(Path.Combine(source, "file.txt"), "Hello");
+            var subDir = Path.Combine(source, "subdir");
             Directory.CreateDirectory(subDir);
-            File.WriteAllText(Path.Combine(subDir, "subfile.txt"), "World");
+            System.IO.File.WriteAllText(Path.Combine(subDir, "subfile.txt"), "World");
 
             IOExtension.CopyDirectory(source, dest);
 
-            Assert.IsTrue(File.Exists(Path.Combine(dest, "file.txt")));
-            Assert.IsTrue(File.Exists(Path.Combine(dest, "subdir", "subfile.txt")));
+            Assert.IsTrue(System.IO.File.Exists(Path.Combine(dest, "file.txt")));
+            Assert.IsTrue(System.IO.File.Exists(Path.Combine(dest, "subdir", "subfile.txt")));
         }
 
         [TestMethod]
         public void DeleteFile_ShouldDeleteExistingFile()
         {
-            string file = Path.Combine(this._testRoot, "test.txt");
-            File.WriteAllText(file, "data");
-            File.SetAttributes(file, FileAttributes.ReadOnly);
+            var file = Path.Combine(this._testRoot, "test.txt");
+            System.IO.File.WriteAllText(file, "data");
+            System.IO.File.SetAttributes(file, FileAttributes.ReadOnly);
 
             IOExtension.DeleteFile(file);
-            Assert.IsFalse(File.Exists(file));
+            Assert.IsFalse(System.IO.File.Exists(file));
         }
 
         [TestMethod]
         public void DeleteFile_AllowNotFound_ShouldNotThrow()
         {
-            string file = Path.Combine(this._testRoot, "nonexistent.txt");
+            var file = Path.Combine(this._testRoot, "nonexistent.txt");
             IOExtension.DeleteFile(file, allowNotFound: true);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(FileNotFoundException))]
         public void DeleteFile_DisallowNotFound_ShouldThrow()
         {
-            string file = Path.Combine(this._testRoot, "nonexistent.txt");
-            IOExtension.DeleteFile(file, allowNotFound: false);
+            var file = Path.Combine(this._testRoot, "nonexistent.txt");
+            Assert.ThrowsExactly<FileNotFoundException>(() => IOExtension.DeleteFile(file, allowNotFound: false));
         }
 
         [TestMethod]
         public void DeleteDirectory_Force_ShouldRemoveReadOnlyFiles()
         {
-            string dir = Path.Combine(this._testRoot, "readonlydir");
+            var dir = Path.Combine(this._testRoot, "readonlydir");
             Directory.CreateDirectory(dir);
-            string file = Path.Combine(dir, "ro.txt");
-            File.WriteAllText(file, "readonly");
-            File.SetAttributes(file, FileAttributes.ReadOnly);
+            var file = Path.Combine(dir, "ro.txt");
+            System.IO.File.WriteAllText(file, "readonly");
+            System.IO.File.SetAttributes(file, FileAttributes.ReadOnly);
 
             IOExtension.DeleteDirectory(dir, allowNotFound: false, force: true);
 
@@ -108,16 +103,16 @@ namespace Xanadu.Skidbladnir.Test.IO.FileTests
         [TestMethod]
         public void DeleteDirectory_AllowNotFound_ShouldNotThrow()
         {
-            string dir = Path.Combine(_testRoot, "missingdir");
+            var dir = Path.Combine(this._testRoot, "missingdir");
             IOExtension.DeleteDirectory(dir, allowNotFound: true);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DirectoryNotFoundException))]
         public void DeleteDirectory_DisallowNotFound_ShouldThrow()
         {
-            string dir = Path.Combine(_testRoot, "missingdir");
-            IOExtension.DeleteDirectory(dir, allowNotFound: false);
+            var dir = Path.Combine(this._testRoot, "missingdir");
+            Assert.ThrowsExactly<DirectoryNotFoundException>(() =>
+                IOExtension.DeleteDirectory(dir, allowNotFound: false));
         }
     }
 }
