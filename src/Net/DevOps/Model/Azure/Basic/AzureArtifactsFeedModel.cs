@@ -1,8 +1,8 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Xanadu.Skidbladnir.Net.DevOps.Azure
+namespace Xanadu.Skidbladnir.Net.DevOps.Model.Azure.Basic
 {
-    public class AzureArtifactsFeeds
+    public class AzureArtifactsFeedModel
     {
         public static Regex OrganizationFeedsUrlRegex =>
             new(@"^https:\/\/dev\.azure\.com\/(?<Organization>(.+?))\/_artifacts\/feed\/(?<FeedsName>(.+?))$", RegexOptions.ExplicitCapture);
@@ -31,22 +31,22 @@ namespace Xanadu.Skidbladnir.Net.DevOps.Azure
             }
             set
             {
-                if (!AzureArtifactsFeeds.ProjectFeedsUrlRegex.IsMatch(value) &&
-                    !AzureArtifactsFeeds.OrganizationFeedsUrlRegex.IsMatch(value))
+                if (!AzureArtifactsFeedModel.ProjectFeedsUrlRegex.IsMatch(value) &&
+                    !AzureArtifactsFeedModel.OrganizationFeedsUrlRegex.IsMatch(value))
                 {
                     return;
                 }
 
-                if (AzureArtifactsFeeds.ProjectFeedsUrlRegex.IsMatch(value))
+                if (AzureArtifactsFeedModel.ProjectFeedsUrlRegex.IsMatch(value))
                 {
-                    var m = AzureArtifactsFeeds.ProjectFeedsUrlRegex.Match(value);
+                    var m = AzureArtifactsFeedModel.ProjectFeedsUrlRegex.Match(value);
                     this.Organization = m.Groups["Organization"].Value;
                     this.Project = m.Groups["Project"].Value;
                     this.FeedsName = m.Groups["FeedsName"].Value;
                     return;
                 }
 
-                var match = AzureArtifactsFeeds.OrganizationFeedsUrlRegex.Match(value);
+                var match = AzureArtifactsFeedModel.OrganizationFeedsUrlRegex.Match(value);
                 this.Organization = match.Groups["Organization"].Value;
                 this.FeedsName = match.Groups["FeedsName"].Value;
             }
