@@ -10,8 +10,8 @@ namespace Xanadu.Skidbladnir.Net.DevOps.Service
     /// <summary>
     /// GitHub REST API client.
     /// </summary>
-    /// <param name="factory"></param>
-    public class GitHubRestApiClient(IHttpClientFactory factory)
+    /// <param name="httpClient">Http Client</param>
+    public class GitHubRestApiClient(HttpClient httpClient)
     {
         /// <summary>
         /// GitHub API base URL.
@@ -29,11 +29,6 @@ namespace Xanadu.Skidbladnir.Net.DevOps.Service
         };
 
         /// <summary>
-        /// HttpClient instance for GitHub REST API.
-        /// </summary>
-        private readonly HttpClient _httpClient = factory.CreateClient("GitHubRestApiClient");
-
-        /// <summary>
         /// Gets the list of release assets for a specific release in a GitHub repository. See detail: https://docs.github.com/en/rest/releases/assets?apiVersion=2022-11-28#list-release-assets
         /// </summary>
         /// <param name="gitHubRepositoryInfoModel">GitHub repository info.</param>
@@ -41,7 +36,7 @@ namespace Xanadu.Skidbladnir.Net.DevOps.Service
         /// <returns>Release Assets Array, NULL if not existed or failed.</returns>
         public async Task<ReleaseAssetModel[]?> ListAssets(GitHubRepositoryInfoModel gitHubRepositoryInfoModel, long releaseId)
         {
-            return await this._httpClient.GetFromJsonAsync<ReleaseAssetModel[]>(gitHubRepositoryInfoModel.ListReleaseAssetApi(releaseId));
+            return await httpClient.GetFromJsonAsync<ReleaseAssetModel[]>(gitHubRepositoryInfoModel.ListReleaseAssetApi(releaseId));
         }
 
         /// <summary>
@@ -51,7 +46,7 @@ namespace Xanadu.Skidbladnir.Net.DevOps.Service
         /// <returns>Release Array, NULL if not existed or failed.</returns>
         public async Task<ReleaseModel[]?> ListReleases(GitHubRepositoryInfoModel gitHubRepositoryInfoModel)
         {
-            return await this._httpClient.GetFromJsonAsync<ReleaseModel[]>(gitHubRepositoryInfoModel.ListReleasesApi);
+            return await httpClient.GetFromJsonAsync<ReleaseModel[]>(gitHubRepositoryInfoModel.ListReleasesApi);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Xanadu.Skidbladnir.Test.Net.DevOps.Service
         public void Setup()
         {
             var services = new ServiceCollection();
-            services.AddHttpClient("GitHubRestApiClient", httpClient =>
+            services.AddHttpClient<GitHubRestApiClient>("GitHubRestApiClient", httpClient =>
             {
                 httpClient.BaseAddress = new Uri(GitHubRestApiClient.BaseUrl);
                 httpClient.DefaultRequestVersion = HttpVersion.Version30;
@@ -39,12 +39,11 @@ namespace Xanadu.Skidbladnir.Test.Net.DevOps.Service
                     httpClient.DefaultRequestHeaders.Add(gitHubDefaultHeader.Key, gitHubDefaultHeader.Value);
                 }
 
-            }).ConfigurePrimaryHttpMessageHandler(handler => new HttpClientHandler
+            }).ConfigurePrimaryHttpMessageHandler(_ => new HttpClientHandler
             {
                 AllowAutoRedirect = true,
                 AutomaticDecompression = DecompressionMethods.All
             });
-            services.AddScoped<GitHubRestApiClient>();
             this._provider = services.BuildServiceProvider();
         }
 
@@ -66,7 +65,7 @@ namespace Xanadu.Skidbladnir.Test.Net.DevOps.Service
                 Repository = "Korabli_localization_chs"
             };
             // Act
-            var releaseAssets = await gitHubRestApiClient.ListAssets(gitHubRepositoryInfoModel, 246552604);
+            var releaseAssets = await gitHubRestApiClient.ListAssets(gitHubRepositoryInfoModel, 232881885);
             // Assert
             Assert.IsNotNull(releaseAssets);
             Assert.IsGreaterThan(0, releaseAssets.ToArray().Length);
