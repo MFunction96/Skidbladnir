@@ -38,7 +38,8 @@ steps:
 
 - task: PublishCodeCoverageResults@2
   inputs:
-    summaryFileLocation: '**/*.cobertura.xml'
+    summaryFileLocation: '$(Agent.TempDirectory)/**/*.cobertura.xml'
+    pathToSources: '$(System.DefaultWorkingDirectory)/src'
 
 - task: PublishPipelineArtifact@1
   inputs:
