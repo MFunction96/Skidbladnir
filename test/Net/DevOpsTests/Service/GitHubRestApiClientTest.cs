@@ -1,11 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Xanadu.Skidbladnir.Net.DevOps;
 using Xanadu.Skidbladnir.Net.DevOps.Model.GitHub.Basic;
 using Xanadu.Skidbladnir.Net.DevOps.Service;
 
@@ -29,21 +28,7 @@ namespace Xanadu.Skidbladnir.Test.Net.DevOps.Service
         public void Setup()
         {
             var services = new ServiceCollection();
-            services.AddHttpClient<GitHubRestApiClient>("GitHubRestApiClient", httpClient =>
-            {
-                httpClient.BaseAddress = new Uri(GitHubRestApiClient.BaseUrl);
-                httpClient.DefaultRequestVersion = HttpVersion.Version30;
-                httpClient.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrLower;
-                foreach (var gitHubDefaultHeader in GitHubRestApiClient.GitHubDefaultHeaders)
-                {
-                    httpClient.DefaultRequestHeaders.Add(gitHubDefaultHeader.Key, gitHubDefaultHeader.Value);
-                }
-
-            }).ConfigurePrimaryHttpMessageHandler(_ => new HttpClientHandler
-            {
-                AllowAutoRedirect = true,
-                AutomaticDecompression = DecompressionMethods.All
-            });
+            services.AddGitHubRestApiClient();
             this._provider = services.BuildServiceProvider();
         }
 
