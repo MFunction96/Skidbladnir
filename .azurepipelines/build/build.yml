@@ -36,6 +36,10 @@ steps:
     projects: '**/*Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration) --collect "Code Coverage;Format=cobertura"'
 
+- task: PublishCodeCoverageResults@2
+  inputs:
+    summaryFileLocation: '**/*.cobertura.xml'
+
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: '$(Pipeline.Workspace)'
