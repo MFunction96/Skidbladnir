@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace Xanadu.Skidbladnir.Net.DevOps.Service
         /// <summary>
         /// GitHub API base URL.
         /// </summary>
-        public const string BaseUrl = "https://api.github.com";
+        public static Uri BaseUrl => new("https://api.github.com");
 
         /// <summary>
         /// GitHub default headers.
@@ -27,6 +28,58 @@ namespace Xanadu.Skidbladnir.Net.DevOps.Service
             { "User-Agent", "Xanadu.Skidbladnir" },
             { "X-GitHub-Api-Version", "2022-11-28" }
         };
+
+        /// <summary>
+        /// Default HttpClientHandler with common settings.
+        /// </summary>
+        /// <param name="handler">HttpClientHandler instance.</param>
+        public static void DefaultHttpClientHandlerAction(HttpClientHandler handler)
+        {
+            handler.AllowAutoRedirect = true;
+            handler.AutomaticDecompression = System.Net.DecompressionMethods.All;
+        }
+
+        /// <summary>
+        /// Default HttpClient with common settings.
+        /// </summary>
+        /// <param name="httpClient">Http Client instance.</param>
+        public static void DefaultHttpClientAction(HttpClient httpClient)
+        {
+            httpClient.BaseAddress = GitHubRestApiClient.BaseUrl;
+            httpClient.DefaultRequestVersion = new Version(3, 0);
+            httpClient.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrLower;
+            foreach (var gitHubDefaultHeader in GitHubRestApiClient.GitHubDefaultHeaders)
+            {
+                httpClient.DefaultRequestHeaders.Add(gitHubDefaultHeader.Key, gitHubDefaultHeader.Value);
+            }
+        }
+
+        /// <summary>
+        /// Default HttpClientHandler with common settings, can be configured via Action. AllowAutoRedirect is true, AutomaticDecompression is All.
+        /// </summary>
+        /// <param name="configure">Configuration Action for HttpClientHandler.</param>
+        /// <returns>HttpClientHandler Instance.</returns>
+        public static HttpClientHandler DefaultHttpClientHandler(Action<HttpClientHandler>? configure = null)
+        {
+            var handler = new HttpClientHandler();
+            GitHubRestApiClient.DefaultHttpClientHandlerAction(handler);
+            configure?.Invoke(handler);
+            return handler;
+        }
+
+        /// <summary>
+        /// Default HttpClient with common settings, can be configured via Action. Default HttpClientHandler is configured. BaseAddress is GitHub API base URL, DefaultRequestVersion is 3.0, DefaultVersionPolicy is RequestVersionOrLower.
+        /// </summary>
+        /// <param name="handlerConfigure">Configuration Action for HttpClientHandler.</param>
+        /// <param name="clientConfigure">Configuration Action for HttpClient.</param>
+        /// <returns>HttpClient Instance.</returns>
+        public static HttpClient DefaultHttpClient(Action<HttpClientHandler>? handlerConfigure = null, Action<HttpClient>? clientConfigure = null)
+        {
+            var httpClient = new HttpClient(GitHubRestApiClient.DefaultHttpClientHandler(handlerConfigure));
+            GitHubRestApiClient.DefaultHttpClientAction(httpClient);
+            clientConfigure?.Invoke(httpClient);
+            return httpClient;
+        }
 
         /// <summary>
         /// Gets the list of release assets for a specific release in a GitHub repository. See detail: https://docs.github.com/en/rest/releases/assets?apiVersion=2022-11-28#list-release-assets
