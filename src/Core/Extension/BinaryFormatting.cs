@@ -8,14 +8,14 @@
         /// <summary>
         /// Base64 format.
         /// </summary>
-        Base64,
+        BASE64,
         /// <summary>
         /// Binary format.
         /// </summary>
-        Binary,
+        BINARY,
         /// <summary>
         /// Hexadecimal format.
         /// </summary>
-        Hexadecimal
+        HEXADECIMAL
     }
 }

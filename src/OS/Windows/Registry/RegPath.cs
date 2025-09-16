@@ -1,7 +1,5 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -82,21 +80,6 @@ namespace Xanadu.Skidbladnir.OS.Windows.Registry
         }
 
         /// <summary>
-        /// 注册表路径信息类构造函数。
-        /// </summary>
-        /// <param name="jsonFile">
-        /// Json文件位置。
-        /// </param>
-        public RegPath(string jsonFile)
-        {
-            var json = File.ReadAllText(jsonFile);
-            var regPath = JsonConvert.DeserializeObject<RegPath>(json)!;
-            HKey = regPath.HKey;
-            LpSubKey = regPath.LpSubKey;
-            LpValueName = regPath.LpValueName;
-        }
-
-        /// <summary>
         /// 注册表路径信息类复制构造函数。
         /// </summary>
         /// <param name="regPath">
@@ -108,21 +91,7 @@ namespace Xanadu.Skidbladnir.OS.Windows.Registry
             LpSubKey = regPath.LpSubKey;
             LpValueName = regPath.LpValueName;
         }
-        /// <summary>
-        /// 导出注册表信息到XML。
-        /// </summary>
-        /// <param name="jsonFile">
-        /// XML文件路径。
-        /// </param>
-        /// <returns>
-        /// true为导出成功。
-        /// false为导出失败。
-        /// </returns>
-        public async Task ExportJson(string jsonFile)
-        {
-            var json = JsonConvert.SerializeObject(this);
-            await File.WriteAllTextAsync(jsonFile, json);
-        }
+
         /// <inheritdoc />
         /// <summary>
         /// 获取当前对象的深表副本。

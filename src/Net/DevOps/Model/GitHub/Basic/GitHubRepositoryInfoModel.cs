@@ -55,7 +55,7 @@ namespace Xanadu.Skidbladnir.Net.DevOps.Model.GitHub.Basic
         /// <inheritdoc />
         public string GitOriginUrl(SecureString pat)
         {
-            return this.IsAvailable ? $"https://{this.Owner}:{pat.ToStr()}@github.com/{this.Owner}/{this.Repository}.git" : string.Empty;
+            return this.IsAvailable ? $"https://{this.Owner}:{pat.ToNormalString()}@github.com/{this.Owner}/{this.Repository}.git" : string.Empty;
         }
 
         /// <summary>
