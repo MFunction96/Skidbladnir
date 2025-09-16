@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.IO;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Xanadu.Skidbladnir.OS.Windows.Registry.Enums;
@@ -77,23 +75,6 @@ namespace Xanadu.Skidbladnir.OS.Windows.Registry
             LpValue = lpValue;
         }
 
-        /// <inheritdoc />
-        /// <summary>
-        /// 注册表路径信息类构造函数。
-        /// </summary>
-        /// <param name="jsonFile">
-        /// Json文件位置。
-        /// </param>
-        public RegKey(string jsonFile)
-        {
-            var json = File.ReadAllText(jsonFile);
-            var regKey = JsonConvert.DeserializeObject<RegKey>(json)!;
-            HKey = regKey.HKey;
-            LpSubKey = regKey.LpSubKey;
-            LpValueName = regKey.LpValueName;
-            LpKind = regKey.LpKind;
-            LpValue = regKey.LpValue;
-        }
         /// <inheritdoc />
         /// <summary>
         /// 注册表键信息类复制构造函数。
