@@ -24,7 +24,7 @@ namespace Xanadu.Skidbladnir.Net.DevOps
                 GitHubRestApiClient.DefaultHttpClientAction(httpClient);
                 httpClientConfig?.Invoke(httpClient);
 
-            }).ConfigurePrimaryHttpMessageHandler(_ => GitHubRestApiClient.DefaultHttpClientHandler(handlerConfig));
+            }).ConfigurePrimaryHttpMessageHandler(_ => RestApiClient.DefaultHttpClientHandler(handlerConfig));
 
             return services;
         }
