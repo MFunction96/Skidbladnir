@@ -2,9 +2,4 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\src\IO\File\File.csproj" />
 	</ItemGroup>
-	<ItemGroup>
-		<None Update="1225.pdf">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
 </Project>

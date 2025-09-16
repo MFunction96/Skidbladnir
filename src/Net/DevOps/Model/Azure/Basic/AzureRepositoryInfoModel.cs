@@ -63,7 +63,7 @@ namespace Xanadu.Skidbladnir.Net.DevOps.Model.Azure.Basic
         /// <inheritdoc />
         public string GitOriginUrl(SecureString pat)
         {
-            return this.IsAvailable ? $"https://{pat.ToStr()}@dev.azure.com/{this.Organization}/{this.Project}/_git/{this.Repository}" : string.Empty;
+            return this.IsAvailable ? $"https://{pat.ToNormalString()}@dev.azure.com/{this.Organization}/{this.Project}/_git/{this.Repository}" : string.Empty;
         }
 
     }
