@@ -30,41 +30,17 @@ namespace Xanadu.Skidbladnir.Net.DevOps.Service
         };
 
         /// <summary>
-        /// Default HttpClientHandler with common settings.
-        /// </summary>
-        /// <param name="handler">HttpClientHandler instance.</param>
-        public static void DefaultHttpClientHandlerAction(HttpClientHandler handler)
-        {
-            handler.AllowAutoRedirect = true;
-            handler.AutomaticDecompression = System.Net.DecompressionMethods.All;
-        }
-
-        /// <summary>
         /// Default HttpClient with common settings.
         /// </summary>
         /// <param name="httpClient">Http Client instance.</param>
         public static void DefaultHttpClientAction(HttpClient httpClient)
         {
+            RestApiClient.DefaultHttpClientAction(httpClient);
             httpClient.BaseAddress = GitHubRestApiClient.BaseUrl;
-            httpClient.DefaultRequestVersion = new Version(3, 0);
-            httpClient.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrLower;
             foreach (var gitHubDefaultHeader in GitHubRestApiClient.GitHubDefaultHeaders)
             {
                 httpClient.DefaultRequestHeaders.Add(gitHubDefaultHeader.Key, gitHubDefaultHeader.Value);
             }
-        }
-
-        /// <summary>
-        /// Default HttpClientHandler with common settings, can be configured via Action. AllowAutoRedirect is true, AutomaticDecompression is All.
-        /// </summary>
-        /// <param name="configure">Configuration Action for HttpClientHandler.</param>
-        /// <returns>HttpClientHandler Instance.</returns>
-        public static HttpClientHandler DefaultHttpClientHandler(Action<HttpClientHandler>? configure = null)
-        {
-            var handler = new HttpClientHandler();
-            GitHubRestApiClient.DefaultHttpClientHandlerAction(handler);
-            configure?.Invoke(handler);
-            return handler;
         }
 
         /// <summary>
@@ -75,9 +51,8 @@ namespace Xanadu.Skidbladnir.Net.DevOps.Service
         /// <returns>HttpClient Instance.</returns>
         public static HttpClient DefaultHttpClient(Action<HttpClientHandler>? handlerConfigure = null, Action<HttpClient>? clientConfigure = null)
         {
-            var httpClient = new HttpClient(GitHubRestApiClient.DefaultHttpClientHandler(handlerConfigure));
+            var httpClient = RestApiClient.DefaultHttpClient(handlerConfigure, clientConfigure);
             GitHubRestApiClient.DefaultHttpClientAction(httpClient);
-            clientConfigure?.Invoke(httpClient);
             return httpClient;
         }
 

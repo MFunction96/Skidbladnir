@@ -1,9 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
+﻿using System.Linq;
 using System.Security;
 using Xanadu.Skidbladnir.Net.DevOps.Model.Azure.Basic;
 
-namespace Xanadu.Skidbladnir.Test.Net.DevOpsTest.Model.Azure.Basic
+namespace Xanadu.Skidbladnir.Test.Net.DevOps.Model.Azure.Basic
 {
     [TestClass]
     public class AzureRepositoryInfoModelTest

@@ -53,7 +53,7 @@ namespace Xanadu.Skidbladnir.Test.Net.DevOps.Service
             var releaseAssets = await gitHubRestApiClient.ListAssets(gitHubRepositoryInfoModel, 232881885);
             // Assert
             Assert.IsNotNull(releaseAssets);
-            Assert.IsGreaterThan(0, releaseAssets.ToArray().Length);
+            Assert.IsGreaterThan(0, releaseAssets.Length);
             this.TestContext.WriteLine(JsonSerializer.Serialize(releaseAssets, this._jsonSerializerOptions));
         }
 
@@ -72,8 +72,46 @@ namespace Xanadu.Skidbladnir.Test.Net.DevOps.Service
             var releases = await gitHubRestApiClient.ListReleases(gitHubRepositoryInfoModel);
             // Assert
             Assert.IsNotNull(releases);
-            Assert.IsGreaterThan(0, releases.ToArray().Length);
+            Assert.IsGreaterThan(0, releases.Length);
             this.TestContext.WriteLine(JsonSerializer.Serialize(releases, this._jsonSerializerOptions));
+        }
+
+        [TestMethod]
+        public void DefaultHttpClient_ShouldReturnConfiguredClient()
+        {
+            // Arrange
+            var handlerConfigured = false;
+            var clientConfigured = false;
+
+            // Act
+            var httpClient = GitHubRestApiClient.DefaultHttpClient(
+                handlerConfigure: handler =>
+                {
+                    // This is a sample configuration to verify the action is executed.
+                    // The default is true, so we set it to false for the test.
+                    handler.AllowAutoRedirect = false;
+                    handlerConfigured = true;
+                },
+                clientConfigure: client =>
+                {
+                    // This is a sample configuration to verify the action is executed.
+                    client.Timeout = TimeSpan.FromSeconds(60);
+                    clientConfigured = true;
+                });
+
+            // Assert
+            Assert.IsNotNull(httpClient);
+            Assert.AreEqual(GitHubRestApiClient.BaseUrl, httpClient.BaseAddress);
+            Assert.IsTrue(handlerConfigured, "Handler configuration action was not called.");
+            Assert.IsTrue(clientConfigured, "Client configuration action was not called.");
+            Assert.AreEqual(TimeSpan.FromSeconds(60), httpClient.Timeout);
+
+            // Verify default headers
+            foreach (var header in GitHubRestApiClient.GitHubDefaultHeaders)
+            {
+                Assert.IsTrue(httpClient.DefaultRequestHeaders.Contains(header.Key));
+                CollectionAssert.Contains(httpClient.DefaultRequestHeaders.GetValues(header.Key).ToList(), header.Value);
+            }
         }
     }
 }
