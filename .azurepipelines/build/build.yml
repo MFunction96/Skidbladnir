@@ -34,12 +34,7 @@ steps:
   inputs:
     command: test
     projects: '**/*Tests/*.csproj'
-    arguments: '--configuration $(buildConfiguration) --collect "Code Coverage;Format=cobertura"'
-
-- task: PublishCodeCoverageResults@2
-  inputs:
-    summaryFileLocation: '$(Agent.TempDirectory)/**/*.cobertura.xml'
-    pathToSources: '$(System.DefaultWorkingDirectory)/src'
+    arguments: '--configuration $(buildConfiguration) --coverage --report-trx'
 
 - task: PublishPipelineArtifact@1
   inputs:
