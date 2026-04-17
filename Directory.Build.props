@@ -5,7 +5,7 @@
 		<Product>Skidbladnir</Product>
 		<PackageProjectUrl>https://github.com/MFunction96/Skidbladnir</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/MFunction96/Skidbladnir</RepositoryUrl>
-		<Copyright>2021-2025 Xanadu</Copyright>
+		<Copyright>2021-2026 Xanadu</Copyright>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
