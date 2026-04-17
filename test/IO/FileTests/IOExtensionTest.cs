@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using Xanadu.Skidbladnir.IO.File;
 
@@ -13,7 +12,7 @@ namespace Xanadu.Skidbladnir.Test.IO.File
         [TestInitialize]
         public void Setup()
         {
-            this._testRoot = Path.Combine(Path.GetTempPath(), "IOExtensionTests", Guid.NewGuid().ToString());
+            this._testRoot = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
             Directory.CreateDirectory(this._testRoot);
         }
 

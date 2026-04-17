@@ -17,6 +17,11 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
         private bool _disposed;
 
         /// <summary>
+        /// The switcher of the keep status. If true, the file cache will not be deleted when disposing. It is used for some special scenarios, such as the file cache is used by other process and cannot be deleted immediately.
+        /// </summary>
+        public bool Keep { get; set; } = false;
+
+        /// <summary>
         /// The file name of the file cache.
         /// </summary>
         public string FileName => Path.GetFileName(this.FullPath);
@@ -101,7 +106,7 @@ namespace Xanadu.Skidbladnir.IO.File.Cache
             // and unmanaged resources.
             if (disposing)
             {
-                if (!this.Pool.UnRegister(this))
+                if (!this.Keep && !this.Pool.UnRegister(this))
                 {
                     this.Delete();
                 }
