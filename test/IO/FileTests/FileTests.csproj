@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\src\Core\Test\Test.csproj" />
 		<ProjectReference Include="..\..\..\src\IO\File\File.csproj" />
 	</ItemGroup>
 </Project>

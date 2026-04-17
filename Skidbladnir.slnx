@@ -8,6 +8,7 @@
   <Folder Name="/src/" />
   <Folder Name="/src/Core/">
     <Project Path="src/Core/Extension/Extension.csproj" />
+    <Project Path="src/Core/Test/Test.csproj" Id="e3448d1a-22e5-4e25-ad44-673d907e2380" />
   </Folder>
   <Folder Name="/src/Interop/">
     <Project Path="src/Interop/Process/Process.csproj" />

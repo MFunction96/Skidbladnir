@@ -1,0 +1,6 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="$(DotNetMajorVersion)" />
+    <PackageReference Include="MSTest.TestFramework" Version="*" />
+  </ItemGroup>
+</Project>

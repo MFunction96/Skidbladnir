@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Xanadu.Skidbladnir.Core.Test;
 using Xanadu.Skidbladnir.Net.DevOps;
 using Xanadu.Skidbladnir.Net.DevOps.Model.GitHub.Basic;
 using Xanadu.Skidbladnir.Net.DevOps.Service;
@@ -28,6 +29,7 @@ namespace Xanadu.Skidbladnir.Test.Net.DevOps.Service
         public void Setup()
         {
             var services = new ServiceCollection();
+            services.AddTestLogging(this.TestContext);
             services.AddGitHubRestApiClient();
             this._provider = services.BuildServiceProvider();
         }
