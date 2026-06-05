@@ -17,14 +17,14 @@ namespace Xanadu.Skidbladnir.Net.DevOps
         /// <param name="httpClientConfig">Custom HttpClient Action.</param>
         /// <param name="handlerConfig">Custom HttpClientHandler Action.</param>
         /// <returns>Service Collection.</returns>
-        public static IServiceCollection AddGitHubRestApiClient(this IServiceCollection services, Action<HttpClient>? httpClientConfig = null, Action<HttpClientHandler>? handlerConfig = null)
+        public static IServiceCollection AddGitHubRestApiClient(this IServiceCollection services, Action<HttpClient>? httpClientConfig = null, Action<SocketsHttpHandler>? handlerConfig = null)
         {
             services.AddHttpClient<GitHubRestApiClient>(nameof(GitHubRestApiClient), httpClient =>
             {
                 GitHubRestApiClient.DefaultHttpClientAction(httpClient);
                 httpClientConfig?.Invoke(httpClient);
 
-            }).ConfigurePrimaryHttpMessageHandler(_ => RestApiClient.DefaultHttpClientHandler(handlerConfig));
+            }).ConfigurePrimaryHttpMessageHandler(_ => RestApiClient.DefaultSocketsHttpHandler(handlerConfig));
 
             return services;
         }

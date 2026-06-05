@@ -12,45 +12,45 @@ namespace Xanadu.Skidbladnir.Net.DevOps
         /// <summary>
         /// Default HttpClientHandler with common settings.
         /// </summary>
-        /// <param name="handler">HttpClientHandler instance.</param>
-        public static void DefaultHttpClientHandlerAction(HttpClientHandler handler)
+        /// <param name="handler">SocketsHttpHandler instance.</param>
+        public static void DefaultSocketsHttpHandlerAction(SocketsHttpHandler handler)
         {
             handler.AllowAutoRedirect = true;
-            handler.AutomaticDecompression = System.Net.DecompressionMethods.All;
+            handler.AutomaticDecompression = DecompressionMethods.All;
         }
 
         /// <summary>
-        /// Default HttpClient with common settings.
+        /// Default HttpClient with common settings. Prefer HTTP/3.0, fallback to lower versions. Can be configured via Action.
         /// </summary>
         /// <param name="httpClient">Http Client instance.</param>
         public static void DefaultHttpClientAction(HttpClient httpClient)
         {
             httpClient.DefaultRequestVersion = HttpVersion.Version30;
-            httpClient.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrLower;
+            httpClient.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher;
         }
 
         /// <summary>
-        /// Default HttpClientHandler with common settings, can be configured via Action. AllowAutoRedirect is true, AutomaticDecompression is All.
+        /// Default SocketsHttpHandler with common settings, can be configured via Action. AllowAutoRedirect is true, AutomaticDecompression is All.
         /// </summary>
-        /// <param name="configure">Configuration Action for HttpClientHandler.</param>
-        /// <returns>HttpClientHandler Instance.</returns>
-        public static HttpClientHandler DefaultHttpClientHandler(Action<HttpClientHandler>? configure = null)
+        /// <param name="configure">Configuration Action for SocketsHttpHandler.</param>
+        /// <returns>SocketsHttpHandler Instance.</returns>
+        public static SocketsHttpHandler DefaultSocketsHttpHandler(Action<SocketsHttpHandler>? configure = null)
         {
-            var handler = new HttpClientHandler();
-            RestApiClient.DefaultHttpClientHandlerAction(handler);
+            var handler = new SocketsHttpHandler();
+            RestApiClient.DefaultSocketsHttpHandlerAction(handler);
             configure?.Invoke(handler);
             return handler;
         }
 
         /// <summary>
-        /// Default HttpClient with common settings, can be configured via Action. Default HttpClientHandler is configured. DefaultRequestVersion is 3.0, DefaultVersionPolicy is RequestVersionOrLower.
+        /// Default HttpClient with common settings, can be configured via Action. Default SocketsHttpHandler is configured. DefaultRequestVersion is 3.0, DefaultVersionPolicy is RequestVersionOrHigher.
         /// </summary>
-        /// <param name="handlerConfigure">Configuration Action for HttpClientHandler.</param>
+        /// <param name="handlerConfigure">Configuration Action for SocketsHttpHandler.</param>
         /// <param name="clientConfigure">Configuration Action for HttpClient.</param>
         /// <returns>HttpClient Instance.</returns>
-        public static HttpClient DefaultHttpClient(Action<HttpClientHandler>? handlerConfigure = null, Action<HttpClient>? clientConfigure = null)
+        public static HttpClient DefaultHttpClient(Action<SocketsHttpHandler>? handlerConfigure = null, Action<HttpClient>? clientConfigure = null)
         {
-            var httpClient = new HttpClient(RestApiClient.DefaultHttpClientHandler(handlerConfigure));
+            var httpClient = new HttpClient(RestApiClient.DefaultSocketsHttpHandler(handlerConfigure));
             RestApiClient.DefaultHttpClientAction(httpClient);
             clientConfigure?.Invoke(httpClient);
             return httpClient;

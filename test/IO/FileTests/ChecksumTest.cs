@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Xanadu.Skidbladnir.Core.Extension;
@@ -12,7 +11,7 @@ namespace Xanadu.Skidbladnir.Test.IO.File
     public class ChecksumTests
     {
         private const string TestContent = "The quick brown fox jumps over the lazy dog";
-        private static readonly byte[] TestContentBytes = Encoding.UTF8.GetBytes(TestContent);
+        private static readonly byte[] TestContentBytes = StaticVault.Utf8WithoutBomEncoding.GetBytes(ChecksumTests.TestContent);
 
         // Expected hashes for "The quick brown fox jumps over the lazy dog"
         private const string Sha256Hex = "d7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592";
@@ -26,24 +25,24 @@ namespace Xanadu.Skidbladnir.Test.IO.File
         private static string GetTempFilePath() => Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
 
         [TestMethod]
-        [DataRow(SHAAlgorithm.SHA256, Sha256Hex)]
-        [DataRow(SHAAlgorithm.SHA384, Sha384Hex)]
-        [DataRow(SHAAlgorithm.SHA512, Sha512Hex)]
+        [DataRow(SHAAlgorithm.SHA256, ChecksumTests.Sha256Hex)]
+        [DataRow(SHAAlgorithm.SHA384, ChecksumTests.Sha384Hex)]
+        [DataRow(SHAAlgorithm.SHA512, ChecksumTests.Sha512Hex)]
         public void GetBinaryHash_WithHexFormatting_ReturnsCorrectHash(SHAAlgorithm algorithm, string expectedHash)
         {
             var checksum = new Checksum(algorithm);
-            var hash = checksum.GetBinaryHash(TestContentBytes, BinaryFormatting.HEXADECIMAL);
+            var hash = checksum.GetBinaryHash(ChecksumTests.TestContentBytes, BinaryFormatting.HEXADECIMAL);
             Assert.AreEqual(expectedHash, hash, ignoreCase: true);
         }
 
         [TestMethod]
-        [DataRow(SHAAlgorithm.SHA256, Sha256Base64)]
-        [DataRow(SHAAlgorithm.SHA384, Sha384Base64)]
-        [DataRow(SHAAlgorithm.SHA512, Sha512Base64)]
+        [DataRow(SHAAlgorithm.SHA256, ChecksumTests.Sha256Base64)]
+        [DataRow(SHAAlgorithm.SHA384, ChecksumTests.Sha384Base64)]
+        [DataRow(SHAAlgorithm.SHA512, ChecksumTests.Sha512Base64)]
         public void GetBinaryHash_WithBase64Formatting_ReturnsCorrectHash(SHAAlgorithm algorithm, string expectedHash)
         {
             var checksum = new Checksum(algorithm);
-            var hash = checksum.GetBinaryHash(TestContentBytes, BinaryFormatting.BASE64);
+            var hash = checksum.GetBinaryHash(ChecksumTests.TestContentBytes, BinaryFormatting.BASE64);
             Assert.AreEqual(expectedHash, hash);
         }
 
@@ -51,13 +50,13 @@ namespace Xanadu.Skidbladnir.Test.IO.File
         public void GetBinaryHash_WithBinaryFormatting_ThrowsNotSupportedException()
         {
             var checksum = new Checksum(SHAAlgorithm.SHA256);
-            Assert.ThrowsExactly<NotSupportedException>(() => checksum.GetBinaryHash(TestContentBytes, BinaryFormatting.BINARY));
+            Assert.ThrowsExactly<NotSupportedException>(() => checksum.GetBinaryHash(ChecksumTests.TestContentBytes, BinaryFormatting.BINARY));
         }
 
         [TestMethod]
-        [DataRow(SHAAlgorithm.SHA256, Sha256Hex)]
-        [DataRow(SHAAlgorithm.SHA384, Sha384Hex)]
-        [DataRow(SHAAlgorithm.SHA512, Sha512Hex)]
+        [DataRow(SHAAlgorithm.SHA256, ChecksumTests.Sha256Hex)]
+        [DataRow(SHAAlgorithm.SHA384, ChecksumTests.Sha384Hex)]
+        [DataRow(SHAAlgorithm.SHA512, ChecksumTests.Sha512Hex)]
         public async Task GetFileHashAsync_WithHexFormatting_ReturnsCorrectHash(SHAAlgorithm algorithm, string expectedHash)
         {
             var filePath = GetTempFilePath();
@@ -78,24 +77,24 @@ namespace Xanadu.Skidbladnir.Test.IO.File
         }
 
         [TestMethod]
-        [DataRow(SHAAlgorithm.SHA256, Sha256Hex)]
-        [DataRow(SHAAlgorithm.SHA384, Sha384Hex)]
-        [DataRow(SHAAlgorithm.SHA512, Sha512Hex)]
+        [DataRow(SHAAlgorithm.SHA256, ChecksumTests.Sha256Hex)]
+        [DataRow(SHAAlgorithm.SHA384, ChecksumTests.Sha384Hex)]
+        [DataRow(SHAAlgorithm.SHA512, ChecksumTests.Sha512Hex)]
         public async Task GetStreamHashAsync_WithHexFormatting_ReturnsCorrectHash(SHAAlgorithm algorithm, string expectedHash)
         {
             var checksum = new Checksum(algorithm);
-            using var stream = new MemoryStream(TestContentBytes);
+            using var stream = new MemoryStream(ChecksumTests.TestContentBytes);
             var hash = await checksum.GetStreamHashAsync(stream, BinaryFormatting.HEXADECIMAL);
             Assert.AreEqual(expectedHash, hash, ignoreCase: true);
         }
 
         [TestMethod]
-        [DataRow(SHAAlgorithm.SHA256, Sha256Hex)]
-        [DataRow(SHAAlgorithm.SHA384, Sha384Hex)]
-        [DataRow(SHAAlgorithm.SHA512, Sha512Hex)]
+        [DataRow(SHAAlgorithm.SHA256, ChecksumTests.Sha256Hex)]
+        [DataRow(SHAAlgorithm.SHA384, ChecksumTests.Sha384Hex)]
+        [DataRow(SHAAlgorithm.SHA512, ChecksumTests.Sha512Hex)]
         public async Task GetObjectHashAsync_WithHexFormatting_ReturnsCorrectHash(SHAAlgorithm algorithm, string expectedHash)
         {
-            var testObject = new { Message = TestContent };
+            var testObject = new { Message = ChecksumTests.TestContent };
             var tempPath = GetTempFilePath();
             await System.IO.File.WriteAllBytesAsync(tempPath, JsonSerializer.SerializeToUtf8Bytes(testObject));
             var checksum = new Checksum(algorithm);

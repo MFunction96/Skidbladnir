@@ -49,7 +49,7 @@ namespace Xanadu.Skidbladnir.Net.DevOps.Service
         /// <param name="handlerConfigure">Configuration Action for HttpClientHandler.</param>
         /// <param name="clientConfigure">Configuration Action for HttpClient.</param>
         /// <returns>HttpClient Instance.</returns>
-        public static HttpClient DefaultHttpClient(Action<HttpClientHandler>? handlerConfigure = null, Action<HttpClient>? clientConfigure = null)
+        public static HttpClient DefaultHttpClient(Action<SocketsHttpHandler>? handlerConfigure = null, Action<HttpClient>? clientConfigure = null)
         {
             var httpClient = RestApiClient.DefaultHttpClient(handlerConfigure, clientConfigure);
             GitHubRestApiClient.DefaultHttpClientAction(httpClient);
