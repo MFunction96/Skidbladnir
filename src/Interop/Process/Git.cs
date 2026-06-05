@@ -22,22 +22,22 @@ namespace Xanadu.Skidbladnir.Interop.Process
         /// <summary>
         /// Clone a repository.
         /// </summary>
-        /// <param name="url"></param>
-        /// <param name="branch"></param>
-        /// <param name="single"></param>
-        /// <param name="destination"></param>
-        /// <param name="workFolder"></param>
-        /// <param name="args"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="url">The URL of the repository to clone.</param>
+        /// <param name="branch">The branch to clone.</param>
+        /// <param name="single">Whether to clone a single branch.</param>
+        /// <param name="destination">The destination folder for the clone.</param>
+        /// <param name="workFolder">The working directory for the git command.</param>
+        /// <param name="args">Additional arguments for the git command.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the process exit information.</returns>
         public static async Task<ProcessExitInfo> Clone(string url, string branch = "", bool single = false, string destination = "", string workFolder = "", string[]? args = null, CancellationToken cancellationToken = default)
         {
             var info = new ProcessStartInfo
             {
                 FileName = "git.exe",
-                StandardErrorEncoding = Encoding.UTF8,
-                StandardInputEncoding = Encoding.UTF8,
-                StandardOutputEncoding = Encoding.UTF8,
+                StandardErrorEncoding = new UTF8Encoding(false),
+                StandardInputEncoding = new UTF8Encoding(false),
+                StandardOutputEncoding = new UTF8Encoding(false),
                 RedirectStandardError = true,
                 RedirectStandardOutput = true,
                 RedirectStandardInput = true,
@@ -97,18 +97,18 @@ namespace Xanadu.Skidbladnir.Interop.Process
         /// <summary>
         /// Push changes to remote.
         /// </summary>
-        /// <param name="workFolder"></param>
-        /// <param name="args"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="workFolder">The working directory for the git command.</param>
+        /// <param name="args">Additional arguments for the git command.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the process exit information.</returns>
         public static async Task<ProcessExitInfo> Push(string workFolder = "", string[]? args = null, CancellationToken cancellationToken = default)
         {
             var info = new ProcessStartInfo
             {
                 FileName = "git.exe",
-                StandardErrorEncoding = Encoding.UTF8,
-                StandardInputEncoding = Encoding.UTF8,
-                StandardOutputEncoding = Encoding.UTF8,
+                StandardErrorEncoding = new UTF8Encoding(false),
+                StandardInputEncoding = new UTF8Encoding(false),
+                StandardOutputEncoding = new UTF8Encoding(false),
                 RedirectStandardError = true,
                 RedirectStandardOutput = true,
                 RedirectStandardInput = true,
