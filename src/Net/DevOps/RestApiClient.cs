@@ -20,13 +20,13 @@ namespace Xanadu.Skidbladnir.Net.DevOps
         }
 
         /// <summary>
-        /// Default HttpClient with common settings. Prefer HTTP/3.0, fallback to lower versions. Can be configured via Action.
+        /// Default HttpClient with common settings. Preferred HTTP version is 3.0, but will fallback to lower versions if not supported by server. BaseAddress is null, can be configured via Action.
         /// </summary>
         /// <param name="httpClient">Http Client instance.</param>
         public static void DefaultHttpClientAction(HttpClient httpClient)
         {
             httpClient.DefaultRequestVersion = HttpVersion.Version30;
-            httpClient.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher;
+            httpClient.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrLower;
         }
 
         /// <summary>

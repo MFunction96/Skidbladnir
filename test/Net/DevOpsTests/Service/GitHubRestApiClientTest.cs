@@ -41,7 +41,7 @@ namespace Xanadu.Skidbladnir.Test.Net.DevOps.Service
         }
 
         [TestMethod]
-        public async Task GitHubRestApiClient_Creation_Success()
+        public async Task GitHubRestApiClient_ListAssets_Success()
         {
             // Arrange
             using var scope = this._provider.CreateScope();
